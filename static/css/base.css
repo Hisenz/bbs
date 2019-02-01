@@ -1,0 +1,29 @@
+.body{
+    min-height: 860px;
+    background-color: rgb(244, 244, 244);
+}
+
+.propagranda{
+    margin-top: 150px;
+}
+.suggestion{
+    background-color: rgb(237, 227, 135);
+}
+.advertisement{
+    margin-bottom: 40px;
+}
+.navigate{
+    background-color: white;
+    padding-top: 5px;
+}
+.form-style{
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+#current_avatar{
+    height: 200px;
+    width: 200px;
+}
+.bg-white{
+    background-color: white;
+}

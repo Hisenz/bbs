@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form>{% csrf_token %}
+        <div class="form-group form-style">
+            <label for="headline">标题</label>
+            <input type="text" class="form-control" id="headline" name="headline" placeholder="请输入您创建的板块名"/>
+        </div>
+        <div class="form-group form-style">
+            <label for=""></label>
+        </div>
+        <div class="form-group form-style">
+            <label for="description">内容</label>
+            <textarea class="form-control" id="description" name="description" rows="8"></textarea>
+        </div>
+        <div class="form-group form-style" >
+            <input type="button" id="submit" value="发帖" class="btn btn-primary col-sm-12">
+        </div>
+    </form>
+
+</body>
+</html>

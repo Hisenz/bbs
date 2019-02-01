@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>发帖</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css">
+    <script type="text/javascript" src="/static/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+    <style>
+        .post-create {
+            background-color: white;
+        }
+
+        .post-item {
+            min-height: 45px;
+        }
+
+        .textarea {
+            width: 97%;
+            margin: 10px 1.5% 0;
+            padding: 10px 1.5% 0;
+            height: 95px;
+            font-size: 14px;
+            border: solid 1px;
+            color: #333;
+            border-radius: 5px;
+        }
+
+        textarea {
+            resize: none;
+            overflow: auto;
+        }
+
+        .post-button {
+            width: 97%;
+            margin: 10px 1.5% 0;
+        }
+
+        .post-form {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+{% include 'base/navigate.html' %}
+<div class="body">
+    <div class="container-fluid">
+        <div class="col-sm-6 col-sm-offset-3 post-create">
+            <div class="col-sm-9 post-form">
+                <div class="post-item">
+                    标题：<input type="text" id="headline" style="width: 80%">
+                </div>
+                <div class="post-item">
+                    板块：
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                            <span id="plate_select">{{ plates.first.name }}</span> <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            {% for plate in plates %}
+                                <li><a class="plate_name">{{ plate.name }}</a></li>
+                            {% endfor %}
+                            <li><a class="btn-link" href="{% url 'user:create_plate' %}">没有? 手动添加</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="post-item">
+                    标签：<span id="tags"></span><span id="prompt">点击删除</span>
+                </div>
+                <div class="post-item">
+                    <textarea class="textarea" placeholder="内容" id="description"></textarea>
+                </div>
+                <div class="post-item">
+                    <button class="btn btn-block post-button" id="submit">发表</button>
+                </div>
+            </div>
+
+            <div class="col-sm-3">
+                <h4>标签池：
+                    <small>(点击添加标签)</small>
+                </h4>
+                <div id="tag-pool"></div>
+                <a href="{% url 'user:create_tag' %}">没有？手动添加</a>
+            </div>
+            <!--
+            <table class="table table-hover">
+                <tr>
+                    <td>标题</td>
+                    <td><input type="text" id="headline"></td>
+                </tr>
+                <tr>
+                    <td>板块</td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                <span id="plate_select">{{ plates.first.name }}</span> <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                {% for plate in plates %}
+                                    <li><a class="plate_name">{{ plate.name }}</a></li>
+                                {% endfor %}
+                                <li><a class="btn-link" href="{% url 'user:create_plate' %}">没有? 手动添加</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>标签</td>
+                    <td>
+                        <span id="tag"></span>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                <span id="select">添加标签</span> <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu tag-menu">
+                                {% for tag in tags %}
+                                    <li><a class="tag_name" title="{{ tag.description }}">{{ tag.name }}</a></li>
+                                {% endfor %}
+                                <li><a href="{% url 'user:create_tag' %}">没有？手动添加</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>内容</td>
+                    <td>
+                        <div class="col-sm-8">
+                            <textarea style="width: 100%" id="description"></textarea>
+                        </div>
+                    </td>
+                </tr>
+                <tfoot>
+                <td colspan="2" class="text-center">
+                    <button class="btn btn-info btn-lg" id="submit">提交</button>
+                </td>
+                </tfoot>
+            </table>
+            -->
+        </div>
+    </div>
+</div>
+{% include 'base/suggestion.html' %}
+</body>
+<script type="text/javascript">
+    let tag = document.getElementById('tags')
+    let button = [
+        'btn-default',
+        'btn-primary',
+        'btn-success',
+        'btn-info',
+        'btn-warning',
+        'btn-danger',
+    ]
+    let button_class = 0
+
+    function tag_cancel(e) {
+        for (let i = 0; i < $('.tag_name').length; i++) {
+            if ($('.tag_name').eq(i).html() == e.innerHTML) {
+                $('.tag_name').eq(i).show()
+                e.remove()
+            }
+        }
+    }
+
+    $(document).ready(function () {
+        let tag_pool = document.getElementById('tag-pool')
+        {% for tag in tags %}
+            let tag_button_{{ tag.pk }}  = document.createElement('button');
+            tag_button_{{ tag.pk }}.setAttribute('class', 'btn tag '+ button[button_class % 6]);
+            tag_button_{{ tag.pk }}.innerHTML= '{{ tag.name }}' ;
+            tag_pool.appendChild(tag_button_{{ tag.pk }});
+            button_class++
+        {% endfor %}
+        $('.plate_name').click(function () {
+            $("#plate_select").html($(this).html())
+        })
+        $('.tag').click(function () {
+            if ($(this).hasClass('tag-item')){
+                $('#tag-pool').append($(this))
+                $(this).removeClass('tag-item')
+            } else {
+                $('#tags').append($(this));
+                $(this).addClass('tag-item')
+            }
+        })
+
+        $('#submit').click(function () {
+            let tag_list = new Array()
+            let tags = tag.childNodes
+            for (let i = 0; i < tags.length; i++) {
+                tag_list.push(tags[i].innerHTML)
+            }
+            let data = {
+                'user': {{ user.pk }},
+                'headline': $('#headline').val(),
+                'plate': $('#plate_select').html(),
+                'tag_list': tag_list.toString(),
+                'description': $('#description').val()
+            }
+
+            $.ajaxSetup({
+                data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+            });
+            $.post("{% url 'user:add_post' %}", data, function (message) {
+                if (message == '1') {
+                    alert('已发表！')
+                } else if (message === '-2'){
+                    alert('标题不能为空')
+                } else if (message === '-3'){
+                    alert('内容不能为空！')
+                } else if (message === '-1') {
+                    alert('请先登录！')
+                } else {
+                    alert('请添加板块')
+                }
+            })
+        })
+    })
+</script>
+</html>

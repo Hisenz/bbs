@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加标签</title>
+</head>
+<body>
+    <form action="" method="post" onsubmit="">{% csrf_token %}
+        <div class="form-group form-style">
+            <label for="plate_name">标签名</label>
+            <input type="text" class="form-control" id="plate_name" name="plate_name" placeholder="请输入您创建的标签名"/>
+        </div>
+        <div class="form-group form-style">
+            <label for="description">描述你创建的标签</label>
+            <textarea class="form-control" id="description" name="description" rows="8"></textarea>
+        </div>
+        <div class="form-group form-style" >
+            <input type="button" id="submit" value="提交" class="btn btn-primary col-sm-12">
+        </div>
+    </form>
+
+</body>
+<script>
+    $(document).ready(function () {
+        $('#submit').click(function () {
+            $.ajaxSetup({
+                data:{csrfmiddlewaretoken:'{{ csrf_token }}'},
+            });
+
+            $.ajax({
+                url:"{% url 'user:add_tag' %}",
+                data:{
+                    "plate_name":$("#plate_name").val(),
+                    'description':$("#description").val(),
+                },
+                type:"POST",
+                success:function (data) {
+                    if(data === '-1'){
+                        alert("请先登录！")
+                    }
+                    else if(data === '0'){
+                        alert("该标签已存在！")
+                    }else if(data === '-2'){
+                        alert("标签名不能为空！")
+                    }else{
+                        alert('创建成功！')
+                    }
+                }
+            })
+        })
+    })
+</script>
+</html>

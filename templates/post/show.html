@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ post.headline }}</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css">
+    <script type="text/javascript" src="/static/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+    <style>
+        .post_description {
+            min-height: 280px;
+        }
+
+        .post_show {
+            background-color: white;
+        }
+
+        .like-btn {
+            background-color: white;
+            border: none;
+            text-align: center;
+            padding: 15px 32px;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            font-size: 25px;
+        }
+
+        .review-btn {
+            background-color: white;
+            border: none;
+            text-align: center;
+            padding: 15px 32px;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            font-size: 25px;
+        }
+
+        .like-icon {
+            color: #5e5e5e;
+            border-color: black;
+        }
+
+        .textarea {
+            width: 97%;
+            margin: 10px 1.5% 0;
+            padding: 10px 1.5% 0;
+            height: 95px;
+            font-size: 14px;
+            border: solid 1px;
+            color: #333;
+            border-radius: 5px;
+        }
+
+        textarea {
+            resize: none;
+            overflow: auto;
+        }
+
+        .review_show {
+            background-color: white;
+        }
+
+        .review {
+            width: 97%;
+            margin: 10px 1.5% 0;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border-bottom: solid 1px #333;
+
+        }
+
+        .review-img {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: solid 1px;
+        }
+
+        .review-icon {
+            height: 25px;
+            width: 25px;
+        }
+
+    </style>
+</head>
+<body>
+{% include 'base/navigate.html' %}
+<div class="body">
+    <div class="container-fluid">
+        <div class="col-sm-8 col-sm-offset-2">
+            <div class="col-sm-3">
+                <div class="row">
+                    <div class="thumbnail" style="margin-top: 20px;">
+                        <img src="/media/{{ post.user.avatar }}" alt="...">
+                        <div class="caption">
+                            <h3>
+                                <a href="{% url 'user:showuser' %}?show={{ post.user.pk }}">
+                                    {{ post.user.nickname }}
+                                    {% if post.user.gender %}
+                                        <small style="color: #5bc0de">♂</small>
+                                    {% else %}
+                                        <small style="color: deeppink">♀</small>
+                                    {% endif %}
+                                </a>
+                            </h3>
+
+                            <p>{{ post.user.description }}</p>
+                        </div>
+                        <div class="caption">
+                            <h4>他最近的发帖</h4>
+                            {% for userpost in posts %}
+                                <div>
+                                    <a href="{% url 'user:show_post' %}?post_id={{ userpost.pk }}">
+                                        <h5>{{ userpost.headline }}</h5></a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-9">
+                <div class="post_show">
+                    <h1 class="text-center">{{ post.headline }}</h1>
+                    <div class="text-center">{{ post.last_change_time }}</div>
+                    <div class="text-center"><span class="btn btn-info">{{ post.plate.name }}</span></div>
+                    <div class="text-center">
+                        {% for tag in post.tags.all %}
+                            <span class="label label-default">{{ tag.name }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-8 col-sm-offset-2 post_description"><h3>{{ post.description }}</h3></div>
+                    </div>
+                    <div class="text-center">
+                        <button class="like-btn" role="group">
+                            <span class="like-icon">&#10084</span>
+                            <span class="like-num">{{ post.give_a_like }}</span>
+                        </button>
+                        <button class="review-btn" role="group">
+                            <img class="review-icon" src="/static/images/review-icon.jpg"/>
+                            <span class="review-num">{{ reviews.count }}</span>
+                        </button>
+                    </div>
+                    <div>
+                        <textarea class="textarea" id="review"></textarea>
+                    </div>
+                    <div class="text-right">
+                        <button class="btn btn-default" style="margin-right: 1.5%" id="add_review">发表评论</button>
+                    </div>
+                </div>
+
+                <div class="review_show">
+                    {% for review in reviews %}
+                        <div class="row review">
+                            <div class="col-sm-1">
+                                <a>
+                                    {% if review.user.avatar %}
+                                        <img class="review-img" src="/media/{{ review.user.avatar }}">
+                                    {% else %}
+                                        <img class="review-img " src="/static/images/user/user_404.png"
+                                    {% endif %}
+                                </a>
+                            </div>
+                            <div class="col-sm-10">
+                                <a href="{% url 'user:showuser' %}?show={{ review.user.pk }}">{{ review.user.nickname }}</a>
+                                <div style="font-size: 20px">{{ review.review }}</div>
+                                <div>{{ review.time }}</div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'base/suggestion.html' %}
+</body>
+<script>
+    let give_like = false
+    $(document).ready(function () {
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+        });
+        $('.like-btn').click(function () {
+            let like = $('.like-num');
+            let like_num = Number(like.html());
+            if (give_like) {
+                $.post("{% url 'user:reduce_like' %}", {
+                    'post_pk':{{ post.pk }},
+                }, function (data) {
+                    if (data === '1') {
+                        give_like = false
+                        $('.like-icon').css('color', 'rgb(244,244,244)');
+                        like.html(like_num - 1);
+                    }
+                })
+            } else {
+                $.post("{% url 'user:add_like' %}", {
+                    'post_pk':{{ post.pk }},
+                }, function (data) {
+                    if (data === '1') {
+                        give_like = true
+                        $('.like-icon').css('color', 'red');
+                        like.html(like_num + 1);
+                    }
+                })
+
+            }
+        })
+        $('#add_review').click(function () {
+            let review = $('#review').val();
+            if (review == '') {
+                alert('评论不能为空！')
+            } else {
+                $.post("{% url 'user:add_review' %}", {
+                    'review': review,
+                    'post_pk':{{ post.pk }},
+                }, function (data,) {
+                    if (data === '1') {
+                        alert('评论成功！');
+                        location.reload()
+                    } else if (data === '0') {
+                        alert('请先登录！')
+                    }
+                })
+            }
+        })
+
+    })
+</script>
+</html>

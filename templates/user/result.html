@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>结果</title>
+</head>
+<body>
+    <div>
+        {% if  result  %}
+            <div> 注册成功！请前往<a href="{% url 'user:login' %}">登录</a> </div>
+        {% else %}
+            <div>注册失败! 请重新<a href="{% url 'user:signup' %}">注册</a></div>
+        {% endif %}
+            <div>3秒后自动跳转</div>
+
+    </div>
+</body>
+<script type="text/javascript">
+    function run() {
+        {% if  result  %}
+            top.location = '{% url 'user:login' %}'
+        {% else %}
+            top.location = '{% url 'user:signup' %}'
+        {% endif %}
+    }
+    window.setTimeout(run, 3000)
+</script>
+</html>
