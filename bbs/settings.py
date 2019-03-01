@@ -82,9 +82,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'bbs',
-        'USER': 'bbs',
-        'PASSWORD': 'bbs123',
-        'HOST': 'localhost',
+        'USER': 'root',
+        'PASSWORD': 'zhai1234',
+        'HOST': '47.101.67.142',
         'POET': '3306'
     }
 }
@@ -130,6 +130,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static/'),
 ]
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
