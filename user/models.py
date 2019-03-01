@@ -37,7 +37,7 @@ class Post(models.Model):
     user = models.ForeignKey(User, to_field='nickname', on_delete=models.DO_NOTHING)
     headline = models.CharField(max_length=20)
     plate = models.ForeignKey(Plate, to_field='name', on_delete=models.CASCADE)
-    tags = models.ManyToManyField(Tag, null=True)
+    tags = models.ManyToManyField(Tag)
     create_time = models.DateTimeField(auto_now_add=True)
     last_change_time = models.DateTimeField(auto_now=True)
     description = models.TextField(null=True, default=None)
