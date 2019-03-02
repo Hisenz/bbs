@@ -1,10 +1,11 @@
 {% extends 'base/base.html' %}
 
 {% block title %}
-发帖
+    发帖
 {% endblock %}
 {% block style %}
-<style>
+
+    <style>
         .post-create {
             background-color: white;
         }
@@ -41,7 +42,7 @@
 {% endblock %}
 
 {% block body %}
-<div class="container-fluid">
+    <div class="container-fluid">
         <div class="col-sm-6 col-sm-offset-3 post-create">
             <div class="col-sm-9 post-form">
                 <div class="post-item">
@@ -66,6 +67,18 @@
                     标签：<span id="tags"></span><span id="prompt">点击删除</span>
                 </div>
                 <div class="post-item">
+                    文本格式：
+
+                        <label class="radio-inline"><input type="radio" name="text_choice" value="0" checked="checked">txt</label>
+                        <label class="radio-inline"><input type="radio" name="text_choice" value="1">markdown</label>
+                        <label class="radio-inline"><input type="radio" name="text_choice" value="2">html</label>
+
+                </div>
+                <div id="show-post">
+                    <h3>预览：（因为txt无变化所以不显示）</h3>
+
+                </div>
+                <div class="post-item">
                     <textarea class="textarea" placeholder="内容" id="description"></textarea>
                 </div>
                 <div class="post-item">
@@ -84,80 +97,101 @@
     </div>
 {% endblock %}
 {% block script %}
-<script type="text/javascript">
-    let tag = document.getElementById('tags')
-    let button = [
-        'btn-default',
-        'btn-primary',
-        'btn-success',
-        'btn-info',
-        'btn-warning',
-        'btn-danger',
-    ]
-    let button_class = 0
+    <script src="https://cdn.bootcss.com/showdown/1.9.0/showdown.min.js"></script>
+    <script type="text/javascript">
+        let tag = document.getElementById('tags')
+        let button = [
+            'btn-default',
+            'btn-primary',
+            'btn-success',
+            'btn-info',
+            'btn-warning',
+            'btn-danger',
+        ]
+        let button_class = 0
 
-    function tag_cancel(e) {
-        for (let i = 0; i < $('.tag_name').length; i++) {
-            if ($('.tag_name').eq(i).html() == e.innerHTML) {
-                $('.tag_name').eq(i).show()
-                e.remove()
+        function tag_cancel(e) {
+            for (let i = 0; i < $('.tag_name').length; i++) {
+                if ($('.tag_name').eq(i).html() == e.innerHTML) {
+                    $('.tag_name').eq(i).show()
+                    e.remove()
+                }
             }
         }
-    }
 
-    $(document).ready(function () {
-        let tag_pool = document.getElementById('tag-pool')
-        {% for tag in tags %}
-            let tag_button_{{ tag.pk }}  = document.createElement('button');
-            tag_button_{{ tag.pk }}.setAttribute('class', 'btn tag '+ button[button_class % 6]);
-            tag_button_{{ tag.pk }}.innerHTML= '{{ tag.name }}' ;
-            tag_pool.appendChild(tag_button_{{ tag.pk }});
-            button_class++
-        {% endfor %}
-        $('.plate_name').click(function () {
-            $("#plate_select").html($(this).html())
-        })
-        $('.tag').click(function () {
-            if ($(this).hasClass('tag-item')){
-                $('#tag-pool').append($(this))
-                $(this).removeClass('tag-item')
-            } else {
-                $('#tags').append($(this));
-                $(this).addClass('tag-item')
-            }
-        })
-
-        $('#submit').click(function () {
-            let tag_list = new Array()
-            let tags = tag.childNodes
-            for (let i = 0; i < tags.length; i++) {
-                tag_list.push(tags[i].innerHTML)
-            }
-            let data = {
-                'user': {{ user.pk }},
-                'headline': $('#headline').val(),
-                'plate': $('#plate_select').html(),
-                'tag_list': tag_list.toString(),
-                'description': $('#description').val()
-            }
-
-            $.ajaxSetup({
-                data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
-            });
-            $.post("{% url 'user:add_post' %}", data, function (message) {
-                if (message == '1') {
-                    alert('已发表！')
-                } else if (message === '-2'){
-                    alert('标题不能为空')
-                } else if (message === '-3'){
-                    alert('内容不能为空！')
-                } else if (message === '-1') {
-                    alert('请先登录！')
+        $(document).ready(function () {
+            let tag_pool = document.getElementById('tag-pool')
+            {% for tag in tags %}
+                let tag_button_{{ tag.pk }} = document.createElement('button');
+                tag_button_{{ tag.pk }}.setAttribute('class', 'btn tag ' + button[button_class % 6]);
+                tag_button_{{ tag.pk }}.innerHTML = '{{ tag.name }}';
+                tag_pool.appendChild(tag_button_{{ tag.pk }});
+                button_class++
+            {% endfor %}
+            $('.plate_name').click(function () {
+                $("#plate_select").html($(this).html())
+            })
+            $('.tag').click(function () {
+                if ($(this).hasClass('tag-item')) {
+                    $('#tag-pool').append($(this))
+                    $(this).removeClass('tag-item')
                 } else {
-                    alert('请添加板块')
+                    $('#tags').append($(this));
+                    $(this).addClass('tag-item')
                 }
             })
+
+            $('#submit').click(function () {
+                let tag_list = new Array()
+                let tags = tag.childNodes
+                for (let i = 0; i < tags.length; i++) {
+                    tag_list.push(tags[i].innerHTML)
+                }
+                let data = {
+                    'user': {{ user.pk }},
+                    'headline': $('#headline').val(),
+                    'plate': $('#plate_select').html(),
+                    'tag_list': tag_list.toString(),
+                    'description': $('#description').val(),
+                    'text_choice':$("input[name='text_choice']:checked").val()
+                }
+
+
+                $.ajaxSetup({
+                    data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+                });
+                $.post("{% url 'user:add_post' %}", data, function (message) {
+                    if (message == '1') {
+                        alert('已发表！')
+                        window.location.href = "{% url "user:showuser %}?show= {{ user.pk }}"
+                    } else if (message === '-2') {
+                        alert('标题不能为空')
+                    } else if (message === '-3') {
+                        alert('内容不能为空！')
+                    } else if (message === '-1') {
+                        alert('请先登录！')
+                    } else {
+                        alert('请添加板块')
+                    }
+                })
+            })
+
+            $("textarea").keyup(function () {
+
+                let text = $(this).val();
+                if ($("input[name='text_choice']:checked").val() === "1"){
+                    text = tomarkdown(text);
+                }else if ($("input[name='text_choice']:checked").val() === "0"){
+                    text = "";
+                }
+                $("#show-post").html(text);
+
+
+            })
         })
-    })
-</script>
+    function tomarkdown(text) {
+        let converter = new showdown.Converter();
+        return converter.makeHtml(text)
+    }
+    </script>
 {% endblock %}

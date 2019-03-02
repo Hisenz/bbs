@@ -22,6 +22,10 @@ def add(user_id, post):
         new_post.plate = Plate.objects.get(name=post['plate'])
         new_post.description = post['description']
         new_post.user = User.objects.get(pk=user_id)
+        if post['text_choice'] == '1':
+            new_post.text_choice = False
+        elif post['text_choice'] == '2':
+            new_post.text_choice = True
         new_post.save()
         if post['tag_list'] != '':
             for tag_name in post['tag_list'].split(','):

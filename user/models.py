@@ -18,18 +18,24 @@ class User(models.Model):
 
 # 板块
 class Plate(models.Model):
-    name = models.CharField(max_length=10, unique=True)
+    name = models.CharField(max_length=10, unique=True, null=False)
     create_user = models.ForeignKey(User, to_field='nickname', on_delete=models.DO_NOTHING)
     description = models.TextField(null=True, default=True)
     audit = models.BooleanField(default=False)
     create_time = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.name
+
 
 # 标签
 class Tag(models.Model):
-    name = models.CharField(max_length=10, unique=True)
+    name = models.CharField(max_length=10, unique=True, null=False)
     create_user = models.ForeignKey(User, to_field='nickname', on_delete=models.DO_NOTHING)
     description = models.TextField(null=True, default=None)
+
+    def __str__(self):
+        return self.name
 
 
 # 帖子
@@ -42,6 +48,10 @@ class Post(models.Model):
     last_change_time = models.DateTimeField(auto_now=True)
     description = models.TextField(null=True, default=None)
     give_a_like = models.IntegerField(default=0)
+    text_choice = models.BooleanField(null=True)
+
+    def __str__(self):
+        return self.headline
 
 
 # 评论
@@ -51,8 +61,13 @@ class Review(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
 
+    def __str__(self):
+        return self.review
+
 
 # 点赞
 class GiveLike(models.Model):
     post = models.ForeignKey(Post, on_delete=models.DO_NOTHING)
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+
+

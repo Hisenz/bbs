@@ -140,14 +140,14 @@ def posting(request):
 
 def add_post(request):
     user_id = requestutil.get_session(name='user', request=request)
-
-    post = {
+    new_post = {
         'headline': request.POST.get('headline'),
         'plate': request.POST.get('plate'),
         'tag_list': request.POST.get('tag_list'),
-        'description': request.POST.get('description')
+        'description': request.POST.get('description'),
+        'text_choice': request.POST.get('text_choice'),
     }
-    message = postutil.add(user_id=user_id, post=post)
+    message = postutil.add(user_id=user_id, post=new_post)
 
     return HttpResponse(message)
 

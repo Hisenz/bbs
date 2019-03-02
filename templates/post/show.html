@@ -1,11 +1,11 @@
 {% extends 'base/base.html' %}
 
 {% block title %}
-{{ post.headline }}
+    {{ post.headline }}
 {% endblock %}
 
 {% block style %}
-<style>
+    <style>
         .post_description {
             min-height: 280px;
         }
@@ -86,7 +86,7 @@
 {% endblock %}
 
 {% block body %}
-<div class="container-fluid">
+    <div class="container-fluid">
         <div class="col-sm-8 col-sm-offset-2">
             <div class="col-sm-3">
                 <div class="row">
@@ -108,7 +108,7 @@
                                 </a>
                             </h3>
 
-                            <p>{{ post.user.description }}</p>
+                            <div >{{ post.user.description }}</div>
                         </div>
                         <div class="caption">
                             <h4>他最近的发帖</h4>
@@ -133,7 +133,16 @@
                         {% endfor %}
                     </div>
                     <div class="row">
-                        <div class="col-sm-8 col-sm-offset-2 post_description"><h3>{{ post.description }}</h3></div>
+                        <div class="col-sm-8 col-sm-offset-2 post_description">
+                            <div id="description">
+                                {{ post.description }}
+                                {% if post.text_choice == None %}
+                                    {{ post.description|safe }}
+                                {% else post.text_choice == True %}
+
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
                     <div class="text-center">
                         <button class="like-btn" role="group">
@@ -179,58 +188,60 @@
 {% endblock %}
 
 {% block script %}
-<script>
-    let give_like = false
-    $(document).ready(function () {
-        $.ajaxSetup({
-            data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
-        });
-        $('.like-btn').click(function () {
-            let like = $('.like-num');
-            let like_num = Number(like.html());
-            if (give_like) {
-                $.post("{% url 'user:reduce_like' %}", {
-                    'post_pk':{{ post.pk }},
-                }, function (data) {
-                    if (data === '1') {
-                        give_like = false
-                        $('.like-icon').css('color', 'rgb(244,244,244)');
-                        like.html(like_num - 1);
-                    }
-                })
-            } else {
-                $.post("{% url 'user:add_like' %}", {
-                    'post_pk':{{ post.pk }},
-                }, function (data) {
-                    if (data === '1') {
-                        give_like = true
-                        $('.like-icon').css('color', 'red');
-                        like.html(like_num + 1);
-                    }
-                })
+    <script src="https://cdn.bootcss.com/showdown/1.9.0/showdown.min.js"></script>
+    <script>
 
-            }
-        })
-        $('#add_review').click(function () {
-            let review = $('#review').val();
-            if (review == '') {
-                alert('评论不能为空！')
-            } else {
-                $.post("{% url 'user:add_review' %}", {
-                    'review': review,
-                    'post_pk':{{ post.pk }},
-                }, function (data,) {
-                    if (data === '1') {
-                        alert('评论成功！');
-                        location.reload()
-                    } else if (data === '0') {
-                        alert('请先登录！')
-                    }
-                })
-            }
-        })
+        let give_like = false
+        $(document).ready(function () {
+            $.ajaxSetup({
+                data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+            });
+            $('.like-btn').click(function () {
+                let like = $('.like-num');
+                let like_num = Number(like.html());
+                if (give_like) {
+                    $.post("{% url 'user:reduce_like' %}", {
+                        'post_pk':{{ post.pk }},
+                    }, function (data) {
+                        if (data === '1') {
+                            give_like = false
+                            $('.like-icon').css('color', 'rgb(244,244,244)');
+                            like.html(like_num - 1);
+                        }
+                    })
+                } else {
+                    $.post("{% url 'user:add_like' %}", {
+                        'post_pk':{{ post.pk }},
+                    }, function (data) {
+                        if (data === '1') {
+                            give_like = true
+                            $('.like-icon').css('color', 'red');
+                            like.html(like_num + 1);
+                        }
+                    })
 
-    })
-</script>
+                }
+            })
+            $('#add_review').click(function () {
+                let review = $('#review').val();
+                if (review == '') {
+                    alert('评论不能为空！')
+                } else {
+                    $.post("{% url 'user:add_review' %}", {
+                        'review': review,
+                        'post_pk':{{ post.pk }},
+                    }, function (data,) {
+                        if (data === '1') {
+                            alert('评论成功！');
+                            location.reload()
+                        } else if (data === '0') {
+                            alert('请先登录！')
+                        }
+                    })
+                }
+            })
+
+        })
+    </script>
 {% endblock %}
 </html>
