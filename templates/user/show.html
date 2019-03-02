@@ -1,13 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>个人信息</title>
-    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/base.css">
-    <script type="text/javascript" src="/static/js/jquery-3.3.1.min.js"></script>
-    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
-    <style>
+{% extends 'base/base.html' %}
+
+{% block title %}
+{{ showuser.nickname }}的个人主页
+{% endblock %}
+
+
+{% block style %}
+<style>
         img {
             height: 200px;
             width: 200px;
@@ -21,11 +20,11 @@
             min-height: 400px;
         }
     </style>
-</head>
-<body>
-{% include 'base/navigate.html' %}
-<div class="body">
-    <div class="container-fluid">
+{% endblock %}
+
+
+{% block body %}
+<div class="container-fluid">
         <div class="row">
             <div class="col-sm-3 col-sm-offset-2 bg-white">
 
@@ -92,7 +91,9 @@
             </div>
         </div>
     </div>
-</div>
-{% include 'base/suggestion.html' %}
-</body>
-</html>
+{% endblock %}
+
+
+{% block script %}
+
+{% endblock %}

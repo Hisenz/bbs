@@ -1,88 +1,91 @@
-<!DOCTYPE html>
-<html lang="zh">
-<head>
-    <meta charset="UTF-8">
-    <title>bbs</title>
-    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/base.css">
-    <script type="text/javascript" src="/static/js/jquery-3.3.1.min.js" ></script>
-    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+{% extends 'base/base.html' %}
 
-</head>
-<body>
-        {% include 'base/navigate.html' %}
-        <div class="body">
-            <div class="container-fluid" >
-                <div class="row propagranda">
-                    <div class="col-sm-6 col-sm-offset-2">
-                        {% include 'base/advertisement.html' %}
-                    </div>
-                    <div class="col-sm-2">
-                        {% include 'form/signupform.html' %}
-                    </div>
-                </div>
+
+{% block title %}
+    注册
+{% endblock %}
+
+
+{% block style %}
+
+{% endblock %}
+
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row propagranda">
+            <div class="col-sm-6 col-sm-offset-2">
+                {% include 'base/advertisement.html' %}
+            </div>
+            <div class="col-sm-2 form">
+                <div class="text-center"><h1>注册</h1></div>
+                {% include 'form/signupform.html' %}
             </div>
         </div>
-        {% include 'base/suggestion.html' %}
-</body>
-</html>
+    </div>
+{% endblock %}
 
-<
-<script>
-    let register = new Array(1,1,1,1)
-    function submitCheck(){
-        $(" input").blur()
 
-        if ((register[0] + register[1] + register[2] + register[3]) == 4){
+{% block script %}
+    <script>
+        let register = new Array(1, 1, 1, 1)
+
+        function submitCheck() {
+            $(" input").blur()
+
+            if ((register[0] + register[1] + register[2] + register[3]) == 4) {
                 return true;
-        }else {
-            return false
+            } else {
+                return false
+            }
+
         }
 
-    }
-    $(document).ready(function () {
+        $(document).ready(function () {
 //        $(" form").attr("action", "http://" + window.location.host + "/registration")
-        $("#email").blur(function () {
-            let re = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
-            if(!re.test($(this).val())){
-                $("#emailV").css('color', 'red')
-                $("#emailV").html('请输入正确的邮箱账号!')
-                register[0] = 0;
-            }else {
-                register[0] = 1
-                $("#emailV").html("")
-            }
-        })
-        $("#password").blur(function () {
-            if($(this).val().length < 6){
-                $("#passwordV").css('color', 'red')
-                $("#passwordV").html("密码长度不得小于6")
-                register[1] = 0
-            }else {
-                $("#passwordV").html("")
-                register[1] = 1
-            }
-        })
-        $("#repeat").blur(function () {
-            if($(this).val() !== $("#password").val()){
-                $("#repeatV").css('color', 'red')
-                $("#repeatV").html("两次密码不一致")
-                register[2] = 0
-            }else {
-                $("#repeatV").html("")
-                register[2] = 1
-            }
-        })
-        $("#nickname").blur(function () {
-            if ($(this).val().length == 0){
-                $("#nicknameV").css("color", "red")
-                $("#nicknameV").html("昵称不能为空")
-                register[3] = 0
-            }else {
-                $("#nicknameV").html("")
-                register[3] = 1
-            }
-        })
+            $("#email").blur(function () {
+                let re = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
+                if (!re.test($(this).val())) {
+                    $("#emailV").css('color', 'red')
+                    $("#emailV").html('请输入正确的邮箱账号!')
+                    register[0] = 0;
+                } else {
+                    register[0] = 1
+                    $("#emailV").html("")
+                }
+            })
+            $("#password").blur(function () {
+                if ($(this).val().length < 6) {
+                    $("#passwordV").css('color', 'red')
+                    $("#passwordV").html("密码长度不得小于6")
+                    register[1] = 0
+                } else {
+                    $("#passwordV").html("")
+                    register[1] = 1
+                }
+            })
+            $("#repeat").blur(function () {
+                if ($(this).val() !== $("#password").val()) {
+                    $("#repeatV").css('color', 'red')
+                    $("#repeatV").html("两次密码不一致")
+                    register[2] = 0
+                } else {
+                    $("#repeatV").html("")
+                    register[2] = 1
+                }
+            })
+            $("#nickname").blur(function () {
+                if ($(this).val().length == 0) {
+                    $("#nicknameV").css("color", "red")
+                    $("#nicknameV").html("昵称不能为空")
+                    register[3] = 0
+                } else {
+                    $("#nicknameV").html("")
+                    register[3] = 1
+                }
+            })
 
-    })
-</script>
+        })
+    </script>
+{% endblock %}
+

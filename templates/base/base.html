@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} {% endblock %}</title>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css">
+    {% block style %}{% endblock %}
+</head>
+<body>
+<div>
+    <nav class="navbar navbar-default" style="margin-bottom: 0px">
+        <div class="container-fluid navigate">
+            <div class="text-center">
+                <div class="col-sm-1 col-sm-offset-2"><a class=" btn btn-link btn-lg" href="{% url 'user:index' %}"
+                                                         title="回到首页">首页</a></div>
+                <div class="col-sm-2 col-sm-offset-5">
+                    {% if user.nickname %}
+                        <a class="btn btn-link" href="{% url 'user:posting' %}">发帖</a>
+                        <a class="btn-link" href="{% url 'user:showuser' %}?show={{ user.pk }}">
+                            {% if user.avatar %}
+                                <img src="/media/{{ user.avatar }}" id="user_avatar">
+                            {% else %}
+                                <img src="/static/images/user/user_404_title.png" id="user_avatar">
+                            {% endif %}
+                            {{ user.nickname }}
+                        </a>
+                        <a class="btn btn-link" href="{% url 'user:logout' %}">退出</a>
+                    {% else %}
+                        <a class="btn btn-link btn-lg" href="{% url 'user:login' %}">登录</a>
+                        <a class="btn btn-link btn-lg" href="{% url 'user:signup' %}">注册</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+<div class="body">
+    {% block body %}{% endblock %}
+</div>
+<div class="container-fluid suggestion">
+    <div class="col-sm-offset-2">
+        <h3>
+            if you have some good idea for us
+            <span><a href="#" class="btn-link">click here</a></span>
+        </h3>
+    </div>
+</div>
+
+</body>
+</html>
+{% block script %}
+
+{% endblock %}

@@ -1,29 +1,44 @@
-.body{
+.body {
     min-height: 860px;
     background-color: rgb(244, 244, 244);
 }
 
-.propagranda{
+.propagranda {
     margin-top: 150px;
 }
-.suggestion{
+
+.suggestion {
     background-color: rgb(237, 227, 135);
 }
-.advertisement{
+
+.advertisement {
     margin-bottom: 40px;
 }
-.navigate{
+
+.navigate {
     background-color: white;
     padding-top: 5px;
 }
-.form-style{
+
+.form-style {
     margin-top: 20px;
     margin-bottom: 40px;
 }
-#current_avatar{
+
+#current_avatar {
     height: 200px;
     width: 200px;
 }
-.bg-white{
+
+.bg-white {
+    background-color: white;
+}
+
+#user_avatar {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+}
+.form{
     background-color: white;
 }

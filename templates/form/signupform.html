@@ -1,33 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>signup</title>
-</head>
-<body>
-            <form action="{%  url 'user:register' %}" method="post" onsubmit="return submitCheck()">{% csrf_token %}
-                <div class="form-group ">
-                    <label for="email">邮箱</label><span id="emailV" class="col-sm-offset-2 text-center"></span>
-                    <input type="text" class="form-control" id="email" name="email" placeholder="请输入邮箱"/>
-                </div>
-                <div class="form-group ">
-                    <label for="password">密码</label><span id="passwordV" class="col-sm-offset-2 text-center"></span>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="请输入密码"/>
-                </div>
-                <div class="form-group ">
-                    <label for="repeat">确认密码</label><span id="repeatV" class="col-sm-offset-2 text-center"></span>
-                    <input type="password" class="form-control" id="repeat" placeholder="请再次输入密码"/>
-                </div>
-                <div class="form-group ">
-                    <label for="nickname">昵称</label><span id="nicknameV" class="col-sm-offset-2 text-center"></span>
-                    <input type="text" class="form-control" id="nickname" name="nickname" placeholder="请输入昵称"/>
-                </div>
-                <div class="form-group " >
-                    <input type="submit" value="注册" id="submit" class="btn btn-primary col-sm-10 col-sm-offset-1">
-                </div>
-                <div class="form-group form-style">
-                    <a href="{% url 'user:login' %}" class="btn btn-link col-sm-12">已有账户？登录</a>
-                </div>
-            </form>
-</body>
-</html>
+<form action="{% url 'user:register' %}" method="post" onsubmit="return submitCheck()">{% csrf_token %}
+    <div class="form-group ">
+        <label for="email">邮箱</label><span id="emailV" class="col-sm-offset-2 text-center"></span>
+        <input type="text" class="form-control" id="email" name="email" placeholder="请输入邮箱"/>
+    </div>
+    <div class="form-group ">
+        <label for="password">密码</label><span id="passwordV" class="col-sm-offset-2 text-center"></span>
+        <input type="password" class="form-control" id="password" name="password" placeholder="请输入密码"/>
+    </div>
+    <div class="form-group ">
+        <label for="repeat">确认密码</label><span id="repeatV" class="col-sm-offset-2 text-center"></span>
+        <input type="password" class="form-control" id="repeat" placeholder="请再次输入密码"/>
+    </div>
+    <div class="form-group ">
+        <label for="nickname">昵称</label><span id="nicknameV" class="col-sm-offset-2 text-center"></span>
+        <input type="text" class="form-control" id="nickname" name="nickname" placeholder="请输入昵称"/>
+    </div>
+    <div class="form-group ">
+        <input type="submit" value="注册" id="submit" class="btn btn-primary col-sm-10 col-sm-offset-1">
+    </div>
+    <div class="form-group form-style">
+        <a href="{% url 'user:login' %}" class="btn btn-link col-sm-12">已有账户？登录</a>
+    </div>
+</form>

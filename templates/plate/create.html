@@ -1,28 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>创建新的板块</title>
-    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/base.css">
-    <script type="text/javascript" src="/static/js/jquery-3.3.1.min.js" ></script>
-    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
-</head>
-<body>
-    {% include 'base/navigate.html' %}
-    <div class="body">
-        <div class="container-fluid">
-            <div class="col-sm-6 col-sm-offset-3">
-                {% if form == 'plate' %}
-                    {% include 'form/plateform.html' %}
-                {% elif form == 'tag' %}
-                    {% include 'form/tagform.html' %}
-                {% elif form == 'post' %}
-                    {% include 'form/postform.html' %}
-                {% endif %}
-            </div>
+{% extends 'base/base.html' %}
+{% block title %}
+    创建新的板块
+{% endblock %}
+{% block body %}
+    <div class="container-fluid">
+        <div class="col-sm-6 col-sm-offset-3 form">
+            {% if form == 'plate' %}
+                {% include 'form/plateform.html' %}
+            {% elif form == 'tag' %}
+                {% include 'form/tagform.html' %}
+            {% endif %}
         </div>
     </div>
-    {% include 'base/suggestion.html' %}
-</body>
-</html>
+{% endblock %}
