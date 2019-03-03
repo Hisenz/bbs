@@ -90,8 +90,8 @@
             <div class="col-sm-3">
                 <div class="row">
                     <div class="thumbnail" style="margin-top: 20px;">
-                        {% if showuser.avatar %}
-                            <img src="/media/{{ showuser.avatar }}" alt="">
+                        {% if post.user.avatar %}
+                            <img src="/media/{{ post.user.avatar }}" alt="">
                         {% else %}
                             <img src="/static/images/user/user_404.png" alt="头像不存在">
                         {% endif %}
