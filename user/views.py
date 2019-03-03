@@ -96,6 +96,7 @@ def add_tag(request):
 def show_user(request):
     user_id = requestutil.get_session(name='user', request=request)
     show = request.GET.get('show')
+    page = int(request.GET.get('page')) if int(request.GET.get('page')) > 0 else 1
     showuser = userutil.get_user(show)
     context = {
         'user': userutil.get_user(user_id),

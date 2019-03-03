@@ -110,7 +110,7 @@
                             <div>{{ post.user.description }}</div>
                         </div>
                         <div class="caption">
-                            <h4>他最近的发帖</h4>
+                            <h4>他最近的发帖：</h4>
                             {% for userpost in posts %}
                                 <div>
                                     <a href="{% url 'user:show_post' %}?post_id={{ userpost.pk }}">
