@@ -84,7 +84,7 @@ DATABASES = {
         'NAME': 'bbs',
         'USER': 'root',
         'PASSWORD': 'zhai1234',
-        'HOST': '47.101.67.142',
+        'HOST': 'localhost',
         'POET': '3306'
     }
 }
