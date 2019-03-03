@@ -66,8 +66,7 @@
             margin: 10px 1.5% 0;
             padding-top: 10px;
             padding-bottom: 10px;
-            border-bottom: solid 1px #333;
-
+            border: solid #9d9d9d 1px;
         }
 
         .review-img {
@@ -98,7 +97,7 @@
                         {% endif %}
                         <div class="caption">
                             <h3>
-                                <a href="{% url 'user:showuser' %}?show={{ post.user.pk }}">
+                                <a href="{% url 'user:showuser' %}?show={{ post.user.pk }}" >
                                     {{ post.user.nickname }}
                                     {% if post.user.gender %}
                                         <small style="color: #5bc0de">♂</small>
@@ -108,7 +107,7 @@
                                 </a>
                             </h3>
 
-                            <div >{{ post.user.description }}</div>
+                            <div>{{ post.user.description }}</div>
                         </div>
                         <div class="caption">
                             <h4>他最近的发帖</h4>
@@ -135,12 +134,7 @@
                     <div class="row">
                         <div class="col-sm-8 col-sm-offset-2 post_description">
                             <div id="description">
-                                {{ post.description }}
-                                {% if post.text_choice == None %}
-                                    {{ post.description|safe }}
-                                {% else post.text_choice == True %}
-
-                                {% endif %}
+                                {{ post.description | safe}}
                             </div>
                         </div>
                     </div>
@@ -165,8 +159,8 @@
                 <div class="review_show">
                     {% for review in reviews %}
                         <div class="row review">
-                            <div class="col-sm-1">
-                                <a>
+                            <div class="col-sm-2">
+                                <a href="{% url 'user:showuser' %}?show={{ review.user.pk }}" class="text-center">
                                     {% if review.user.avatar %}
                                         <img class="review-img" src="/media/{{ review.user.avatar }}">
                                     {% else %}
@@ -191,8 +185,10 @@
     <script src="https://cdn.bootcss.com/showdown/1.9.0/showdown.min.js"></script>
     <script>
 
-        let give_like = false
+
+        let give_like = false;
         $(document).ready(function () {
+
             $.ajaxSetup({
                 data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
             });
@@ -204,7 +200,7 @@
                         'post_pk':{{ post.pk }},
                     }, function (data) {
                         if (data === '1') {
-                            give_like = false
+                            give_like = false;
                             $('.like-icon').css('color', 'rgb(244,244,244)');
                             like.html(like_num - 1);
                         }
@@ -214,7 +210,7 @@
                         'post_pk':{{ post.pk }},
                     }, function (data) {
                         if (data === '1') {
-                            give_like = true
+                            give_like = true;
                             $('.like-icon').css('color', 'red');
                             like.html(like_num + 1);
                         }
@@ -225,7 +221,7 @@
             $('#add_review').click(function () {
                 let review = $('#review').val();
                 if (review == '') {
-                    alert('评论不能为空！')
+                    alert('评论不能为空！');
                 } else {
                     $.post("{% url 'user:add_review' %}", {
                         'review': review,

@@ -18,7 +18,7 @@
             width: 97%;
             margin: 10px 1.5% 0;
             padding: 10px 1.5% 0;
-            height: 95px;
+            min-height: 700px;
             font-size: 14px;
             border: solid 1px;
             color: #333;
@@ -31,69 +31,91 @@
         }
 
         .post-button {
-            width: 97%;
-            margin: 10px 1.5% 0;
+            width: 40%;
+            margin: 10px 30% 0;
         }
 
         .post-form {
             margin-top: 50px;
+        }
+
+        #show-post {
+            width: 97%;
+            margin: 10px 1.5% 0;
+            padding-left: 10px;
+            padding-right: 10px;
+            min-height: 700px;
+            border: solid 1px;
+            border-radius: 5px;
         }
     </style>
 {% endblock %}
 
 {% block body %}
     <div class="container-fluid">
-        <div class="col-sm-6 col-sm-offset-3 post-create">
-            <div class="col-sm-9 post-form">
-                <div class="post-item">
-                    标题：<input type="text" id="headline" style="width: 80%">
-                </div>
-                <div class="post-item">
-                    板块：
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                            <span id="plate_select">{{ plates.first.name }}</span> <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            {% for plate in plates %}
-                                <li><a class="plate_name">{{ plate.name }}</a></li>
-                            {% endfor %}
-                            <li><a class="btn-link" href="{% url 'user:create_plate' %}">没有? 手动添加</a></li>
-                        </ul>
+        <div class="col-sm-12 post-create">
+            <div class="container-fluid">
+                <div class="col-sm-9 post-form">
+                    <div class="post-item">
+                        标题：<input type="text" id="headline" style="width: 80%">
                     </div>
-                </div>
-                <div class="post-item">
-                    标签：<span id="tags"></span><span id="prompt">点击删除</span>
-                </div>
-                <div class="post-item">
-                    文本格式：
+                    <div class="post-item">
+                        板块：
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                <span id="plate_select">{{ plates.first.name }}</span> <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                {% for plate in plates %}
+                                    <li><a class="plate_name">{{ plate.name }}</a></li>
+                                {% endfor %}
+                                <li><a class="btn-link" href="{% url 'user:create_plate' %}">没有? 手动添加</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="post-item">
+                        标签：<span id="tags"></span><span id="prompt">点击删除</span>
+                    </div>
+                    <div class="post-item">
+                        文本格式：
 
-                        <label class="radio-inline"><input type="radio" name="text_choice" value="0" checked="checked">txt</label>
-                        <label class="radio-inline"><input type="radio" name="text_choice" value="1">markdown</label>
-                        <label class="radio-inline"><input type="radio" name="text_choice" value="2">html</label>
+                        <label class="radio-inline"><input type="radio" name="text_choice" class="text_choice" value="0"
+                                                           checked="checked">txt</label>
+                        <label class="radio-inline"><input type="radio" name="text_choice" class="text_choice"
+                                                           value="1">markdown</label>
+                        <label class="radio-inline"><input type="radio" name="text_choice" class="text_choice"
+                                                           value="2">html</label>
+
+                    </div>
+
 
                 </div>
-                <div id="show-post">
-                    <h3>预览：（因为txt无变化所以不显示）</h3>
 
+                <div class="col-sm-3">
+                    <h4>标签池：
+                        <small>(点击添加标签)</small>
+                    </h4>
+                    <div id="tag-pool"></div>
+                    <a href="{% url 'user:create_tag' %}">没有？手动添加</a>
                 </div>
-                <div class="post-item">
+            </div>
+            <div class="container-fluid">
+                <div class="col-sm-6 post-item">
+                    <label for="description">输入内容：</label>
                     <textarea class="textarea" placeholder="内容" id="description"></textarea>
                 </div>
-                <div class="post-item">
-                    <button class="btn btn-block post-button" id="submit">发表</button>
+                <div class="col-sm-6 show-post">
+                    <label for="show-post">预览:</label>
+                    <div id="show-post"></div>
                 </div>
-            </div>
 
-            <div class="col-sm-3">
-                <h4>标签池：
-                    <small>(点击添加标签)</small>
-                </h4>
-                <div id="tag-pool"></div>
-                <a href="{% url 'user:create_tag' %}">没有？手动添加</a>
+            </div>
+            <div class="post-item">
+                <button class="btn btn-block post-button" id="submit">发表</button>
             </div>
         </div>
+
     </div>
 {% endblock %}
 {% block script %}
@@ -152,8 +174,8 @@
                     'headline': $('#headline').val(),
                     'plate': $('#plate_select').html(),
                     'tag_list': tag_list.toString(),
-                    'description': $('#description').val(),
-                    'text_choice':$("input[name='text_choice']:checked").val()
+                    'description': $('#show-post').html(),
+                    'text_choice': $("input[name='text_choice']:checked").val()
                 }
 
 
@@ -163,7 +185,7 @@
                 $.post("{% url 'user:add_post' %}", data, function (message) {
                     if (message == '1') {
                         alert('已发表！')
-                        window.location.href = "{% url "user:showuser %}?show= {{ user.pk }}"
+                        window.location.href = "{% url 'user:showuser' %}?show= {{ user.pk }}"
                     } else if (message === '-2') {
                         alert('标题不能为空')
                     } else if (message === '-3') {
@@ -177,21 +199,24 @@
             })
 
             $("textarea").keyup(function () {
-
+                this.style.height = 'auto';
+                this.style.height = this.scrollHeight + "px";
                 let text = $(this).val();
-                if ($("input[name='text_choice']:checked").val() === "1"){
+                if ($("input[name='text_choice']:checked").val() === "1") {
                     text = tomarkdown(text);
-                }else if ($("input[name='text_choice']:checked").val() === "0"){
-                    text = "";
+                } else if ($("input[name='text_choice']:checked").val() === "0") {
+                    text = "<xmp>" + text + "</xmp>";
                 }
                 $("#show-post").html(text);
-
-
+            })
+            $('.text_choice').change(function () {
+                $("textarea").keyup();
             })
         })
-    function tomarkdown(text) {
-        let converter = new showdown.Converter();
-        return converter.makeHtml(text)
-    }
+
+        function tomarkdown(text) {
+            let converter = new showdown.Converter();
+            return converter.makeHtml(text)
+        }
     </script>
 {% endblock %}
