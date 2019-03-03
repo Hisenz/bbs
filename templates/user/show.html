@@ -66,7 +66,7 @@
                     </li>
                 </ul>
                 <div class="list-group">
-                    {% for post in posts %}
+                    {% for post in current_page %}
                         <a class="list-group-item" href="{% url 'user:show_post' %}?post_id={{ post.pk }}">
                             <div class="list-group-item-heading">{{ post.headline }}
                                 <span class="label label-info">{{ post.plate.name }}</span>
@@ -83,9 +83,10 @@
                     {% endfor %}
 
                 </div>
-                {% if posts.count == 0 and showuser == user %}
+
+                {% if current_page.paginator.num_page == 0 and showuser == user %}
                     <div class="alert alert-warning text-center">您还没有<a href="{% url 'user:posting' %}">发帖</a>，</div>
-                {% elif posts.count == 0 and showuser != user %}
+                {% elif current_page.paginator.num_page == 0 and showuser != user %}
                     <div class="alert alert-warning text-center">这个人还没有发过贴呢，</div>
                 {% endif %}
             </div>

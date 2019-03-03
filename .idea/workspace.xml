@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="37d68b61-209e-4e38-a9ae-8c0be99c058b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/user/util/pageutil.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/post/show.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/post/show.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/user/show.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/show.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/util/pageutil.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/util/pageutil.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -49,7 +50,7 @@
         <entry file="file://$PROJECT_DIR$/templates/post/show.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="513">
-              <caret line="112" column="39" selection-start-line="112" selection-start-column="39" selection-end-line="112" selection-end-column="39" />
+              <caret line="113" column="52" selection-start-line="113" selection-start-column="52" selection-end-line="113" selection-end-column="52" />
               <folding>
                 <element signature="n#style#0;n#!!top" />
               </folding>
@@ -90,8 +91,17 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/user/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="320">
-              <caret line="98" column="82" selection-start-line="98" selection-start-column="82" selection-end-line="98" selection-end-column="82" />
+            <state relative-caret-position="523">
+              <caret line="111" column="37" lean-forward="true" selection-start-line="111" selection-start-column="37" selection-end-line="111" selection-end-column="37" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/user/show.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="363">
+              <caret line="85" selection-start-line="85" selection-end-line="85" />
             </state>
           </provider>
         </entry>
@@ -99,17 +109,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/user/util/pageutil.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="125">
-              <caret line="5" column="27" lean-forward="true" selection-start-line="5" selection-start-column="27" selection-end-line="5" selection-end-column="27" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/user/result.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="18" column="20" selection-start-line="18" selection-start-column="20" selection-end-line="18" selection-end-column="20" />
+            <state relative-caret-position="150">
+              <caret line="6" column="31" selection-start-line="6" selection-start-column="31" selection-end-line="6" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -196,7 +197,6 @@
         <option value="$PROJECT_DIR$/templates/base/base.html" />
         <option value="$PROJECT_DIR$/templates/plate/showpost.html" />
         <option value="$PROJECT_DIR$/templates/base/baseuse.html" />
-        <option value="$PROJECT_DIR$/templates/user/show.html" />
         <option value="$PROJECT_DIR$/templates/form/changeform.html" />
         <option value="$PROJECT_DIR$/templates/plate/create.html" />
         <option value="$PROJECT_DIR$/templates/base/advertisement.html" />
@@ -219,6 +219,7 @@
         <option value="$PROJECT_DIR$/templates/post/create.html" />
         <option value="$PROJECT_DIR$/templates/post/show.html" />
         <option value="$PROJECT_DIR$/user/views.py" />
+        <option value="$PROJECT_DIR$/templates/user/show.html" />
         <option value="$PROJECT_DIR$/user/util/pageutil.py" />
       </list>
     </option>
@@ -441,7 +442,7 @@
       <workItem from="1551488349444" duration="21483000" />
       <workItem from="1551575765301" duration="15175000" />
       <workItem from="1551624827224" duration="99000" />
-      <workItem from="1551625014465" duration="1859000" />
+      <workItem from="1551625014465" duration="3823000" />
     </task>
     <task id="LOCAL-00001" summary="1">
       <created>1551405462513</created>
@@ -506,11 +507,18 @@
       <option name="project" value="LOCAL" />
       <updated>1551592967233</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="对个人信息中的帖子添加分页操作">
+      <created>1551626951095</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1551626951095</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="156971000" />
+    <option name="totallyTimeSpent" value="158935000" />
   </component>
   <component name="TodoView" selected-index="2">
     <todo-panel id="selected-file">
@@ -527,10 +535,10 @@
     <layout>
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="1" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="2" sideWeight="0.49946696" visible="true" weight="0.15778251" />
+      <window_info content_ui="combo" id="Project" order="2" sideWeight="0.49946696" visible="true" weight="0.15778251" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49781182" weight="0.32936078" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.6279318" visible="true" weight="0.18133047" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.6279318" weight="0.18133047" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39914164" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -538,8 +546,8 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" sideWeight="0.7148188" weight="0.17148982" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.37206823" side_tool="true" visible="true" weight="0.18133047" />
-      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.8006396" weight="0.25107297" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.19989339" side_tool="true" visible="true" weight="0.25107297" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.8001066" visible="true" weight="0.25107297" />
       <window_info anchor="bottom" id="Python Console" order="12" weight="0.4650838" />
       <window_info anchor="bottom" id="Database Console" order="13" weight="0.32827735" />
       <window_info anchor="right" id="Coverage" order="0" side_tool="true" />
@@ -558,7 +566,8 @@
     <MESSAGE value="html 优化" />
     <MESSAGE value="支持markdown、 HTML显示" />
     <MESSAGE value="bug 修改" />
-    <option name="LAST_COMMIT_MESSAGE" value="bug 修改" />
+    <MESSAGE value="对个人信息中的帖子添加分页操作" />
+    <option name="LAST_COMMIT_MESSAGE" value="对个人信息中的帖子添加分页操作" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/user/util/reviewutil.py">
@@ -783,13 +792,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/user/show.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1014">
-          <caret line="1" selection-start-line="1" selection-end-line="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/user/signup.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="358">
@@ -825,27 +827,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/post/create.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="206" column="82" selection-start-line="206" selection-start-column="82" selection-end-line="206" selection-end-column="82" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/form/userchangeform.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="663">
           <caret line="45" column="72" selection-start-line="45" selection-start-column="72" selection-end-line="45" selection-end-column="72" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/post/show.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="513">
-          <caret line="112" column="39" selection-start-line="112" selection-start-column="39" selection-end-line="112" selection-end-column="39" />
-          <folding>
-            <element signature="n#style#0;n#!!top" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -859,10 +844,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bbs/settings.py">
+    <entry file="file://$PROJECT_DIR$/templates/post/show.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="663">
-          <caret line="86" column="26" selection-start-line="86" selection-start-column="26" selection-end-line="86" selection-end-column="26" />
+        <state relative-caret-position="513">
+          <caret line="113" column="52" selection-start-line="113" selection-start-column="52" selection-end-line="113" selection-end-column="52" />
+          <folding>
+            <element signature="n#style#0;n#!!top" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -876,17 +864,38 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/bbs/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="663">
+          <caret line="86" column="26" selection-start-line="86" selection-start-column="26" selection-end-line="86" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/post/create.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="202">
+          <caret line="206" column="82" selection-start-line="206" selection-start-column="82" selection-end-line="206" selection-end-column="82" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/user/util/pageutil.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="5" column="27" lean-forward="true" selection-start-line="5" selection-start-column="27" selection-end-line="5" selection-end-column="27" />
+        <state relative-caret-position="150">
+          <caret line="6" column="31" selection-start-line="6" selection-start-column="31" selection-end-line="6" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/user/show.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="363">
+          <caret line="85" selection-start-line="85" selection-end-line="85" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/user/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="98" column="82" selection-start-line="98" selection-start-column="82" selection-end-line="98" selection-end-column="82" />
+        <state relative-caret-position="523">
+          <caret line="111" column="37" lean-forward="true" selection-start-line="111" selection-start-column="37" selection-end-line="111" selection-end-column="37" />
         </state>
       </provider>
     </entry>

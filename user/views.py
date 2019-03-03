@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 
-from user.util import plateutil, tagutil, postutil, reviewutil
+from user.util import plateutil, tagutil, postutil, reviewutil, pageutil
 from .models import User, Plate, Tag, Post, Review
 from .util import userutil, requestutil
 # Create your views here.
@@ -96,12 +96,21 @@ def add_tag(request):
 def show_user(request):
     user_id = requestutil.get_session(name='user', request=request)
     show = request.GET.get('show')
-    page = int(request.GET.get('page')) if int(request.GET.get('page')) > 0 else 1
+    page = 1
+    try:
+        page = int(request.GET.get('page'))
+        if page < 0:
+            page =1
+    except:
+        pass
     showuser = userutil.get_user(show)
+    posts = postutil.get_posts_for_user(showuser)
+    current_page = pageutil.get_one_page(posts, page, 5)
     context = {
         'user': userutil.get_user(user_id),
         'showuser': showuser,
-        'posts': postutil.get_posts_for_user(showuser),
+        'current_page': current_page,
+        'total_page': current_page.end_index(),
     }
     return render(request, 'user/show.html', context=context)
 
