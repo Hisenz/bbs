@@ -23,4 +23,5 @@ urlpatterns = [
     path('reduce_like/', views.reduce_like, name='reduce_like'),
     path('add_review/', views.add_review, name='add_review'),
     path('show_posts/', views.show_posts, name='show_posts'),
+    path('dynamic_login', views.dynamic_login, name='dynamic_login'),
 ]

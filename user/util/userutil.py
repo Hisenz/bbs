@@ -47,6 +47,13 @@ def get_user(user_id):
         return None
 
 
+def get_user_for_email(email):
+    try:
+        return User.objects.get(email=email)
+    except Exception as e:
+        return None
+
+
 def modify_information(kwargs):
     if login(kwargs['email'], kwargs['password']):
         user = User.objects.get(email=kwargs['email'])

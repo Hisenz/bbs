@@ -4,6 +4,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 from user.util import plateutil, tagutil, postutil, reviewutil, pageutil
 from .models import User, Plate, Tag, Post, Review
 from .util import userutil, requestutil
+
+
 # Create your views here.
 
 
@@ -12,7 +14,7 @@ def login(request):
     email = request.POST.get('email')
     password = request.POST.get('password')
     message = ''
-    if email or password:
+    if email:
         user = userutil.login(email=email, password=password)
         if user:
             request.session['user'] = user.pk
@@ -20,10 +22,36 @@ def login(request):
             return index(request)
         else:
             message = '用户名不存在或者密码错误'
+
     context = {
         'message': message,
     }
-    return render(request, 'user/login.html',context=context )
+    return render(request, 'user/login.html', context=context)
+
+
+def dynamic_login(request):
+    request.session.clear()
+    email = request.POST.get('email')
+    captcha= request.POST.get('captcha')
+    message = ''
+    try:
+        if email == request.session['email'] and captcha == request.session['captcha']:
+            user = userutil.get_user_for_email(email)
+            request.session['user'] = user.pk
+            request.session.set_expiry(0)
+            return index(request)
+        else:
+            message = '用户名不存在或者验证码错误'
+    except:
+        pass
+    context = {
+        'message': message,
+    }
+    return render(request, 'user/dynamiclogin.html', context=context)
+
+
+def sendmail(request):
+    pass
 
 
 def signup(request):
@@ -35,7 +63,8 @@ def register(request):
     context = {
         'result': False,
     }
-    if userutil.add_user(email=request.POST.get('email'), password=request.POST.get('password'), nickname = request.POST.get('nickname')):
+    if userutil.add_user(email=request.POST.get('email'), password=request.POST.get('password'),
+                         nickname=request.POST.get('nickname')):
         context['result'] = True
 
     return render(request, 'user/result.html', context=context)
@@ -60,7 +89,7 @@ def logout(request):
 def create_plate(request):
     user_id = requestutil.get_session(name='user', request=request)
     user = userutil.get_user(user_id)
-    context ={
+    context = {
         'user': user,
         'form': 'plate',
     }
@@ -89,7 +118,7 @@ def add_tag(request):
     description = request.POST.get('description')
     tag_name = request.POST.get('plate_name')
     id = requestutil.get_session(name='user', request=request)
-    message = tagutil.add_tag(tag_name=tag_name,description=description, user_id=id)
+    message = tagutil.add_tag(tag_name=tag_name, description=description, user_id=id)
     return HttpResponse(message)
 
 
@@ -217,7 +246,3 @@ def show_posts(request):
 
 def show_post_for_search(request):
     pass
-
-
-
-
