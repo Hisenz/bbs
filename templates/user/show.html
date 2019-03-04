@@ -1,12 +1,12 @@
 {% extends 'base/base.html' %}
 
 {% block title %}
-{{ showuser.nickname }}的个人主页
+    {{ showuser.nickname }}的个人主页
 {% endblock %}
 
 
 {% block style %}
-<style>
+    <style>
         img {
             height: 200px;
             width: 200px;
@@ -16,7 +16,8 @@
         #username {
             font-size: 30px;
         }
-        .list-group{
+
+        .list-group {
             min-height: 400px;
         }
     </style>
@@ -24,7 +25,7 @@
 
 
 {% block body %}
-<div class="container-fluid">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-sm-3 col-sm-offset-2 bg-white">
 
@@ -84,10 +85,43 @@
 
                 </div>
 
-                {% if current_page.paginator.num_page == 0 and showuser == user %}
+                {% if total_post == 0 and showuser == user %}
                     <div class="alert alert-warning text-center">您还没有<a href="{% url 'user:posting' %}">发帖</a>，</div>
-                {% elif current_page.paginator.num_page == 0 and showuser != user %}
+                {% elif total_post == 0 and showuser != user %}
                     <div class="alert alert-warning text-center">这个人还没有发过贴呢，</div>
+                {% else %}
+                    <div class="text-center">
+                        <nav aria-label="Page navigation" class="text-center    ">
+                            <ul class="pagination page-list">
+                                <li>
+                                    <a id="first-page" href="{% url 'user:showuser' %}?show={{ showuser.pk }}&page=1">
+                                        <span aria-hidden="true">首页;</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a id="previous-page">
+                                        <span aria-hidden="true">上一页</span>
+                                    </a>
+                                </li>
+
+                                <li><a class="page-item-hottest">第{{ current_page.number }}页</a></li>
+                                <li>
+                                    <a id="next-page">
+                                        <span aria-hidden="true">下一页</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a id="last-page"
+                                       href="{% url 'user:showuser' %}?show={{ showuser.pk }}&page={{ current_page.paginator.num_pages }}">
+                                        <span aria-hidden="true">尾页</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+
+                    </div>
                 {% endif %}
             </div>
         </div>
@@ -96,5 +130,19 @@
 
 
 {% block script %}
+    <script>
+        $(document).ready(function () {
+            {% if current_page.has_previous %}
+                $('#previous-page').attr('href', "{% url 'user:showuser' %}?show={{ showuser.pk }}&page={{ current_page.previous_page_number }}")
+
+            {% endif %}
+            {% if current_page.has_next %}
+                $('#next-page').attr('href', "{% url 'user:showuser' %}?show={{ showuser.pk }}&page={{ current_page.next_page_number }}")
+
+            {% endif %}
+        })
+
+
+    </script>
 
 {% endblock %}

@@ -100,7 +100,7 @@ def show_user(request):
     try:
         page = int(request.GET.get('page'))
         if page < 0:
-            page =1
+            page = 1
     except:
         pass
     showuser = userutil.get_user(show)
@@ -110,7 +110,7 @@ def show_user(request):
         'user': userutil.get_user(user_id),
         'showuser': showuser,
         'current_page': current_page,
-        'total_page': current_page.end_index(),
+        'total_post': posts.count(),
     }
     return render(request, 'user/show.html', context=context)
 
@@ -170,7 +170,7 @@ def post(request):
         'post': post,
         'user': userutil.get_user(user_id=user_pk),
         'reviews': Review.objects.filter(post=post).order_by('-time'),
-        'posts': postutil.get_posts_for_user(post.user, order='-create_time'),
+        'posts': postutil.get_posts_for_user(post.user, order='-create_time')[0:5],
     }
     return render(request, 'post/show.html', context=context)
 
