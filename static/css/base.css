@@ -1,6 +1,6 @@
 .body {
     min-height: 860px;
-    background-color: rgb(244, 244, 244);
+    background-color: #cccccc;
 }
 
 .propagranda {
@@ -8,7 +8,7 @@
 }
 
 .suggestion {
-    background-color: rgb(237, 227, 135);
+    background-color: #ABCDEF;
 }
 
 .advertisement {
@@ -16,7 +16,6 @@
 }
 
 .navigate {
-    background-color: white;
     padding-top: 5px;
 }
 

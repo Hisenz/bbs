@@ -254,13 +254,22 @@ def show_posts(request):
     plate_pk = request.GET.get('plate')
     user_pk = requestutil.get_session(name='user', request=request)
     plate = plateutil.get(plate_pk)
-    posts = postutil.get_posts_for_plate(plate_pk)
+    page = 1
+    try:
+        page = int(request.GET.get('page'))
+        if page < 0:
+            page = 1
+    except:
+        pass
+    posts = postutil.get_posts_for_plate(plate_pk).order_by('-create_time')
+
+    current_page = pageutil.get_one_page(posts, page, 10)
     context = {
         'plate': plate,
         'posts': posts,
-        'hottest': posts.order_by('-give_a_like'),
-        'latest': posts.order_by('-create_time'),
-        'user': userutil.get_user(user_id=user_pk),
+        'user': userutil.get_user(user_pk),
+        'currnet_page': current_page,
+        'total_page': posts.count(),
     }
 
     return render(request, 'plate/showpost.html', context=context)

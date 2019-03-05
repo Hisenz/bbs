@@ -1,18 +1,20 @@
 {% extends 'base/base.html' %}
 {% block title %}
-板块： {{ plate.name }}
+    板块： {{ plate.name }}
 {% endblock %}
 {% block style %}
-<style>
+    <style>
         .body-content {
             background-color: white;
         }
 
         .post-list {
             margin: 0px;
+            padding-right: 15%;
+            padding-left: 15%;
             min-height: 481px;
         }
-</style>
+    </style>
 {% endblock %}
 
 {% load custom %}
@@ -20,130 +22,64 @@
 
 {% block body %}
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-8 col-sm-offset-2 body-content">
-                <div class="jumbotron">
-                    <h2>{{ plate.name }}</h2>
-                    <p>{{ plate.description }}</p>
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-2 body-content">
+            <div class="jumbotron">
+                <h2>{{ plate.name }}</h2>
+                <p>{{ plate.description }}</p>
+            </div>
+            {% if total_page == 0 %}
+                <h4 class="text-center">该板块还没有人发帖，<a href="{% url 'app:posting' %}">前往发帖</a></h4>
+            {% else %}
+                <div class="list-group post-list">
+                    {% for post in currnet_page %}
+                        <a class="list-group-item" href="{% url 'app:show_post' %}?post_id={{ post.pk }}">
+                            <div class="list-group-item-heading">{{ post.headline }}
+                                <span class="label label-info">{{ post.plate.name }}</span>
+                                <div class="text-right">{{ post.user.nickname }}</div>
+
+                            </div>
+                            <p class="text-right">
+                                {% for tag in post.tags.all %}
+                                    <span class="label label-default">{{ tag.name }}</span>
+                                {% endfor %}
+                                {{ post.last_change_time }}
+                            </p>
+                        </a>
+                    {% endfor %}
                 </div>
-                {% if posts.count == 0 %}
-                    <h4 class="text-center">该板块还没有人发帖，<a href="{% url 'app:posting' %}">前往发帖</a></h4>
-                {% else %}
-                    <div class="col-sm-6">
-                        <div class="">
-                            <ul class="nav nav-tabs">
-                                <li role="presentation" class="active"><a>最热榜</a></li>
-                            </ul>
-                            <div class="list-group post-list" id="hottest">
-                                {% for post in hottest %}
-                                    {% if forloop.counter > 5 %}
-                                        <a class="list-group-item " style="display: none"
-                                           href="{% url 'app:show_post' %}?post_id={{ post.pk }}">
-                                            <div class="list-group-item-heading">{{ post.headline }}
-                                                <div class="text-right">{{ post.user.nickname }}</div>
 
-                                            </div>
-                                            <p class="text-right">
-                                                {% for tag in post.tags.all %}
-                                                    <span class="label label-default">{{ tag.name }}</span>
-                                                {% endfor %}
-                                                {{ post.last_change_time }}
-                                            </p>
-                                        </a>
-                                    {% else %}
-                                        <a class="list-group-item"
-                                           href="{% url 'app:show_post' %}?post_id={{ post.pk }}">
-                                            <div class="list-group-item-heading">{{ post.headline }}
-                                                <div class="text-right">{{ post.user.nickname }}</div>
+                <div class="text-center">
+                <nav aria-label="Page navigation" class="text-center">
+                    <ul class="pager page-list ">
+                        <li>
+                            <a id="first-page" href="{% url 'app:show_posts' %}?plate={{ plate.pk }}&page=1">
+                                <span aria-hidden="true">首页;</span>
+                            </a>
+                        </li>
 
-                                            </div>
-                                            <p class="text-right">
-                                                {% for tag in post.tags.all %}
-                                                    <span class="label label-default">{{ tag.name }}</span>
-                                                {% endfor %}
-                                                {{ post.last_change_time }}
-                                            </p>
-                                        </a>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                            <nav aria-label="Page navigation" class="text-center    ">
-                                <ul class="pagination page-list">
-                                    <li>
-                                        <a aria-label="Previous" id="hottest-first-page">
-                                            <span aria-hidden="true">&laquo;</span>
-                                        </a>
-                                    </li>
-                                    {% for i in hottest.count|xrange:5 %}
-                                        <li><a class="page-item-hottest">{{ i }}</a></li>
-                                    {% endfor %}
-                                    <li>
-                                        <a  aria-label="Next" id="hottest-last-page">
-                                            <span aria-hidden="true">&raquo;</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="">
-                            <ul class="nav nav-tabs">
-                                <li role="presentation" class="active"><a>最新榜</a></li>
-                            </ul>
-                            <div class="list-group post-list" id="latest">
-                                {% for post in latest %}
-                                    {% if forloop.counter > 5 %}
-                                        <a class="list-group-item " style="display: none"
-                                           href="{% url 'app:show_post' %}?post_id={{ post.pk }}">
-                                            <div class="list-group-item-heading">{{ post.headline }}
-                                                <div class="text-right">{{ post.user.nickname }}</div>
+                        <li>
+                            <a id="previous-page">
+                                <span aria-hidden="true">上一页</span>
+                            </a>
+                        </li>
 
-                                            </div>
-                                            <p class="text-right">
-                                                {% for tag in post.tags.all %}
-                                                    <span class="label label-default">{{ tag.name }}</span>
-                                                {% endfor %}
-                                                {{ post.last_change_time }}
-                                            </p>
-                                        </a>
-                                    {% else %}
-                                        <a class="list-group-item"
-                                           href="{% url 'app:show_post' %}?post_id={{ post.pk }}">
-                                            <div class="list-group-item-heading">{{ post.headline }}
-                                                <div class="text-right">{{ post.user.nickname }}</div>
+                        <li><a class="page-item-hottest">第{{ currnet_page.number }}页</a></li>
+                        <li>
+                            <a id="next-page">
+                                <span aria-hidden="true">下一页</span>
+                            </a>
+                        </li>
 
-                                            </div>
-                                            <p class="text-right">
-                                                {% for tag in post.tags.all %}
-                                                    <span class="label label-default">{{ tag.name }}</span>
-                                                {% endfor %}
-                                                {{ post.last_change_time }}
-                                            </p>
-                                        </a>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                            <nav aria-label="Page navigation" class="text-center">
-                                <ul class="pagination page-list">
-                                    <li>
-                                        <a aria-label="Previous" id="latest-first-page">
-                                            <span aria-hidden="true">&laquo;</span>
-                                        </a>
-                                    </li>
-                                    {% for i in latest.count|xrange:5 %}
-                                        <li><a class="page-item-latest">{{ i }}</a></li>
-                                    {% endfor %}
-                                    <li>
-                                        <a aria-label="Next" id="latest-last-page">
-                                            <span aria-hidden="true">&raquo;</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                {% endif %}
+                        <li>
+                            <a id="last-page"
+                               href="{% url 'app:show_posts' %}?plate={{ plate.pk }}&page={{ currnet_page.paginator.num_pages }}">
+                                <span aria-hidden="true">尾页</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            {% endif %}
 
             </div>
         </div>
@@ -151,56 +87,18 @@
 {% endblock %}
 
 {% block script %}
-<script>
-    function show_post(posts, page){
-        let start = (page - 1)*5;
-            for(let i=0; i<posts.length; i++){
-                $(posts[i]).hide(1000)
-            }
-            for (let i=0; i<5; i++){
-                if ((start + i) < posts.length){
-                    $(posts[start + i]).show(1000)
-                }
-            }
-    }
-    $(document).ready(function () {
-        $('.page-item-hottest').click(function () {
-            let page = Number($(this).html());
-            let posts = document.getElementById('hottest').getElementsByClassName('list-group-item');
-            show_post(posts,page)
+    <script>
+
+        $(document).ready(function () {
+            {% if currnet_page.has_previous %}
+                $('#previous-page').attr('href', "{% url 'app:show_posts' %}?plate={{ plate.pk }}&page={{ currnet_page.previous_page_number }}")
+
+            {% endif %}
+            {% if currnet_page.has_next %}
+                $('#next-page').attr('href', "{% url 'app:show_posts' %}?plate={{ plate.pk }}&page={{ currnet_page.next_page_number }}")
+
+            {% endif %}
         })
-        $('.page-item-latest').click(function () {
-            let page = Number($(this).html());
-            let posts = document.getElementById('latest').getElementsByClassName('list-group-item');
-            show_post(posts, page)
-        })
-        $('#hottest-first-page').click(function () {
-            let page = 1;
-            let posts = document.getElementById('hottest').getElementsByClassName('list-group-item');
-            show_post(posts,page)
-        })
-        $('#hottest-last-page').click(function () {
-            let posts = document.getElementById('hottest').getElementsByClassName('list-group-item');
-            let page = parseInt(posts.length / 5);
-            if (page < (posts.length/5)){
-                page ++ ;
-            }
-            show_post(posts,page);
-        })
-        $('#latest-first-page').click(function () {
-            let page = 1;
-            let posts = document.getElementById('latest').getElementsByClassName('list-group-item');
-            show_post(posts,page)
-        })
-        $('#latest-last-page').click(function () {
-            let posts = document.getElementById('latest').getElementsByClassName('list-group-item');
-            let page = parseInt(posts.length / 5);
-            if (page < (posts.length/5)){
-                page ++ ;
-            }
-            show_post(posts,page);
-        })
-    })
-</script>
+    </script>
 
 {% endblock %}
