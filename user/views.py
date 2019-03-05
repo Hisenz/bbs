@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 
-from user.util import plateutil, tagutil, postutil, reviewutil, pageutil
+from user.util import plateutil, tagutil, postutil, reviewutil, pageutil, randomutil, mailutil
 from .models import User, Plate, Tag, Post, Review
 from .util import userutil, requestutil
 
@@ -30,28 +30,50 @@ def login(request):
 
 
 def dynamic_login(request):
-    request.session.clear()
+    try:
+        del request.session["user"]
+    except:
+        pass
     email = request.POST.get('email')
-    captcha= request.POST.get('captcha')
+    captcha = request.POST.get('captcha')
     message = ''
     try:
-        if email == request.session['email'] and captcha == request.session['captcha']:
+        if email == request.session.get("email") and captcha == request.session.get("captcha"):
             user = userutil.get_user_for_email(email)
             request.session['user'] = user.pk
             request.session.set_expiry(0)
             return index(request)
         else:
             message = '用户名不存在或者验证码错误'
-    except:
+    except Exception as e :
         pass
+
     context = {
         'message': message,
     }
     return render(request, 'user/dynamiclogin.html', context=context)
 
 
+def get_user(request):
+    email = request.GET.get('email')
+    if userutil.get_user_for_email(email):
+        return HttpResponse(1)
+    else:
+        return HttpResponse(0)
+
+
 def sendmail(request):
-    pass
+    email = request.GET.get('email')
+    if userutil.get_user_for_email(email):
+        captcha = randomutil.generate(4)
+        if mailutil.senderEmail(captcha, email):
+            request.session['email'] = email
+            request.session['captcha'] = captcha
+            return HttpResponse(1)
+        else:
+            return HttpResponse(0)
+    else:
+        return HttpResponse(0)
 
 
 def signup(request):

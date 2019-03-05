@@ -8,22 +8,38 @@
             <div class="list-group">
                 {% for plate in plates %}
 
-                    <a class="list-group-item" href="{% url 'user:show_posts' %}?plate={{ plate.pk }}">
-                        <h4 class="list-group-item-heading">
-                            {{ plate.name }}
-                        </h4>
-                        <div class="list-group-item-text text-right">
-                            <p class="btn btn-link plate-description-detail" role="button" data-container="body"
-                               data-toggle="popover"
-                               data-placement="right" data-content="{{ plate.description }}"
-                               title="{{ plate.name }}">详情></p>
-                        </div>
 
-                    </a>
+                    {% if forloop.counter <= 5 %}
+                        <a class="list-group-item" href="{% url 'user:show_posts' %}?plate={{ plate.pk }}">
+                            <h4 class="list-group-item-heading">
+                                {{ plate.name }}
+                            </h4>
+                            <div class="list-group-item-text text-right">
+                                <p class="btn btn-link plate-description-detail" role="button" data-container="body"
+                                   data-toggle="popover"
+                                   data-placement="right" data-content="{{ plate.description }}"
+                                   title="{{ plate.name }}">详情></p>
+                            </div>
+
+                        </a>
+                    {% else %}
+                        <a class="list-group-item hidden hidden-plate" href="{% url 'user:show_posts' %}?plate={{ plate.pk }}">
+                            <h4 class="list-group-item-heading">
+                                {{ plate.name }}
+                            </h4>
+                            <div class="list-group-item-text text-right">
+                                <p class="btn btn-link plate-description-detail" role="button" data-container="body"
+                                   data-toggle="popover"
+                                   data-placement="right" data-content="{{ plate.description }}"
+                                   title="{{ plate.name }}">详情></p>
+                            </div>
+
+                        </a>
+                    {% endif %}
 
                 {% endfor %}
-                {% if hottest.count == 8 %}
-                    <a href="" class="list-group-item">显示更多板块
+                {% if plates.count > 5 %}
+                    <a class="list-group-item" id="show_more">显示更多板块
                     </a>
                 {% endif %}
                 <a class="list-group-item" href="{% url 'user:create_plate' %}">创建板块</a>
@@ -86,6 +102,10 @@
 {% block script %}
     <script>
         $(document).ready(function () {
+            $("#show_more").click(function () {
+                $(this).remove();
+                $(".hidden-plate").removeClass("hidden")
+            })
             $('.plate-description-detail').hover(function () {
                 $(this).popover('show')
             }, function () {

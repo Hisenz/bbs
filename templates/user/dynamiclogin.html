@@ -18,22 +18,22 @@
                 {% include 'base/advertisement.html' %}
             </div>
             <div class="col-sm-2 form">
-                <div class="text-center"><h1>动态登录</h1></div>
+                <div class="text-center"><h1>验证码登录</h1></div>
                 <form action="{% url 'user:dynamic_login' %}" method="post">{% csrf_token %}
                     <div class="form-group form-style">
-                        <label for="email">邮 箱</label>
+                        <label for="email">邮 箱:<span id="email_v"></span></label>
+
                         <input type="text" class="form-control" id="email" name="email" placeholder="请输入邮箱"/>
-                        <button class="btn btn-primary">发送验证码</button>
+                        <span></span>
                     </div>
                     <div class="form-group form-style">
-                        <label for="captcha">验证码: </label>
-                        <input type="password" class="form-control" id="captcha" name="captcha"/>
+                        <label for="captcha">验证码: <span id="captcha_v"></span></label>
+                        <input type="text" class="form-control" id="captcha" name="captcha" maxlength="6" disabled="disabled"/>
                     </div>
-                    <div class="form-group form-style">
-                        <input type="submit" value="登录" class="btn btn-primary col-sm-12">
-                    </div>
+
                     <div class="form-group form-style">
                         <a href="{% url 'user:login' %}" class="btn btn-link col-sm-12">账户密码登录</a>
+                        <input type="submit" value="登录" class="btn btn-primary col-sm-12">
                         <a href="{% url 'user:signup' %}" class="btn btn-link col-sm-12">现在注册</a>
                     </div>
                 </form>
@@ -47,9 +47,47 @@
 {% block script %}
     <script>
         $(document).ready(function () {
-            {% if message %}
-                alert('{{ message }}')
-            {% endif %}
+            $('#email').blur(function () {
+
+                $.get("{% url 'user:get_user' %}?email="+$(this).val(), function(data){
+                    let result = 1
+                    if(data === '1'){
+                        message = "邮箱已注册！<input type=\"button\" class=\"btn btn-default btn-sm sendmail\" id='sendcode' value=\"发送验证码\"/>"
+
+                    }else {
+                        message = "邮箱未注册！"
+                        result = 0
+                    }
+                    putresult("email_v", message, result)
+                })
+            })
+            $("#captcha").blur(function () {
+                let message = "";
+                if($(this).val().length != 6){
+                    message = "请输入正确的验证码";
+                }
+                putresult('captcha_v', message, 0);
+            })
+
+            $("body").on("click", "#sendcode",function () {
+                $.get("{% url 'user:sendmail' %}?email="+$("#email").val(),function(data){
+                    if (data === '1'){
+                        alert('验证码已发送');
+                        $("#captcha").removeAttr("disabled");
+                    } else if (data === "0") {
+                        alert("发送失败！");
+                    }
+                })
+            })
         })
+    function putresult(id, message, result) {
+        let obj = "#"+ id;
+        let color = "green"
+        $(obj).html(message);
+        if (result == 0){
+            color = "red";
+        }
+        $(obj).css('color', color)
+    }
     </script>
 {% endblock %}
