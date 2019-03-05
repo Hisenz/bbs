@@ -97,7 +97,7 @@
                         {% endif %}
                         <div class="caption">
                             <h3>
-                                <a href="{% url 'user:showuser' %}?show={{ post.user.pk }}" >
+                                <a href="{% url 'app:showuser' %}?show={{ post.user.pk }}" >
                                     {{ post.user.nickname }}
                                     {% if post.user.gender %}
                                         <small style="color: #5bc0de">♂</small>
@@ -113,7 +113,7 @@
                             <h4>他最近的发帖：</h4>
                             {% for userpost in posts %}
                                 <div>
-                                    <a href="{% url 'user:show_post' %}?post_id={{ userpost.pk }}">
+                                    <a href="{% url 'app:show_post' %}?post_id={{ userpost.pk }}">
                                         <h5>{{ userpost.headline }}</h5></a>
                                 </div>
                             {% endfor %}
@@ -161,7 +161,7 @@
                     {% for review in reviews %}
                         <div class="row review">
                             <div class="col-sm-2">
-                                <a href="{% url 'user:showuser' %}?show={{ review.user.pk }}" class="text-center">
+                                <a href="{% url 'app:showuser' %}?show={{ review.user.pk }}" class="text-center">
                                     {% if review.user.avatar %}
                                         <img class="review-img" src="/media/{{ review.user.avatar }}">
                                     {% else %}
@@ -170,7 +170,7 @@
                                 </a>
                             </div>
                             <div class="col-sm-10">
-                                <a href="{% url 'user:showuser' %}?show={{ review.user.pk }}">{{ review.user.nickname }}</a>
+                                <a href="{% url 'app:showuser' %}?show={{ review.user.pk }}">{{ review.user.nickname }}</a>
                                 <div style="font-size: 20px">{{ review.review }}</div>
                                 <div>{{ review.time }}</div>
                             </div>
@@ -197,7 +197,7 @@
                 let like = $('.like-num');
                 let like_num = Number(like.html());
                 if (give_like) {
-                    $.post("{% url 'user:reduce_like' %}", {
+                    $.post("{% url 'app:reduce_like' %}", {
                         'post_pk':{{ post.pk }},
                     }, function (data) {
                         if (data === '1') {
@@ -207,7 +207,7 @@
                         }
                     })
                 } else {
-                    $.post("{% url 'user:add_like' %}", {
+                    $.post("{% url 'app:add_like' %}", {
                         'post_pk':{{ post.pk }},
                     }, function (data) {
                         if (data === '1') {
@@ -224,7 +224,7 @@
                 if (review == '') {
                     alert('评论不能为空！');
                 } else {
-                    $.post("{% url 'user:add_review' %}", {
+                    $.post("{% url 'app:add_review' %}", {
                         'review': review,
                         'post_pk':{{ post.pk }},
                     }, function (data,) {

@@ -1,4 +1,4 @@
-from user.models import Review, User, Post
+from app.models import Review, User, Post
 
 
 def add_review(user_pk, post_pk, content):

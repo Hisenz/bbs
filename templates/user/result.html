@@ -7,9 +7,9 @@
 <body>
     <div>
         {% if  result  %}
-            <div> 注册成功！请前往<a href="{% url 'user:login' %}">登录</a> </div>
+            <div> 注册成功！请前往<a href="{% url 'app:login' %}">登录</a> </div>
         {% else %}
-            <div>注册失败! 请重新<a href="{% url 'user:signup' %}">注册</a></div>
+            <div>注册失败! 请重新<a href="{% url 'app:signup' %}">注册</a></div>
         {% endif %}
             <div>3秒后自动跳转</div>
 
@@ -18,9 +18,9 @@
 <script type="text/javascript">
     function run() {
         {% if  result  %}
-            top.location = '{% url 'user:login' %}'
+            top.location = '{% url 'app:login' %}'
         {% else %}
-            top.location = '{% url 'user:signup' %}'
+            top.location = '{% url 'app:signup' %}'
         {% endif %}
     }
     window.setTimeout(run, 3000)

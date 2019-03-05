@@ -1,4 +1,4 @@
-from user.models import Post, Tag, User, Plate
+from app.models import Post, Tag, User, Plate
 from  . import userutil
 
 

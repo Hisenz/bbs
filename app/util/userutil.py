@@ -1,4 +1,4 @@
-from user.models import User
+from app.models import User
 from .encryption import encryption
 
 ERROR = -1

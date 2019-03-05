@@ -1,4 +1,4 @@
-<form action="{% url 'user:login' %}" method="post">{% csrf_token %}
+<form action="{% url 'app:login' %}" method="post">{% csrf_token %}
     <div class="form-group form-style">
         <div class="input-group">
             <div class="input-group-addon">邮 箱</div>
@@ -15,7 +15,7 @@
         <input type="submit" value="登录" class="btn btn-primary col-sm-12">
     </div>
     <div class="form-group form-style">
-        <a href="{% url 'user:dynamic_login' %}" class="btn btn-link col-sm-12">验证码登录</a>
-        <a href="{% url 'user:signup' %}" class="btn btn-link col-sm-12">现在注册</a>
+        <a href="{% url 'app:dynamic_login' %}" class="btn btn-link col-sm-12">验证码登录</a>
+        <a href="{% url 'app:signup' %}" class="btn btn-link col-sm-12">现在注册</a>
     </div>
 </form>

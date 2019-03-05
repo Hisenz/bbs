@@ -27,7 +27,7 @@
                     <p>{{ plate.description }}</p>
                 </div>
                 {% if posts.count == 0 %}
-                    <h4 class="text-center">该板块还没有人发帖，<a href="{% url 'user:posting' %}">前往发帖</a></h4>
+                    <h4 class="text-center">该板块还没有人发帖，<a href="{% url 'app:posting' %}">前往发帖</a></h4>
                 {% else %}
                     <div class="col-sm-6">
                         <div class="">
@@ -38,7 +38,7 @@
                                 {% for post in hottest %}
                                     {% if forloop.counter > 5 %}
                                         <a class="list-group-item " style="display: none"
-                                           href="{% url 'user:show_post' %}?post_id={{ post.pk }}">
+                                           href="{% url 'app:show_post' %}?post_id={{ post.pk }}">
                                             <div class="list-group-item-heading">{{ post.headline }}
                                                 <div class="text-right">{{ post.user.nickname }}</div>
 
@@ -52,7 +52,7 @@
                                         </a>
                                     {% else %}
                                         <a class="list-group-item"
-                                           href="{% url 'user:show_post' %}?post_id={{ post.pk }}">
+                                           href="{% url 'app:show_post' %}?post_id={{ post.pk }}">
                                             <div class="list-group-item-heading">{{ post.headline }}
                                                 <div class="text-right">{{ post.user.nickname }}</div>
 
@@ -95,7 +95,7 @@
                                 {% for post in latest %}
                                     {% if forloop.counter > 5 %}
                                         <a class="list-group-item " style="display: none"
-                                           href="{% url 'user:show_post' %}?post_id={{ post.pk }}">
+                                           href="{% url 'app:show_post' %}?post_id={{ post.pk }}">
                                             <div class="list-group-item-heading">{{ post.headline }}
                                                 <div class="text-right">{{ post.user.nickname }}</div>
 
@@ -109,7 +109,7 @@
                                         </a>
                                     {% else %}
                                         <a class="list-group-item"
-                                           href="{% url 'user:show_post' %}?post_id={{ post.pk }}">
+                                           href="{% url 'app:show_post' %}?post_id={{ post.pk }}">
                                             <div class="list-group-item-heading">{{ post.headline }}
                                                 <div class="text-right">{{ post.user.nickname }}</div>
 

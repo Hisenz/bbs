@@ -19,7 +19,7 @@
             </div>
             <div class="col-sm-2 form">
                 <div class="text-center"><h1>验证码登录</h1></div>
-                <form action="{% url 'user:dynamic_login' %}" method="post">{% csrf_token %}
+                <form action="{% url 'app:dynamic_login' %}" method="post">{% csrf_token %}
                     <div class="form-group form-style">
                         <label for="email">邮 箱:<span id="email_v"></span></label>
 
@@ -32,9 +32,9 @@
                     </div>
 
                     <div class="form-group form-style">
-                        <a href="{% url 'user:login' %}" class="btn btn-link col-sm-12">账户密码登录</a>
+                        <a href="{% url 'app:login' %}" class="btn btn-link col-sm-12">账户密码登录</a>
                         <input type="submit" value="登录" class="btn btn-primary col-sm-12">
-                        <a href="{% url 'user:signup' %}" class="btn btn-link col-sm-12">现在注册</a>
+                        <a href="{% url 'app:signup' %}" class="btn btn-link col-sm-12">现在注册</a>
                     </div>
                 </form>
 
@@ -49,7 +49,7 @@
         $(document).ready(function () {
             $('#email').blur(function () {
 
-                $.get("{% url 'user:get_user' %}?email="+$(this).val(), function(data){
+                $.get("{% url 'app:get_user' %}?email="+$(this).val(), function(data){
                     let result = 1
                     if(data === '1'){
                         message = "邮箱已注册！<input type=\"button\" class=\"btn btn-default btn-sm sendmail\" id='sendcode' value=\"发送验证码\"/>"
@@ -70,7 +70,7 @@
             })
 
             $("body").on("click", "#sendcode",function () {
-                $.get("{% url 'user:sendmail' %}?email="+$("#email").val(),function(data){
+                $.get("{% url 'app:sendmail' %}?email="+$("#email").val(),function(data){
                     if (data === '1'){
                         alert('验证码已发送');
                         $("#captcha").removeAttr("disabled");

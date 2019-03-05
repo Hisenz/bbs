@@ -70,7 +70,7 @@
                                 {% for plate in plates %}
                                     <li><a class="plate_name">{{ plate.name }}</a></li>
                                 {% endfor %}
-                                <li><a class="btn-link" href="{% url 'user:create_plate' %}">没有? 手动添加</a></li>
+                                <li><a class="btn-link" href="{% url 'app:create_plate' %}">没有? 手动添加</a></li>
                             </ul>
                         </div>
                     </div>
@@ -97,7 +97,7 @@
                         <small>(点击添加标签)</small>
                     </h4>
                     <div id="tag-pool"></div>
-                    <a href="{% url 'user:create_tag' %}">没有？手动添加</a>
+                    <a href="{% url 'app:create_tag' %}">没有？手动添加</a>
                 </div>
             </div>
             <div class="container-fluid">
@@ -182,10 +182,10 @@
                 $.ajaxSetup({
                     data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
                 });
-                $.post("{% url 'user:add_post' %}", data, function (message) {
+                $.post("{% url 'app:add_post' %}", data, function (message) {
                     if (message == '1') {
                         alert('已发表！')
-                        window.location.href = "{% url 'user:showuser' %}?show= {{ user.pk }}"
+                        window.location.href = "{% url 'app:showuser' %}?show= {{ user.pk }}"
                     } else if (message === '-2') {
                         alert('标题不能为空')
                     } else if (message === '-3') {

@@ -10,7 +10,7 @@
 
 
                     {% if forloop.counter <= 5 %}
-                        <a class="list-group-item" href="{% url 'user:show_posts' %}?plate={{ plate.pk }}">
+                        <a class="list-group-item" href="{% url 'app:show_posts' %}?plate={{ plate.pk }}">
                             <h4 class="list-group-item-heading">
                                 {{ plate.name }}
                             </h4>
@@ -23,7 +23,7 @@
 
                         </a>
                     {% else %}
-                        <a class="list-group-item hidden hidden-plate" href="{% url 'user:show_posts' %}?plate={{ plate.pk }}">
+                        <a class="list-group-item hidden hidden-plate" href="{% url 'app:show_posts' %}?plate={{ plate.pk }}">
                             <h4 class="list-group-item-heading">
                                 {{ plate.name }}
                             </h4>
@@ -42,7 +42,7 @@
                     <a class="list-group-item" id="show_more">显示更多板块
                     </a>
                 {% endif %}
-                <a class="list-group-item" href="{% url 'user:create_plate' %}">创建板块</a>
+                <a class="list-group-item" href="{% url 'app:create_plate' %}">创建板块</a>
             </div>
         </div>
         <div class="col-sm-5">
@@ -52,7 +52,7 @@
                 </ul>
                 <div class="list-group">
                     {% for post in hottest %}
-                        <a class="list-group-item" href="{% url 'user:show_post' %}?post_id={{ post.pk }}">
+                        <a class="list-group-item" href="{% url 'app:show_post' %}?post_id={{ post.pk }}">
                             <div class="list-group-item-heading">{{ post.headline }}
                                 <span class="label label-info">{{ post.plate.name }}</span>
                                 <div class="text-right">{{ post.user.nickname }}</div>
@@ -74,7 +74,7 @@
                 </ul>
                 <div class="list-group">
                     {% for post in latest %}
-                        <a class="list-group-item" href="{% url 'user:show_post' %}?post_id={{ post.pk }}">
+                        <a class="list-group-item" href="{% url 'app:show_post' %}?post_id={{ post.pk }}">
                             <div class="list-group-item-heading">{{ post.headline }}
                                 <span class="label label-info">{{ post.plate.name }}</span>
                                 <div class="text-right">{{ post.user.nickname }}</div>

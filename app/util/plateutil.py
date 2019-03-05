@@ -1,6 +1,6 @@
 from django.db import IntegrityError
 
-from user.models import Plate, User
+from app.models import Plate, User
 
 
 def get(plate_pk):

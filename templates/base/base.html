@@ -15,12 +15,12 @@
     <nav class="navbar navbar-default" style="margin-bottom: 0px">
         <div class="container-fluid navigate">
             <div class="text-center">
-                <div class="col-sm-1 col-sm-offset-2"><a class=" btn btn-link btn-lg" href="{% url 'user:index' %}"
+                <div class="col-sm-1 col-sm-offset-2"><a class=" btn btn-link btn-lg" href="{% url 'app:index' %}"
                                                          title="回到首页">首页</a></div>
                 <div class="col-sm-2 col-sm-offset-5">
                     {% if user.nickname %}
-                        <a class="btn btn-link" href="{% url 'user:posting' %}">发帖</a>
-                        <a class="btn-link" href="{% url 'user:showuser' %}?show={{ user.pk }}">
+                        <a class="btn btn-link" href="{% url 'app:posting' %}">发帖</a>
+                        <a class="btn-link" href="{% url 'app:showuser' %}?show={{ user.pk }}">
                             {% if user.avatar %}
                                 <img src="/media/{{ user.avatar }}" id="user_avatar">
                             {% else %}
@@ -28,10 +28,10 @@
                             {% endif %}
                             {{ user.nickname }}
                         </a>
-                        <a class="btn btn-link" href="{% url 'user:logout' %}">退出</a>
+                        <a class="btn btn-link" href="{% url 'app:logout' %}">退出</a>
                     {% else %}
-                        <a class="btn btn-link btn-lg" href="{% url 'user:login' %}">登录</a>
-                        <a class="btn btn-link btn-lg" href="{% url 'user:signup' %}">注册</a>
+                        <a class="btn btn-link btn-lg" href="{% url 'app:login' %}">登录</a>
+                        <a class="btn btn-link btn-lg" href="{% url 'app:signup' %}">注册</a>
                     {% endif %}
                 </div>
             </div>

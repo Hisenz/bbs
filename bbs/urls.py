@@ -5,13 +5,13 @@ The `urlpatterns` list routes URLs to views. For more information please see:
 Examples:
 Function views
     1. Add an import:  from my_app import views
-    2. Add user URL to urlpatterns:  path('', views.home, name='home')
+    2. Add app URL to urlpatterns:  path('', views.home, name='home')
 Class-based views
     1. Add an import:  from other_app.views import Home
-    2. Add user URL to urlpatterns:  path('', Home.as_view(), name='home')
+    2. Add app URL to urlpatterns:  path('', Home.as_view(), name='home')
 Including another URLconf
     1. Import the include() function: from django.urls import include, path
-    2. Add user URL to urlpatterns:  path('blog/', include('blog.urls'))
+    2. Add app URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
 from django.urls import path, include, re_path
@@ -21,7 +21,7 @@ from bbs.settings import MEDIA_ROOT, DEBUG
 
 urlpatterns = [
     path('xadmin/', admin.site.urls),
-    path('', include('user.urls')),
+    path('', include('app.urls')),
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
 ]
 

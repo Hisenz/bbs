@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 
-from user.util import plateutil, tagutil, postutil, reviewutil, pageutil, randomutil, mailutil
+from app.util import plateutil, tagutil, postutil, reviewutil, pageutil, randomutil, mailutil
 from .models import User, Plate, Tag, Post, Review
 from .util import userutil, requestutil
 

@@ -19,7 +19,7 @@
             });
 
             $.ajax({
-                url: "{% url 'user:add_plate' %}",
+                url: "{% url 'app:add_plate' %}",
                 data: {
                     "plate_name": $("#plate_name").val(),
                     'description': $("#description").val(),
@@ -31,7 +31,8 @@
                     } else if (data === '0') {
                         alert("该模块已存在！")
                     } else {
-                        alert('创建成功！请耐心等待管理员审核')
+                        alert('创建成功！请耐心等待管理员审核');
+                        window.history.go(-1);
                     }
                 }
             })

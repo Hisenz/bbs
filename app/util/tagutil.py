@@ -1,4 +1,4 @@
-from user.models import Tag, User
+from app.models import Tag, User
 
 USER_NOT_EXIST = -1
 TAG_IS_EXIST = 0

@@ -1,4 +1,4 @@
-<form action="{% url 'user:register' %}" method="post" onsubmit="return submitCheck()">{% csrf_token %}
+<form action="{% url 'app:register' %}" method="post" onsubmit="return submitCheck()">{% csrf_token %}
     <div class="form-group ">
         <label for="email">邮箱</label><span id="emailV" class="col-sm-offset-2 text-center"></span>
         <input type="text" class="form-control" id="email" name="email" placeholder="请输入邮箱"/>
@@ -19,6 +19,6 @@
         <input type="submit" value="注册" id="submit" class="btn btn-primary col-sm-10 col-sm-offset-1">
     </div>
     <div class="form-group form-style">
-        <a href="{% url 'user:login' %}" class="btn btn-link col-sm-12">已有账户？登录</a>
+        <a href="{% url 'app:login' %}" class="btn btn-link col-sm-12">已有账户？登录</a>
     </div>
 </form>

@@ -1,7 +1,7 @@
 """
 WSGI config for bbs project.
 
-It exposes the WSGI callable as user module-level variable named ``application``.
+It exposes the WSGI callable as app module-level variable named ``application``.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/2.1/howto/deployment/wsgi/

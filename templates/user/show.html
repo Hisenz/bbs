@@ -47,7 +47,7 @@
                         <p> 个人说明：{{ showuser.description }}</p>
                         {% if showuser.pk == user.pk %}
                             <p>
-                                <a href="{% url 'user:change' %}" class="btn btn-link" role="button">点击修改</a>
+                                <a href="{% url 'app:change' %}" class="btn btn-link" role="button">点击修改</a>
                             </p>
                         {% endif %}
                     </div>
@@ -68,7 +68,7 @@
                 </ul>
                 <div class="list-group">
                     {% for post in current_page %}
-                        <a class="list-group-item" href="{% url 'user:show_post' %}?post_id={{ post.pk }}">
+                        <a class="list-group-item" href="{% url 'app:show_post' %}?post_id={{ post.pk }}">
                             <div class="list-group-item-heading">{{ post.headline }}
                                 <span class="label label-info">{{ post.plate.name }}</span>
                                 <div class="text-right">{{ post.user.nickname }}</div>
@@ -94,7 +94,7 @@
                         <nav aria-label="Page navigation" class="text-center">
                             <ul class="pagination page-list">
                                 <li>
-                                    <a id="first-page" href="{% url 'user:showuser' %}?show={{ showuser.pk }}&page=1">
+                                    <a id="first-page" href="{% url 'app:showuser' %}?show={{ showuser.pk }}&page=1">
                                         <span aria-hidden="true">首页;</span>
                                     </a>
                                 </li>
@@ -114,7 +114,7 @@
 
                                 <li>
                                     <a id="last-page"
-                                       href="{% url 'user:showuser' %}?show={{ showuser.pk }}&page={{ current_page.paginator.num_pages }}">
+                                       href="{% url 'app:showuser' %}?show={{ showuser.pk }}&page={{ current_page.paginator.num_pages }}">
                                         <span aria-hidden="true">尾页</span>
                                     </a>
                                 </li>
@@ -133,11 +133,11 @@
     <script>
         $(document).ready(function () {
             {% if current_page.has_previous %}
-                $('#previous-page').attr('href', "{% url 'user:showuser' %}?show={{ showuser.pk }}&page={{ current_page.previous_page_number }}")
+                $('#previous-page').attr('href', "{% url 'app:showuser' %}?show={{ showuser.pk }}&page={{ current_page.previous_page_number }}")
 
             {% endif %}
             {% if current_page.has_next %}
-                $('#next-page').attr('href', "{% url 'user:showuser' %}?show={{ showuser.pk }}&page={{ current_page.next_page_number }}")
+                $('#next-page').attr('href', "{% url 'app:showuser' %}?show={{ showuser.pk }}&page={{ current_page.next_page_number }}")
 
             {% endif %}
         })

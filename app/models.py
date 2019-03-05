@@ -4,7 +4,7 @@ from django.db import models
 # Create your models here.
 # 用户
 def avatar(self, filename):
-    return 'user/' + str(self.pk) + '/avatar/init.'+filename.split('.')[-1]
+    return 'app/' + str(self.pk) + '/avatar/init.'+filename.split('.')[-1]
 
 
 class User(models.Model):

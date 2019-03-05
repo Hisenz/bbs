@@ -19,7 +19,7 @@
             });
 
             $.ajax({
-                url: "{% url 'user:add_tag' %}",
+                url: "{% url 'app:add_tag' %}",
                 data: {
                     "plate_name": $("#plate_name").val(),
                     'description': $("#description").val(),
@@ -33,7 +33,8 @@
                     } else if (data === '-2') {
                         alert("标签名不能为空！")
                     } else {
-                        alert('创建成功！')
+                        alert('创建成功！');
+                        window.history.go(-1);
                     }
                 }
             })
