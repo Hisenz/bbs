@@ -67,6 +67,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
+
             ],
         },
     },
@@ -136,3 +137,14 @@ else:
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
+# 发送邮件设置
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# SMTP地址
+EMAIL_HOST = 'smtp.163.com'
+# SMTP端口
+EMAIL_PORT = 25
+# 自己的邮箱
+EMAIL_HOST_USER = '13966345738'
+# 自己的邮箱授权码，非密码
+EMAIL_HOST_PASSWORD = 'asdf1234'
+EMAIL_SUBJECT_PREFIX = '[论坛]'

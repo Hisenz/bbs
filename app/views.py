@@ -66,7 +66,7 @@ def sendmail(request):
     email = request.GET.get('email')
     if userutil.get_user_for_email(email):
         captcha = randomutil.generate(4)
-        if mailutil.senderEmail(captcha, email):
+        if mailutil.send(captcha, email):
             request.session['email'] = email
             request.session['captcha'] = captcha
             return HttpResponse(1)

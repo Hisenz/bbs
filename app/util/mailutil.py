@@ -2,7 +2,6 @@ import smtplib
 from email.mime.text import MIMEText
 from email.header import Header
 
-
 def senderEmail(key, email):
     mail_host = 'smtp.163.com'
     mail_user = '13966345738'
@@ -29,3 +28,15 @@ def senderEmail(key, email):
         print(e)
         print("error send fail")
         return False
+
+
+def send(key, email):
+    from django.core.mail import send_mail
+
+    title = "论坛"
+    content = '您在论坛的验证码是：'+key
+    senduser = '13966345738@163.com'
+    result = send_mail(title, content, senduser, [email, ], fail_silently=False)
+    print(result)
+    return result
+
