@@ -38,6 +38,16 @@ class Tag(models.Model):
         return self.name
 
 
+# 评论
+class Review(models.Model):
+    review = models.TextField()
+    time = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+
+    def __str__(self):
+        return self.review
+
+
 # 帖子
 class Post(models.Model):
     user = models.ForeignKey(User, to_field='nickname', on_delete=models.DO_NOTHING)
@@ -49,20 +59,12 @@ class Post(models.Model):
     description = models.TextField(null=True, default=None)
     give_a_like = models.IntegerField(default=0)
     text_choice = models.BooleanField(null=True)
+    read_num = models.IntegerField(default=0)
+    reviews = models.ManyToManyField(Review)
 
     def __str__(self):
         return self.headline
 
-
-# 评论
-class Review(models.Model):
-    review = models.TextField()
-    time = models.DateTimeField(auto_now_add=True)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-
-    def __str__(self):
-        return self.review
 
 
 # 点赞

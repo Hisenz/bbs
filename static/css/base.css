@@ -1,6 +1,8 @@
 .body {
+    margin-top: 50px;
     min-height: 860px;
-    background-color: #cccccc;
+    background-color: rgb(245, 246, 247);
+    padding:5px 1.5% 0 ;
 }
 
 .propagranda {
@@ -40,4 +42,15 @@
 }
 .form{
     background-color: white;
+}
+#homepage{
+    height: 30px;
+}
+
+nav{
+    background-color: white;
+}
+
+.user-group{
+    margin-top: 10px;
 }

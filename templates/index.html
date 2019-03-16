@@ -1,70 +1,89 @@
 {% extends 'base/base.html' %}
 
 {% block title %}首页{% endblock %}
+{% block style %}
+    <style>
+        .post-list {
+            background-color: white;
+        }
 
+        .post-item {
+            padding: 5px 1.5% 0;
+        }
+
+        .post-hover {
+            background-color: ghostwhite;
+        }
+
+        .post-title {
+            color: black;
+        }
+
+        .plate-list {
+            position: fixed;
+            left: auto;
+            margin-left: -200px;
+            width: 190px;
+        }
+    </style>
+{% endblock %}
 {% block body %}
     <div class="container-fluid">
-        <div class="col-sm-2 col-sm-offset-2 plate-list">
-            <div class="list-group">
-                {% for plate in plates %}
+
+        <div class="col-sm-5 col-sm-offset-3">
+            <div class="plate-list">
+                <div class="list-group">
+                    {% for plate in plates %}
 
 
-                    {% if forloop.counter <= 5 %}
-                        <a class="list-group-item" href="{% url 'app:show_posts' %}?plate={{ plate.pk }}">
-                            <h4 class="list-group-item-heading">
-                                {{ plate.name }}
-                            </h4>
-                            <div class="list-group-item-text text-right">
-                                <p class="btn btn-link plate-description-detail" role="button" data-container="body"
-                                   data-toggle="popover"
-                                   data-placement="right" data-content="{{ plate.description }}"
-                                   title="{{ plate.name }}">详情></p>
-                            </div>
+                        {% if forloop.counter <= 5 %}
+                            <a class="list-group-item" href="{% url 'app:show_posts' %}?plate={{ plate.pk }}">
+                                <h4 class="list-group-item-heading">
+                                    {{ plate.name }}
+                                </h4>
+                            </a>
+                        {% else %}
+                            <a class="list-group-item hidden hidden-plate"
+                               href="{% url 'app:show_posts' %}?plate={{ plate.pk }}">
+                                <h4 class="list-group-item-heading">
+                                    {{ plate.name }}
+                                </h4>
+                            </a>
+                        {% endif %}
 
-                        </a>
-                    {% else %}
-                        <a class="list-group-item hidden hidden-plate" href="{% url 'app:show_posts' %}?plate={{ plate.pk }}">
-                            <h4 class="list-group-item-heading">
-                                {{ plate.name }}
-                            </h4>
-                            <div class="list-group-item-text text-right">
-                                <p class="btn btn-link plate-description-detail" role="button" data-container="body"
-                                   data-toggle="popover"
-                                   data-placement="right" data-content="{{ plate.description }}"
-                                   title="{{ plate.name }}">详情></p>
-                            </div>
-
+                    {% endfor %}
+                    {% if plates.count > 5 %}
+                        <a class="list-group-item" id="show_more">显示更多板块
                         </a>
                     {% endif %}
-
-                {% endfor %}
-                {% if plates.count > 5 %}
-                    <a class="list-group-item" id="show_more">显示更多板块
-                    </a>
-                {% endif %}
-                <a class="list-group-item" href="{% url 'app:create_plate' %}">创建板块</a>
+                    <a class="list-group-item" href="{% url 'app:create_plate' %}">创建板块</a>
+                </div>
             </div>
-        </div>
-        <div class="col-sm-5">
             <div class="">
                 <ul class="nav nav-tabs">
                     <li role="presentation" class="active"><a>最热榜</a></li>
                 </ul>
-                <div class="list-group">
+                <div class="post-list">
                     {% for post in hottest %}
-                        <a class="list-group-item" href="{% url 'app:show_post' %}?post_id={{ post.pk }}">
-                            <div class="list-group-item-heading">{{ post.headline }}
-                                <span class="label label-info">{{ post.plate.name }}</span>
-                                <div class="text-right">{{ post.user.nickname }}</div>
-
+                        <div class="post-item">
+                            <a class="post-title" href="{% url 'app:show_post' %}?post_id={{ post.pk }}">
+                                <h4>{{ post.headline }}</h4></a>
+                            <div>{{ post.description | truncatewords:"20" | safe }}</div>
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        {% if post.user.avatar %}
+                                            <img src="/media/{{ post.user.avatar }}" id="user_avatar">
+                                        {% else %}
+                                            <img src="/static/images/user/user_404_title.png" id="user_avatar">
+                                        {% endif %}{{ post.user.nickname }} | {{ post.plate.name }} | {{ post.create_time }}
+                                    </div>
+                                    <div class="col-sm-3 text-right">
+                                        阅读 {{ post.read_num }} | 评论数 {{ post.reviews.count }}
+                                    </div>
+                                </div>
                             </div>
-                            <p class="text-right">
-                                {% for tag in post.tags.all %}
-                                    <span class="label label-default">{{ tag.name }}</span>
-                                {% endfor %}
-                                {{ post.last_change_time }}
-                            </p>
-                        </a>
+                        </div>
                     {% endfor %}
                 </div>
             </div>
@@ -110,6 +129,16 @@
                 $(this).popover('show')
             }, function () {
                 $(this).popover('hide')
+            })
+            $(".post-item").hover(function () {
+                $(this).addClass("post-hover")
+            }, function () {
+                $(this).removeClass("post-hover")
+            })
+            $(".post-title").hover(function () {
+                $(this).css("color", "red")
+            }, function () {
+                $(this).css("color", 'black')
             })
         })
     </script>

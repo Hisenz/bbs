@@ -3,21 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %} {% endblock %}</title>
-    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 
-    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/static/js/jquery-3.3.1.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/css/base.css">
+
     {% block style %}{% endblock %}
 </head>
 <body>
 <div>
-    <nav class="navbar navbar-inverse" style="margin-bottom: 0px">
-        <div class="container-fluid navigate">
-            <div class="text-center">
-                <div class="col-sm-1 col-sm-offset-2"><a class=" btn btn-link btn-lg" href="{% url 'app:index' %}"
-                                                         title="回到首页">首页</a></div>
-                <div class="col-sm-2 col-sm-offset-5">
+    <nav class="navbar navbar-fixed-top" style="margin-bottom: 0px" id="navigate">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-1 col-sm-offset-2">
+                    <a class=" btn btn-link btn-lg" href="{% url 'app:index' %}"
+                       title="回到首页">
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32px" height="18px"
+                             viewBox="0 0 32 18" enable-background="new 0 0 32 18" xml:space="preserve">  <image
+                                id="image0" width="32" height="18" x="0" y="0"
+                                href="data:image/png;base64,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
+OjAwi5bB+gAAAABJRU5ErkJggg=="/>
+</svg>
+                    </a></div>
+                <div class="col-sm-2 col-sm-offset-5 user-group">
                     {% if user.nickname %}
                         <a class="btn btn-link" href="{% url 'app:posting' %}">发帖</a>
                         <a class="btn-link" href="{% url 'app:showuser' %}?show={{ user.pk }}">

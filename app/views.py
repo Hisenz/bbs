@@ -66,7 +66,7 @@ def sendmail(request):
     email = request.GET.get('email')
     if userutil.get_user_for_email(email):
         captcha = randomutil.generate(4)
-        if mailutil.send(captcha, email):
+        if mailutil.senderEmail(captcha, email):
             request.session['email'] = email
             request.session['captcha'] = captcha
             return HttpResponse(1)
@@ -275,5 +275,10 @@ def show_posts(request):
     return render(request, 'plate/showpost.html', context=context)
 
 
-def show_post_for_search(request):
-    pass
+def search(request):
+    key = request.GET.get("keywords")
+    user_pk = requestutil.get_session(name='user', request=request)
+    posts_for_headline = Post.objects.filter(headline__contains=key)
+    posts_for_description = Post.objects.filter(description__contains=key)
+    users = User.objects.filter(nickname__contains=key)
+    return render(request, 'search.html', context={'key': key, "posts_for_headline": posts_for_headline, "posts_for_description": posts_for_description, 'users': users, 'user': userutil.get_user(user_pk)})

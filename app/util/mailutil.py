@@ -2,6 +2,8 @@ import smtplib
 from email.mime.text import MIMEText
 from email.header import Header
 
+
+
 def senderEmail(key, email):
     mail_host = 'smtp.163.com'
     mail_user = '13966345738'
@@ -22,11 +24,8 @@ def senderEmail(key, email):
         smtpObj.connect(mail_host,25)
         smtpObj.login(mail_user, mail_pass)
         smtpObj.sendmail(sender, receivers,message.as_string())
-        print('success to send')
         return True
     except smtplib.SMTPException as e:
-        print(e)
-        print("error send fail")
         return False
 
 

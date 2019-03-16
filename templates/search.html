@@ -1,0 +1,34 @@
+
+{% extends 'base/base.html' %}
+
+
+{% block title %}
+搜索
+{% endblock %}
+
+
+{% block style %}
+
+{% endblock %}
+
+
+{% block body %}
+    <h1>标题</h1>
+{% for foo in posts_for_headline %}
+<h5>{{ foo.headline }}</h5>
+{% endfor %}
+    <h1>内容</h1>
+{% for foo in posts_for_description %}
+<h5>{{ foo.headline }}</h5>
+{% endfor %}
+    <h1>用户</h1>
+{% for user in users %}
+{{ user.nickname }}
+{% endfor %}
+
+{% endblock %}
+
+
+{% block script %}
+
+{% endblock %}

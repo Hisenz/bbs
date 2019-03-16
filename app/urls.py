@@ -25,5 +25,6 @@ urlpatterns = [
     path('show_posts/', views.show_posts, name='show_posts'),
     path('dynamic_login/', views.dynamic_login, name='dynamic_login'),
     path('getuser/', views.get_user, name="get_user"),
-    path('sendmail/', views.sendmail, name="sendmail")
+    path('sendmail/', views.sendmail, name="sendmail"),
+    path('search/', views.search, name='search')
 ]
