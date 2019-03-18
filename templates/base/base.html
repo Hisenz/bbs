@@ -52,8 +52,18 @@ NDM6NTkrMDg6MDD6y3lGAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE5LTAzLTE2VDE5OjQzOjU5KzA4
 OjAwi5bB+gAAAABJRU5ErkJggg=="/>
 </svg>
                     </a></div>
-                <div class="col-sm-2 col-sm-offset-5 user-group">
-                    {% if user.nickname %}
+
+                <div class="col-sm-2 col-sm-offset-6 user-group">
+                    <form class="search input-group" method="get" action="{% url 'app:search' %}">
+                        <input type="text" class="form-control" id="search" name="keywords">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" aria-label="Left Align">
+                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                            </button>
+                        </span>
+                    </form>
+                    <div>
+                        {% if user.nickname %}
                         <a class="btn btn-link" href="{% url 'app:posting' %}">发帖</a>
                         <a class="btn-link" href="{% url 'app:showuser' %}?show={{ user.pk }}">
                             {% if user.avatar %}
@@ -68,6 +78,7 @@ OjAwi5bB+gAAAABJRU5ErkJggg=="/>
                         <a class="btn btn-link btn-lg" href="{% url 'app:login' %}">登录</a>
                         <a class="btn btn-link btn-lg" href="{% url 'app:signup' %}">注册</a>
                     {% endif %}
+                    </div>
                 </div>
             </div>
         </div>

@@ -49,8 +49,13 @@
 
 nav{
     background-color: white;
+    padding-top: 10px;
 }
 
-.user-group{
-    margin-top: 10px;
+.search{
+    position: fixed;
+    left: auto;
+    margin-left: -220px;
+    width: 200px;
+    margin-top: 5px;
 }

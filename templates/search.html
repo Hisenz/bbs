@@ -1,31 +1,52 @@
-
 {% extends 'base/base.html' %}
 
 
 {% block title %}
-搜索
+    搜索
 {% endblock %}
 
 
 {% block style %}
-
+<style>
+.page-search{
+    margin-top: 50px;
+}
+</style>
 {% endblock %}
 
 
 {% block body %}
-    <h1>标题</h1>
-{% for foo in posts_for_headline %}
-<h5>{{ foo.headline }}</h5>
-{% endfor %}
-    <h1>内容</h1>
-{% for foo in posts_for_description %}
-<h5>{{ foo.headline }}</h5>
-{% endfor %}
-    <h1>用户</h1>
-{% for user in users %}
-{{ user.nickname }}
-{% endfor %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <form class="input-group page-search" method="get" action="{% url 'app:search' %}">
+                    <input type="text" class="form-control" id="search" name="keywords" value="{{ keywords }}">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" aria-label="Left Align">
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>搜索
+                        </button>
+                    </span>
+                </form>
+                {% if keywords == "" %}
+                    <h1 class="text-center">关键词不能为空</h1>
+                {% else %}
+                    <h1>标题</h1>
+                    {% for foo in posts_for_headline %}
+                        <h5>{{ foo.headline }}</h5>
+                    {% endfor %}
+                    <h1>内容</h1>
+                    {% for foo in posts_for_description %}
+                        <h5>{{ foo.headline }}</h5>
+                    {% endfor %}
+                    <h1>用户</h1>
+                    {% for user in users %}
+                        {{ user.nickname }}
+                    {% endfor %}
+                {% endif %}
 
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 

@@ -1,7 +1,9 @@
+import json
+
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 
-from app.util import plateutil, tagutil, postutil, reviewutil, pageutil, randomutil, mailutil
+from app.util import plateutil, tagutil, postutil, reviewutil, pageutil, randomutil, mailutil, imageutil
 from .models import User, Plate, Tag, Post, Review
 from .util import userutil, requestutil
 
@@ -276,9 +278,23 @@ def show_posts(request):
 
 
 def search(request):
-    key = request.GET.get("keywords")
-    user_pk = requestutil.get_session(name='user', request=request)
-    posts_for_headline = Post.objects.filter(headline__contains=key)
-    posts_for_description = Post.objects.filter(description__contains=key)
-    users = User.objects.filter(nickname__contains=key)
-    return render(request, 'search.html', context={'key': key, "posts_for_headline": posts_for_headline, "posts_for_description": posts_for_description, 'users': users, 'user': userutil.get_user(user_pk)})
+    keywords = request.GET.get("keywords")
+    user_pk = None
+    posts_for_headline = None
+    posts_for_description = None
+    users = None
+    if keywords != "":
+        user_pk = requestutil.get_session(name='user', request=request)
+        posts_for_headline = Post.objects.filter(headline__contains=keywords)
+        posts_for_description = Post.objects.filter(description__contains=keywords)
+        users = User.objects.filter(nickname__contains=keywords)
+    return render(request, 'search.html', context={'keywords': keywords, "posts_for_headline": posts_for_headline, "posts_for_description": posts_for_description, 'users': users, 'user': userutil.get_user(user_pk)})
+
+
+def upload_image(request):
+
+    image = request.FILES.get("postImg")
+    context = {
+        'image': imageutil.create(image)
+    }
+    return render(request, 'img.json', context=context, content_type="application/json")

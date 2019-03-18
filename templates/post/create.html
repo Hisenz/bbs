@@ -111,6 +111,7 @@
                 </div>
 
             </div>
+            <div id="editor"></div>{% csrf_token %}
             <div class="post-item">
                 <button class="btn btn-block post-button" id="submit">发表</button>
             </div>
@@ -120,7 +121,17 @@
 {% endblock %}
 {% block script %}
     <script src="https://cdn.bootcss.com/showdown/1.9.0/showdown.min.js"></script>
+    <script src="https://unpkg.com/wangeditor@3.1.1/release/wangEditor.min.js"></script>
     <script type="text/javascript">
+        let E = window.wangEditor
+        let editor = new E("#editor")
+        editor.customConfig.uploadImgServer = '{% url "app:uploadimage" %}'
+        editor.customConfig.uploadFileName = 'postImg'
+        editor.customConfig.uploadImgParams = {
+            csrfmiddlewaretoken: "{{ csrf_token }}"
+        }
+        editor.create()
+
         let tag = document.getElementById('tags')
         let button = [
             'btn-default',

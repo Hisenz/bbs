@@ -26,5 +26,6 @@ urlpatterns = [
     path('dynamic_login/', views.dynamic_login, name='dynamic_login'),
     path('getuser/', views.get_user, name="get_user"),
     path('sendmail/', views.sendmail, name="sendmail"),
-    path('search/', views.search, name='search')
+    path('search/', views.search, name='search'),
+    path('upload_image/', views.upload_image, name="uploadimage")
 ]

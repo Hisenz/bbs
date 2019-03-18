@@ -7,6 +7,9 @@ def avatar(self, filename):
     return 'app/' + str(self.pk) + '/avatar/init.'+filename.split('.')[-1]
 
 
+def image(self, filename):
+    return "image/" + filename
+
 class User(models.Model):
     password = models.CharField(max_length=40)
     email = models.EmailField(unique=True)
@@ -66,10 +69,11 @@ class Post(models.Model):
         return self.headline
 
 
-
 # 点赞
 class GiveLike(models.Model):
     post = models.ForeignKey(Post, on_delete=models.DO_NOTHING)
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
 
 
+class Image(models.Model):
+    image = models.ImageField(upload_to=image)

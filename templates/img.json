@@ -1,0 +1,6 @@
+{
+  "errno": 0,
+  "data": [
+    "/media/{{image.image}}"
+  ]
+}
