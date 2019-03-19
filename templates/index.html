@@ -73,9 +73,9 @@
                                 <div class="row">
                                     <div class="col-sm-9">
                                         {% if post.user.avatar %}
-                                            <img src="/media/{{ post.user.avatar }}" id="user_avatar">
+                                            <img src="/media/{{ post.user.avatar }}" class="user_avatar">
                                         {% else %}
-                                            <img src="/static/images/user/user_404_title.png" id="user_avatar">
+                                            <img src="/static/images/user/user_404_title.png" class="user_avatar">
                                         {% endif %}{{ post.user.nickname }} | {{ post.plate.name }} | {{ post.create_time }}
                                     </div>
                                     <div class="col-sm-3 text-right">

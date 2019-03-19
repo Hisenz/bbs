@@ -48,6 +48,13 @@
             border: solid 1px;
             border-radius: 5px;
         }
+
+        #editor {
+            width: 80%;
+            margin-left: 10%;
+            min-height: 600px;
+        }
+
     </style>
 {% endblock %}
 
@@ -100,18 +107,10 @@
                     <a href="{% url 'app:create_tag' %}">没有？手动添加</a>
                 </div>
             </div>
-            <div class="container-fluid">
-                <div class="col-sm-6 post-item">
-                    <label for="description">输入内容：</label>
-                    <textarea class="textarea" placeholder="内容" id="description"></textarea>
-                </div>
-                <div class="col-sm-6 show-post">
-                    <label for="show-post">预览:</label>
-                    <div id="show-post"></div>
-                </div>
 
-            </div>
-            <div id="editor"></div>{% csrf_token %}
+            <div id="editor"></div>
+            <button id="btn1">获取html</button>
+            <button id="btn2">获取text</button>
             <div class="post-item">
                 <button class="btn btn-block post-button" id="submit">发表</button>
             </div>
@@ -131,6 +130,15 @@
             csrfmiddlewaretoken: "{{ csrf_token }}"
         }
         editor.create()
+        document.getElementById('btn1').addEventListener('click', function () {
+            // 读取 html
+            alert(editor.txt.html())
+        }, false)
+
+        document.getElementById('btn2').addEventListener('click', function () {
+            // 读取 text
+            alert(editor.txt.text())
+        }, false)
 
         let tag = document.getElementById('tags')
         let button = [
@@ -180,13 +188,13 @@
                 for (let i = 0; i < tags.length; i++) {
                     tag_list.push(tags[i].innerHTML)
                 }
+                alert(editor.txt.html())
                 let data = {
                     'user': {{ user.pk }},
                     'headline': $('#headline').val(),
                     'plate': $('#plate_select').html(),
                     'tag_list': tag_list.toString(),
-                    'description': $('#show-post').html(),
-                    'text_choice': $("input[name='text_choice']:checked").val()
+                    'description': editor.txt.html(),
                 }
 
 

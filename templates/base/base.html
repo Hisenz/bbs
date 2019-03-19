@@ -8,7 +8,7 @@
     <script src="/static/js/jquery-3.3.1.min.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/css/base.css">
-
+    <link rel="icon" href="/static/favicon.ico">
     {% block style %}{% endblock %}
 </head>
 <body>
@@ -67,9 +67,9 @@ OjAwi5bB+gAAAABJRU5ErkJggg=="/>
                         <a class="btn btn-link" href="{% url 'app:posting' %}">发帖</a>
                         <a class="btn-link" href="{% url 'app:showuser' %}?show={{ user.pk }}">
                             {% if user.avatar %}
-                                <img src="/media/{{ user.avatar }}" id="user_avatar">
+                                <img src="/media/{{ user.avatar }}" class="user_avatar">
                             {% else %}
-                                <img src="/static/images/user/user_404_title.png" id="user_avatar">
+                                <img src="/static/images/user/user_404_title.png" class="user_avatar">
                             {% endif %}
                             {{ user.nickname }}
                         </a>

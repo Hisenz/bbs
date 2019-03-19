@@ -8,7 +8,8 @@ def avatar(self, filename):
 
 
 def image(self, filename):
-    return "image/" + filename
+    return "post/image/" + filename
+
 
 class User(models.Model):
     password = models.CharField(max_length=40)
@@ -61,7 +62,6 @@ class Post(models.Model):
     last_change_time = models.DateTimeField(auto_now=True)
     description = models.TextField(null=True, default=None)
     give_a_like = models.IntegerField(default=0)
-    text_choice = models.BooleanField(null=True)
     read_num = models.IntegerField(default=0)
     reviews = models.ManyToManyField(Review)
 

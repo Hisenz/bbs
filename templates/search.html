@@ -7,11 +7,21 @@
 
 
 {% block style %}
-<style>
-.page-search{
-    margin-top: 50px;
-}
-</style>
+    <style>
+        .page-search {
+            margin-top: 50px;
+        }
+
+        .search-list {
+            padding: 5px 1.5% 0;
+            border-radius: 3px;
+        }
+        .search-item{
+            padding: 5px 1.5% 0;
+            background-color: white;
+            border-radius: 5px;
+        }
+    </style>
 {% endblock %}
 
 
@@ -31,17 +41,47 @@
                     <h1 class="text-center">关键词不能为空</h1>
                 {% else %}
                     <h1>标题</h1>
-                    {% for foo in posts_for_headline %}
-                        <h5>{{ foo.headline }}</h5>
-                    {% endfor %}
+                    <div class="search-list">
+                        {% for foo in posts_for_headline %}
+
+                            {% if forloop.counter < 5 %}
+                                <div class="search-item">
+                                <a href="{% url 'app:show_post' %}?post_id={{ foo.pk }}">
+                                    <h4 class="show-search" style="color: #3875d7">{{ foo.headline }}</h4>
+                                    <p>{{ foo.description | truncatewords:"10" }}</p>
+                                </a>
+                                </div>
+                            {% endif %}
+
+                        {% endfor %}
+                        {% if posts_for_headline.count == 0 %}
+                            <h3>没有相关标题</h3>
+                        {% endif %}
+                    </div>
                     <h1>内容</h1>
-                    {% for foo in posts_for_description %}
-                        <h5>{{ foo.headline }}</h5>
-                    {% endfor %}
+                    <div class="search-list">
+                        {% for foo in posts_for_description %}
+                            {% if forloop.counter < 5 %}
+                                <div class="search-item">
+                                <a href="{% url 'app:show_post' %}?post_id={{ foo.pk }}">
+                                    <h4 style="color: #3875d7">{{ foo.headline }}</h4>
+                                    <p class="show-search">{{ foo.description | truncatewords:"10" }}</p>
+                                </a>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                     <h1>用户</h1>
+                    <div class="search-list">
                     {% for user in users %}
-                        {{ user.nickname }}
+                        <div class="search-item">
+                            <img class="user_avatar" src="/media/{{ user.avatar }}"/><a class="show-search"
+                                                                                        style="color: #3875d7"
+                                                                                        href="{% url 'app:showuser' %}?show={{ user.pk }}">{{ user.nickname }}</a>
+                            <p>个人简介：{{ user.description | truncatewords:"10" }}</p>
+                        </div>
                     {% endfor %}
+                    </div>
                 {% endif %}
 
             </div>
@@ -51,5 +91,14 @@
 
 
 {% block script %}
+    <script>
+        showkeyords()
 
+        function showkeyords() {
+            showhtml = document.getElementsByClassName("show-search")
+            for (let i = 0; i < showhtml.length; i++) {
+                showhtml[i].innerHTML = showhtml[i].innerHTML.split("{{ keywords }}").join("<span style='color: red'>{{ keywords }}</span>")
+            }
+        }
+    </script>
 {% endblock %}
