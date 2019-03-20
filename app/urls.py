@@ -27,5 +27,7 @@ urlpatterns = [
     path('getuser/', views.get_user, name="get_user"),
     path('sendmail/', views.sendmail, name="sendmail"),
     path('search/', views.search, name='search'),
-    path('upload_image/', views.upload_image, name="uploadimage")
+    path('upload_image/', views.upload_image, name="uploadimage"),
+    path('latest/', views.latest, name='latest'),
 ]
+

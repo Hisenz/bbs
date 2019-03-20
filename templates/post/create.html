@@ -84,19 +84,6 @@
                     <div class="post-item">
                         标签：<span id="tags"></span><span id="prompt">点击删除</span>
                     </div>
-                    <div class="post-item">
-                        文本格式：
-
-                        <label class="radio-inline"><input type="radio" name="text_choice" class="text_choice" value="0"
-                                                           checked="checked">txt</label>
-                        <label class="radio-inline"><input type="radio" name="text_choice" class="text_choice"
-                                                           value="1">markdown</label>
-                        <label class="radio-inline"><input type="radio" name="text_choice" class="text_choice"
-                                                           value="2">html</label>
-
-                    </div>
-
-
                 </div>
 
                 <div class="col-sm-3">
@@ -109,8 +96,7 @@
             </div>
 
             <div id="editor"></div>
-            <button id="btn1">获取html</button>
-            <button id="btn2">获取text</button>
+
             <div class="post-item">
                 <button class="btn btn-block post-button" id="submit">发表</button>
             </div>
@@ -130,15 +116,6 @@
             csrfmiddlewaretoken: "{{ csrf_token }}"
         }
         editor.create()
-        document.getElementById('btn1').addEventListener('click', function () {
-            // 读取 html
-            alert(editor.txt.html())
-        }, false)
-
-        document.getElementById('btn2').addEventListener('click', function () {
-            // 读取 text
-            alert(editor.txt.text())
-        }, false)
 
         let tag = document.getElementById('tags')
         let button = [

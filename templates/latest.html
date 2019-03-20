@@ -38,12 +38,12 @@
         <div class="col-sm-5 col-sm-offset-3">
             <div class="plate-list">
                 <ul class="list-group">
-                    <li class="active text-center">
+                    <li class="text-center plate-item">
                         <a href="{% url 'app:index' %}">
                             <h4>推荐</h4>
                         </a>
                     </li>
-                    <li class="text-center plate-item">
+                    <li class="active text-center">
                         <a href="{% url 'app:latest' %}">
                             <h4>最新</h4>
                         </a>
@@ -78,26 +78,26 @@
             </div>
             <div class="">
                 <div class="post-list">
-                    {% for rank in hottest %}
+                    {% for post in posts %}
                         <div class="post-item">
-                            <a class="post-title" href="{% url 'app:show_post' %}?post_id={{ rank.post.pk }}">
-                                <h4>{{ rank.post.headline }}</h4></a>
-                            <div class="description">{{ rank.post.description| striptags }}</div>
+                            <a class="post-title" href="{% url 'app:show_post' %}?post_id={{ post.pk }}">
+                                <h4>{{ post.headline }}</h4></a>
+                            <div class="description">{{ post.description| striptags }}</div>
                             <div class="container-fluid">
                                 <div class="row">
                                     <div class="col-sm-9">
-                                        <a href="{% url 'app:showuser' %}?show={{ rank.post.user.pk }}">
-                                            {% if rank.post.user.avatar %}
-                                                <img src="/media/{{ rank.post.user.avatar }}" class="user_avatar">
+                                        <a href="{% url 'app:showuser' %}?show={{ post.user.pk }}">
+                                            {% if post.user.avatar %}
+                                                <img src="/media/{{ post.user.avatar }}" class="user_avatar">
                                             {% else %}
                                                 <img src="/static/images/user/user_404_title.png" class="user_avatar">
-                                            {% endif %}{{ rank.post.user.nickname }}</a>
+                                            {% endif %}{{ post.user.nickname }}</a>
                                         | <a
-                                            href="{% url 'app:show_posts' %}?plate={{ rank.post.plate.pk }}">{{ rank.post.plate.name }}</a>>
-                                        | {{ rank.post.create_time | timesince }}以前
+                                            href="{% url 'app:show_posts' %}?plate={{ post.plate.pk }}">{{ post.plate.name }}</a>>
+                                        | {{ post.create_time | timesince}}以前
                                     </div>
                                     <div class="col-sm-3 text-right">
-                                        阅读 {{ rank.post.read_num }} | 评论数 {{ rank.post.reviews.count }}
+                                        阅读 {{ post.read_num }} | 评论数 {{ post.reviews.count }}
                                     </div>
                                 </div>
                             </div>

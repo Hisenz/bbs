@@ -17,7 +17,7 @@ class User(models.Model):
     gender = models.BooleanField(default=True)
     nickname = models.CharField(max_length=20, unique=True)
     avatar = models.ImageField(upload_to=avatar, default=None, null=True)
-    description = models.TextField(null=True, default=None)
+    description = models.TextField(null=True, default="")
 
 
 # 板块
@@ -75,5 +75,13 @@ class GiveLike(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
 
 
+# 图片存放
 class Image(models.Model):
     image = models.ImageField(upload_to=image)
+
+
+# 帖子排行
+class Rank(models.Model):
+    rank = models.FloatField(default=0)
+    post = models.ForeignKey(Post, on_delete=models.DO_NOTHING)
+    update_time = models.DateTimeField(auto_now=True)

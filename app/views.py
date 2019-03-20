@@ -3,8 +3,8 @@ import json
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 
-from app.util import plateutil, tagutil, postutil, reviewutil, pageutil, randomutil, mailutil, imageutil
-from .models import User, Plate, Tag, Post, Review
+from app.util import plateutil, tagutil, postutil, reviewutil, pageutil, randomutil, mailutil, imageutil, rankutil
+from .models import User, Plate, Tag, Post, Review, Rank
 from .util import userutil, requestutil
 
 
@@ -96,11 +96,11 @@ def register(request):
 
 def index(request):
     pk = requestutil.get_session(name='user', request=request)
+    rankutil.update()
     context = {
         'user': userutil.get_user(user_id=pk),
         'plates': Plate.objects.filter(audit=True),
-        'latest': Post.objects.all().order_by('-create_time')[0:5],
-        'hottest': Post.objects.all().order_by('-give_a_like')[0:5],
+        'hottest': Rank.objects.all().order_by("-rank"),
     }
     return render(request, 'index.html', context=context)
 
@@ -218,6 +218,11 @@ def post(request):
     user_pk = requestutil.get_session(name='user', request=request)
     post_id = request.GET.get('post_id')
     post = postutil.get(pk=post_id)
+    if post:
+        post.read_num = post.read_num + 1
+        post.save()
+    else:
+        return HttpResponseRedirect("/")
     context = {
         'post': post,
         'user': userutil.get_user(user_id=user_pk),
@@ -267,6 +272,7 @@ def show_posts(request):
     current_page = pageutil.get_one_page(posts, page, 10)
     context = {
         'plate': plate,
+        'plates': Plate.objects.filter(audit=True),
         'posts': posts,
         'user': userutil.get_user(user_pk),
         'currnet_page': current_page,
@@ -278,16 +284,14 @@ def show_posts(request):
 
 def search(request):
     keywords = request.GET.get("keywords")
-    user_pk = None
+    user_pk = requestutil.get_session(name='user', request=request)
+
     posts_for_headline = None
-    posts_for_description = None
     users = None
     if keywords != "":
-        user_pk = requestutil.get_session(name='user', request=request)
         posts_for_headline = Post.objects.filter(headline__contains=keywords)
-        posts_for_description = Post.objects.filter(description__contains=keywords)
         users = User.objects.filter(nickname__contains=keywords)
-    return render(request, 'search.html', context={'keywords': keywords, "posts_for_headline": posts_for_headline, "posts_for_description": posts_for_description, 'users': users, 'user': userutil.get_user(user_pk)})
+    return render(request, 'search.html', context={'keywords': keywords, "posts_for_headline": posts_for_headline, 'users': users, 'user': userutil.get_user(user_pk)})
 
 
 def upload_image(request):
@@ -297,3 +301,14 @@ def upload_image(request):
         'image': imageutil.create(image)
     }
     return render(request, 'img.json', context=context, content_type="application/json")
+
+
+def latest(request):
+    user_pk = requestutil.get_session(name='user', request=request)
+    posts = Post.objects.all().order_by("-create_time")
+    context = {
+        "posts": posts,
+        'user': userutil.get_user(user_pk),
+        'plates': Plate.objects.filter(audit=True)
+    }
+    return render(request, 'latest.html', context=context)

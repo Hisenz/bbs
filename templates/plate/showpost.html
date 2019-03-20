@@ -14,6 +14,17 @@
             padding-left: 15%;
             min-height: 481px;
         }
+        .description {
+            color: #8a8a8a;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+    .post-hover {
+            background-color: #fafafa;
+        }
+
     </style>
 {% endblock %}
 
@@ -23,7 +34,53 @@
 {% block body %}
     <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-8 col-sm-offset-2 body-content">
+        <div class="col-sm-8 col-sm-offset-3 body-content">
+            <div class="plate-list">
+                <ul class="list-group">
+                    <li class="text-center plate-item">
+                        <a href="{% url 'app:index' %}">
+                            <h4>推荐</h4>
+                        </a>
+
+                    </li>
+                    <li class="text-center plate-item">
+                        <a href="{% url 'app:latest' %}">
+                            <h4>最新</h4>
+                        </a>
+
+                    </li>
+                    {% for plate_item in plates %}
+                        {% if forloop.counter <= 5 %}
+                            <li class="text-center {% if plate.pk == plate_item.pk %}
+                            active{% else %} plate-item
+                            {% endif %}">
+                                <a href="{% url 'app:show_posts' %}?plate={{ plate_item.pk }}">
+                                    <h4>{{ plate_item.name }}</h4>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="hidden hidden-plate text-center {% if plate.pk == plate_item.pk %}
+                            active{% else %} plate-item
+                            {% endif %}">
+                                <a href="{% url 'app:show_posts' %}?plate={{ plate_item.pk }}">
+                                    <h4>{{ plate_item.name }}</h4>
+                                </a>
+                            </li>
+                        {% endif %}
+
+                    {% endfor %}
+                    {% if plates.count > 5 %}
+                        <li id="show_more" class="text-center plate-item">
+                            <h4>显示更多板块</h4>
+                        </li>
+                    {% endif %}
+                    <li class="text-center plate-item">
+                        <a href="{% url 'app:create_plate' %}">
+                            <h4>创建板块</h4>
+                        </a>
+                    </li>
+                </ul>
+            </div>
             <div class="jumbotron">
                 <h2>{{ plate.name }}</h2>
                 <p>{{ plate.description }}</p>
@@ -33,19 +90,29 @@
             {% else %}
                 <div class="list-group post-list">
                     {% for post in currnet_page %}
-                        <a class="list-group-item" href="{% url 'app:show_post' %}?post_id={{ post.pk }}">
-                            <div class="list-group-item-heading">{{ post.headline }}
-                                <span class="label label-info">{{ post.plate.name }}</span>
-                                <div class="text-right">{{ post.user.nickname }}</div>
-
+                        <div class="post-item">
+                            <a class="post-title" href="{% url 'app:show_post' %}?post_id={{ post.pk }}">
+                                <h4>{{ post.headline }}</h4></a>
+                            <div class="description">{{ post.description| striptags }}</div>
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        <a href="{% url 'app:showuser' %}?show={{ post.user.pk }}">
+                                            {% if post.user.avatar %}
+                                                <img src="/media/{{ post.user.avatar }}" class="user_avatar">
+                                            {% else %}
+                                                <img src="/static/images/user/user_404_title.png" class="user_avatar">
+                                            {% endif %}{{ post.user.nickname }}</a>
+                                        | <a
+                                            href="{% url 'app:show_posts' %}?plate={{ post.plate.pk }}">{{ post.plate.name }}</a>>
+                                        | {{ post.create_time | timesince}}以前
+                                    </div>
+                                    <div class="col-sm-3 text-right">
+                                        阅读 {{ post.read_num }} | 评论数 {{ post.reviews.count }}
+                                    </div>
+                                </div>
                             </div>
-                            <p class="text-right">
-                                {% for tag in post.tags.all %}
-                                    <span class="label label-default">{{ tag.name }}</span>
-                                {% endfor %}
-                                {{ post.last_change_time }}
-                            </p>
-                        </a>
+                        </div>
                     {% endfor %}
                 </div>
 
@@ -98,6 +165,21 @@
                 $('#next-page').attr('href', "{% url 'app:show_posts' %}?plate={{ plate.pk }}&page={{ currnet_page.next_page_number }}")
 
             {% endif %}
+            $("#show_more").click(function () {
+                $(this).remove();
+                $(".hidden-plate").removeClass("hidden")
+            })
+            $(".post-item").hover(function () {
+                $(this).addClass("post-hover")
+            }, function () {
+                $(this).removeClass("post-hover")
+            })
+            $(".plate-item").hover(function () {
+                $(this).addClass("active")
+            }, function () {
+                $(this).removeClass("active")
+            })
+
         })
     </script>
 

@@ -20,6 +20,13 @@
         .list-group {
             min-height: 400px;
         }
+    .description {
+            color: #8a8a8a;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
     </style>
 {% endblock %}
 
@@ -68,19 +75,23 @@
                 </ul>
                 <div class="list-group">
                     {% for post in current_page %}
-                        <a class="list-group-item" href="{% url 'app:show_post' %}?post_id={{ post.pk }}">
-                            <div class="list-group-item-heading">{{ post.headline }}
-                                <span class="label label-info">{{ post.plate.name }}</span>
-                                <div class="text-right">{{ post.user.nickname }}</div>
-
+                        <div class="post-item">
+                            <a class="post-title" href="{% url 'app:show_post' %}?post_id={{ post.pk }}">
+                                <h4>{{ post.headline }}</h4></a>
+                            <div class="description">{{ post.description| striptags }}</div>
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        <a
+                                            href="{% url 'app:show_posts' %}?plate={{ post.plate.pk }}">{{ post.plate.name }}</a>>
+                                        | {{ post.create_time | timesince}}以前
+                                    </div>
+                                    <div class="col-sm-3 text-right">
+                                        阅读 {{ post.read_num }} | 评论数 {{ post.reviews.count }}
+                                    </div>
+                                </div>
                             </div>
-                            <p class="text-right">
-                                {% for tag in post.tags.all %}
-                                    <span class="label label-default">{{ tag.name }}</span>
-                                {% endfor %}
-                                {{ post.last_change_time }}
-                            </p>
-                        </a>
+                        </div>
                     {% endfor %}
 
                 </div>
