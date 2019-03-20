@@ -22,6 +22,7 @@ def add(user_id, post):
         new_post.plate = Plate.objects.get(name=post['plate'])
         new_post.description = post['description']
         new_post.user = User.objects.get(pk=user_id)
+        new_post.attachment = post['attachment']
         new_post.save()
         if post['tag_list'] != '':
             for tag_name in post['tag_list'].split(','):

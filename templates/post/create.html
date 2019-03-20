@@ -84,6 +84,9 @@
                     <div class="post-item">
                         标签：<span id="tags"></span><span id="prompt">点击删除</span>
                     </div>
+                    <div class="post-item">
+                        附件：<input type="file" name="attachment" id="attachment">
+                    </div>
                 </div>
 
                 <div class="col-sm-3">
@@ -165,20 +168,41 @@
                 for (let i = 0; i < tags.length; i++) {
                     tag_list.push(tags[i].innerHTML)
                 }
-                alert(editor.txt.html())
-                let data = {
-                    'user': {{ user.pk }},
-                    'headline': $('#headline').val(),
-                    'plate': $('#plate_select').html(),
-                    'tag_list': tag_list.toString(),
-                    'description': editor.txt.html(),
-                }
-
+                let fd = new FormData();
+                fd.append('user', {{ user.pk }});
+                fd.append('headline', $('#headline').val());
+                fd.append('plate', $('#plate_select').html());
+                fd.append('tag_list', tag_list.toString());
+                fd.append('description', editor.txt.html());
+                fd.append('attachment', $("#attachment")[0].files[0])
+                fd.append('csrfmiddlewaretoken', '{{ csrf_token }}')
 
                 $.ajaxSetup({
                     data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
                 });
-                $.post("{% url 'app:add_post' %}", data, function (message) {
+                $.ajax({
+                    url: "{% url 'app:add_post' %}",
+                    type: "POST",
+                    data: fd,
+                    processData: false,
+                    contentType: false,
+                    success: function (message) {
+                        if (message == '1') {
+                            alert('已发表！')
+                            window.location.href = "{% url 'app:showuser' %}?show= {{ user.pk }}"
+                        } else if (message === '-2') {
+                            alert('标题不能为空')
+                        } else if (message === '-3') {
+                            alert('内容不能为空！')
+                        } else if (message === '-1') {
+                            alert('请先登录！')
+                        } else {
+                            alert('请添加板块')
+                        }
+                    }
+                })
+
+                $.post("{% url 'app:add_post' %}", fd, function (message) {
                     if (message == '1') {
                         alert('已发表！')
                         window.location.href = "{% url 'app:showuser' %}?show= {{ user.pk }}"

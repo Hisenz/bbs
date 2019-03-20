@@ -11,6 +11,10 @@ def image(self, filename):
     return "post/image/" + filename
 
 
+def postfile(self, filename):
+    return  "post/attachment/"+ filename
+
+
 class User(models.Model):
     password = models.CharField(max_length=40)
     email = models.EmailField(unique=True)
@@ -64,6 +68,7 @@ class Post(models.Model):
     give_a_like = models.IntegerField(default=0)
     read_num = models.IntegerField(default=0)
     reviews = models.ManyToManyField(Review)
+    attachment = models.FileField(upload_to=postfile, null=True)
 
     def __str__(self):
         return self.headline

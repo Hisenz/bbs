@@ -208,6 +208,7 @@ def add_post(request):
         'plate': request.POST.get('plate'),
         'tag_list': request.POST.get('tag_list'),
         'description': request.POST.get('description'),
+        'attachment': request.FILES.get("attachment")
     }
     message = postutil.add(user_id=user_id, post=new_post)
 

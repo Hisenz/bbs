@@ -140,6 +140,9 @@
                             <div id="description">
                                 {{ post.description | safe}}
                             </div>
+                            <div class="attachment">
+                                附件：<a href="/media/{{ post.attachment }}" id="attachment"></a>
+                            </div>
                         </div>
                     </div>
                     <div class="text-center">
@@ -188,7 +191,8 @@
 {% block script %}
     <script src="https://cdn.bootcss.com/showdown/1.9.0/showdown.min.js"></script>
     <script>
-
+        let attachment = "{{ post.attachment }}".split("/").pop()
+        $("#attachment").html(attachment)
 
         let give_like = false;
         $(document).ready(function () {
