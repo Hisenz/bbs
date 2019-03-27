@@ -16,21 +16,32 @@ def postfile(self, filename):
 
 
 class User(models.Model):
-    password = models.CharField(max_length=40)
-    email = models.EmailField(unique=True)
-    gender = models.BooleanField(default=True)
-    nickname = models.CharField(max_length=20, unique=True)
-    avatar = models.ImageField(upload_to=avatar, default=None, null=True)
-    description = models.TextField(null=True, default="")
+    password = models.CharField(max_length=40, verbose_name="密码")
+    email = models.EmailField(unique=True, verbose_name="邮箱")
+    gender = models.BooleanField(default=True, verbose_name="性别")
+    nickname = models.CharField(max_length=20, unique=True, verbose_name="昵称")
+    avatar = models.ImageField(upload_to=avatar, default=None, null=True, verbose_name="头像")
+    description = models.TextField(null=True, default="", verbose_name="个人说明")
+
+    class Meta:
+        verbose_name = "用户"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.nickname
 
 
 # 板块
 class Plate(models.Model):
-    name = models.CharField(max_length=10, unique=True, null=False)
-    create_user = models.ForeignKey(User, to_field='nickname', on_delete=models.DO_NOTHING)
-    description = models.TextField(null=True, default=True)
-    audit = models.BooleanField(default=False)
-    create_time = models.DateTimeField(auto_now_add=True)
+    name = models.CharField(max_length=10, unique=True, null=False, verbose_name="名称")
+    create_user = models.ForeignKey(User, to_field='nickname', on_delete=models.DO_NOTHING, verbose_name="创建者")
+    description = models.TextField(null=True, default=True, verbose_name="描述")
+    audit = models.BooleanField(default=False, verbose_name="审核结果")
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
+
+    class Meta:
+        verbose_name = "板块"
+        verbose_name_plural = verbose_name
 
     def __str__(self):
         return self.name
@@ -38,9 +49,13 @@ class Plate(models.Model):
 
 # 标签
 class Tag(models.Model):
-    name = models.CharField(max_length=10, unique=True, null=False)
-    create_user = models.ForeignKey(User, to_field='nickname', on_delete=models.DO_NOTHING)
-    description = models.TextField(null=True, default=None)
+    name = models.CharField(max_length=10, unique=True, null=False, verbose_name="名称")
+    create_user = models.ForeignKey(User, to_field='nickname', on_delete=models.DO_NOTHING, verbose_name="创建者")
+    description = models.TextField(null=True, default=None, verbose_name="描述")
+
+    class Meta:
+        verbose_name = "标签"
+        verbose_name_plural = verbose_name
 
     def __str__(self):
         return self.name
@@ -48,9 +63,13 @@ class Tag(models.Model):
 
 # 评论
 class Review(models.Model):
-    review = models.TextField()
-    time = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    review = models.TextField(verbose_name="内容")
+    time = models.DateTimeField(auto_now_add=True, verbose_name="时间")
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, verbose_name="创建者")
+
+    class Meta:
+        verbose_name = "评论"
+        verbose_name_plural = verbose_name
 
     def __str__(self):
         return self.review
@@ -58,17 +77,21 @@ class Review(models.Model):
 
 # 帖子
 class Post(models.Model):
-    user = models.ForeignKey(User, to_field='nickname', on_delete=models.DO_NOTHING)
-    headline = models.CharField(max_length=20)
-    plate = models.ForeignKey(Plate, to_field='name', on_delete=models.CASCADE)
-    tags = models.ManyToManyField(Tag)
-    create_time = models.DateTimeField(auto_now_add=True)
-    last_change_time = models.DateTimeField(auto_now=True)
-    description = models.TextField(null=True, default=None)
-    give_a_like = models.IntegerField(default=0)
-    read_num = models.IntegerField(default=0)
-    reviews = models.ManyToManyField(Review)
-    attachment = models.FileField(upload_to=postfile, null=True)
+    user = models.ForeignKey(User, to_field='nickname', on_delete=models.DO_NOTHING, verbose_name="创建者")
+    headline = models.CharField(max_length=20, verbose_name="标题")
+    plate = models.ForeignKey(Plate, to_field='name', on_delete=models.CASCADE, verbose_name="所属板块")
+    tags = models.ManyToManyField(Tag, verbose_name="包含标签")
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
+    last_change_time = models.DateTimeField(auto_now=True, verbose_name="最后修改时间")
+    description = models.TextField(null=True, default=None, verbose_name="内容")
+    give_a_like = models.IntegerField(default=0, verbose_name="点赞")
+    read_num = models.IntegerField(default=0, verbose_name="阅读数")
+    reviews = models.ManyToManyField(Review, verbose_name="评论")
+    attachment = models.FileField(upload_to=postfile, null=True, verbose_name="附件")
+
+    class Meta:
+        verbose_name = "帖子"
+        verbose_name_plural = verbose_name
 
     def __str__(self):
         return self.headline
@@ -88,5 +111,12 @@ class Image(models.Model):
 # 帖子排行
 class Rank(models.Model):
     rank = models.FloatField(default=0)
-    post = models.ForeignKey(Post, on_delete=models.DO_NOTHING)
-    update_time = models.DateTimeField(auto_now=True)
+    post = models.ForeignKey(Post, on_delete=models.DO_NOTHING, verbose_name="帖子")
+    update_time = models.DateTimeField(auto_now=True, verbose_name="更新时间")
+
+    class Meta:
+        verbose_name = "排行榜"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.pk

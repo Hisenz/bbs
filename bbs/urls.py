@@ -16,11 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.static import serve
+
+import xadmin
 from bbs.settings import MEDIA_ROOT, DEBUG
 
 
 urlpatterns = [
-    path('xadmin/', admin.site.urls),
+    path('admin/', admin.site.urls),
+    path('xadmin/', xadmin.site.urls),
     path('', include('app.urls')),
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
 ]
