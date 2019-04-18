@@ -50,7 +50,7 @@
 
                     </li>
                     {% for plate_item in plates %}
-                        {% if forloop.counter <= 5 %}
+                        {% if forloop.counter <= 17 %}
                             <li class="text-center {% if plate.pk == plate_item.pk %}
                             active{% else %} plate-item
                             {% endif %}">
@@ -69,7 +69,7 @@
                         {% endif %}
 
                     {% endfor %}
-                    {% if plates.count > 5 %}
+                    {% if plates.count > 17 %}
                         <li id="show_more" class="text-center plate-item">
                             <h4>显示更多板块</h4>
                         </li>

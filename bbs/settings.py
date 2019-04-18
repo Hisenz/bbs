@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'app.apps.AConfig',
     'xadmin',
     'crispy_forms',
+    'rest_framework',
+    'api.apps.ApiConfig',
 ]
 
 MIDDLEWARE = [
@@ -150,3 +152,9 @@ EMAIL_HOST_USER = '13966345738'
 # 自己的邮箱授权码，非密码
 EMAIL_HOST_PASSWORD = 'asdf1234'
 EMAIL_SUBJECT_PREFIX = '[论坛]'
+
+REST_FRAMEWORK = {
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.NamespaceVersioning',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 30
+}

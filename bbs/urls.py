@@ -24,8 +24,11 @@ from bbs.settings import MEDIA_ROOT, DEBUG
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('xadmin/', xadmin.site.urls),
+    path('api/', include('api.urls')),
     path('', include('app.urls')),
+
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
+
 ]
 
 #

@@ -100,7 +100,6 @@ def index(request):
     context = {
         'user': userutil.get_user(user_id=pk),
         'plates': Plate.objects.filter(audit=True),
-        'hottest': Rank.objects.all().order_by("-rank"),
     }
     return render(request, 'index.html', context=context)
 
@@ -158,7 +157,7 @@ def show_user(request):
         pass
     showuser = userutil.get_user(show)
     posts = postutil.get_posts_for_user(showuser)
-    current_page = pageutil.get_one_page(posts, page, 5)
+    current_page = pageutil.get_one_page(posts, page, 8)
     context = {
         'user': userutil.get_user(user_id),
         'showuser': showuser,

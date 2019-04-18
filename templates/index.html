@@ -2,6 +2,8 @@
 
 {% block title %}首页{% endblock %}
 {% block style %}
+    <link rel="stylesheet" href="/static/css/swiper.min.css">
+    <script src="/static/js/swiper.min.js"></script>
     <style>
         .post-list {
             background-color: white;
@@ -27,15 +29,51 @@
             overflow: hidden;
         }
 
-
         .post-title {
             color: black;
+        }
+
+        .post-title h4:hover {
+            color: red;
+        }
+
+        .swiper-container {
+            margin-left: 3%;
+            height: 300px;
+            background-color: #9d9d9d;
+        }
+
+        .swiper-pagination-bullet {
+            width: 20px;
+            height: 20px;
+            background-color: white;
+        }
+
+        .newest {
+            background-color: white;
+        }
+
+        .newest-title {
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid #eee;
+            border-left-width: 5px;
+            border-left-color: #ce4044;
+            border-radius: 3px;
+        }
+
+        .swiper-wrapper div h1 {
+            color: white;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            text-overflow: ellipsis;
+            overflow: hidden;
         }
     </style>
 {% endblock %}
 {% block body %}
     <div class="container-fluid">
-        <div class="col-sm-5 col-sm-offset-3">
+        <div class="col-sm-6 col-sm-offset-3">
             <div class="plate-list">
                 <ul class="list-group">
                     <li class="active text-center">
@@ -49,7 +87,7 @@
                         </a>
                     </li>
                     {% for plate in plates %}
-                        {% if forloop.counter <= 5 %}
+                        {% if forloop.counter <= 17 %}
                             <li class="text-center plate-item">
                                 <a href="{% url 'app:show_posts' %}?plate={{ plate.pk }}">
                                     <h4>{{ plate.name }}</h4>
@@ -64,7 +102,7 @@
                         {% endif %}
 
                     {% endfor %}
-                    {% if plates.count > 5 %}
+                    {% if plates.count > 17 %}
                         <li id="show_more" class="text-center plate-item">
                             <h4>显示更多板块</h4>
                         </li>
@@ -77,33 +115,23 @@
                 </ul>
             </div>
             <div class="">
-                <div class="post-list">
-                    {% for rank in hottest %}
-                        <div class="post-item">
-                            <a class="post-title" href="{% url 'app:show_post' %}?post_id={{ rank.post.pk }}">
-                                <h4>{{ rank.post.headline }}</h4></a>
-                            <div class="description">{{ rank.post.description| striptags }}</div>
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-sm-9">
-                                        <a href="{% url 'app:showuser' %}?show={{ rank.post.user.pk }}">
-                                            {% if rank.post.user.avatar %}
-                                                <img src="/media/{{ rank.post.user.avatar }}" class="user_avatar">
-                                            {% else %}
-                                                <img src="/static/images/user/user_404_title.png" class="user_avatar">
-                                            {% endif %}{{ rank.post.user.nickname }}</a>
-                                        | <a
-                                            href="{% url 'app:show_posts' %}?plate={{ rank.post.plate.pk }}">{{ rank.post.plate.name }}</a>>
-                                        | {{ rank.post.create_time | timesince }}以前
-                                    </div>
-                                    <div class="col-sm-3 text-right">
-                                        阅读 {{ rank.post.read_num }} | 评论数 {{ rank.post.reviews.count }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
+                <div class="swiper-container">
+                    <div class="swiper-wrapper" id="wrapper"></div>
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
                 </div>
+                <div class="post-list" id="post-list"></div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="newest">
+                <h5 class="newest-title">最新文章</h5>
+                <ul id="newest"></ul>
+            </div>
+            <div class="newest">
+                <h5 class="newest-title">最新评论</h5>
+                <ul id="newest-review"></ul>
             </div>
         </div>
     </div>
@@ -113,6 +141,109 @@
     <script>
 
         $(document).ready(function () {
+
+            $.get('/api/recommended?format=json', function (data, status) {
+                let results = data.results;
+                for (let i = 0; i < results.length; i++) {
+                    let id = results[i]['id'];
+                    let post;
+                    $.get(results[i]['post'], function (data) {
+                        post = data
+                        let headline = post.headline;
+                        let div = document.createElement("div");
+                        let h1 = document.createElement("h1");
+                        div.setAttribute("class", "swiper-slide");
+                        div.style.backgroundImage = "url('" + results[i]['cover'] + "')";
+                        div.appendChild(h1);
+                        h1.setAttribute('class', "text-center");
+                        h1.innerHTML = headline
+                        div.addEventListener('click', function () {
+                            window.open("{%  url 'app:show_post' %}?post_id=" + post['id'])
+                        });
+
+                        document.getElementById("wrapper").appendChild(div)
+                    });
+
+                }
+                let myswiper = new Swiper('.swiper-container', {
+                    loop: true,
+                    grabCursor: true,
+                    autoplay: {
+                        disableOnInteraction: false,
+                    },
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                        renderBullet: function (index, className) {
+                            return '<span class="' + className + '">' + (index + 1) + '</span>';
+                        },
+                    },
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+
+                });
+
+            }, dataType = "json")
+            $.get('/api/posts?format=json&limit=8', function (data, status) {
+                let posts = data.results
+                for (let i = 0; i < posts.length; i++) {
+                    let id = posts[i]['id'];
+                    let headline = posts[i]['headline'];
+                    let li = document.createElement("li")
+                    let a = document.createElement("a");
+                    a.innerHTML = headline;
+                    a.setAttribute('href', '{% url "app:show_post" %}?post_id=' + id);
+                    li.appendChild(a)
+                    document.getElementById("newest").appendChild(li)
+                }
+
+            }, dataType = "json")
+            $.get('/api/ReviewPosts/?limit=8', function (data, status) {
+                let posts = data.results
+                for (let i = 0; i < posts.length; i++) {
+                    let id = posts[i]['id'];
+                    let headline = posts[i]['headline'];
+                    let li = document.createElement("li")
+                    let a = document.createElement("a");
+                    a.innerHTML = headline;
+                    a.setAttribute('href', '{% url "app:show_post" %}?post_id=' + id);
+                    li.appendChild(a)
+                    document.getElementById("newest-review").appendChild(li)
+                }
+
+            }, dataType = "json")
+
+            $.get('/api/ranks/?format=json', function (data) {
+                let ranks = data.results;
+                for (let i = 0; i < ranks.length; i++) {
+                    $.get(ranks[i]['post'], function (data) {
+                        let post = data;
+                        let html = '<div class="post-item">\n' +
+                            '                            <a class="post-title" href="' + "{% url 'app:show_post' %}?post_id=" + post['id'] + '">\n' +
+                            '                                <h4>' + post['headline'] + '</h4></a>\n' +
+                            '                            <div class="description">' + post['description'].replace(/<[^>]+>/g, "") + '</div>\n' +
+                            '                            <div class="container-fluid">\n' +
+                            '                                <div class="row">\n' +
+                            '                                    <div class="col-sm-9">\n' +
+                            '                                        <a href="{% url 'app:showuser' %}?show=' + post['user']['id'] + '">\n' +
+                            '                                                <img src="' + avatar_src(post['user']['avatar']) + '" class="user_avatar">\n' +
+                            '                                        | <a\n' +
+                            '                                            href="{% url 'app:show_posts' %}?plate=' + post['plate']['id'] + '">' + post['plate']['name'] + '</a>\n' +
+                            '                                        | ' + post['create_time'].split('+')[0].replace("T", " ") + '\n' +
+                            '                                    </div>\n' +
+                            '                                    <div class="col-sm-3 text-right">\n' +
+                            '                                        阅读' + post['read_num'] + ' | 评论数 ' + post['reviews'].length + '\n' +
+                            '                                    </div>\n' +
+                            '                                </div>\n' +
+                            '                            </div>\n' +
+                            '                        </div>'
+                        document.getElementById("post-list").innerHTML += html
+                    })
+                }
+            })
+
             $("#show_more").click(function () {
                 $(this).remove();
                 $(".hidden-plate").removeClass("hidden")
@@ -135,5 +266,22 @@
 
 
         })
+
+        function create_element(tag) {
+            return document.createElement(tag)
+        }
+
+        function addClass(element, classname) {
+            return null
+        }
+
+
+        function avatar_src(url) {
+            if (url == null) {
+                return "/static/images/user/user_404_title.png"
+            } else {
+                return url
+            }
+        }
     </script>
 {% endblock %}

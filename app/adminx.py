@@ -13,6 +13,7 @@ xadmin.site.register(User, NullAdmin)
 xadmin.site.register(Tag, NullAdmin)
 xadmin.site.register(Review, NullAdmin)
 xadmin.site.register(Rank, NullAdmin)
+xadmin.site.register(Recommended, NullAdmin)
 
 
 
