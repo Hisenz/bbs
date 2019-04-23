@@ -29,5 +29,6 @@ urlpatterns = [
     path('search/', views.search, name='search'),
     path('upload_image/', views.upload_image, name="uploadimage"),
     path('latest/', views.latest, name='latest'),
+    path('addreply/', views.add_replay, name='addreplay'),
 ]
 

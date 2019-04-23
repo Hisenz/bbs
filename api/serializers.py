@@ -40,8 +40,35 @@ class RankSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class RecommendedSerializer(serializers.HyperlinkedModelSerializer):
-    post =  serializers.HyperlinkedRelatedField(view_name="post-detail", read_only=True)
+    post = serializers.HyperlinkedRelatedField(view_name="post-detail", read_only=True)
 
     class Meta:
         model = Recommended
         fields = ('url', 'id', 'cover', 'create_time', 'post')
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+
+    class Meta:
+        model = Review
+        fields = ('id', 'review', 'time', 'user')
+
+
+class ReplyNoToReplySerializer(serializers.ModelSerializer):
+    review = ReviewSerializer(read_only=True)
+    user = UserSerializer(read_only=True)
+
+    class Meta:
+        model = Reply
+        fields = ('id', 'review', 'user', 'content', 'time')
+
+
+class ReplySerializer(serializers.ModelSerializer):
+    review = ReviewSerializer(read_only=True)
+    user = UserSerializer(read_only=True)
+    to_reply = ReplyNoToReplySerializer(read_only=True)
+
+    class Meta:
+        model = Reply
+        fields = ('id', 'review', 'to_reply', 'user', 'content', 'time')

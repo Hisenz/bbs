@@ -63,7 +63,7 @@
             })
             $("#captcha").blur(function () {
                 let message = "";
-                if($(this).val().length != 6){
+                if($(this).val().length != 4){
                     message = "请输入正确的验证码";
                 }
                 putresult('captcha_v', message, 0);

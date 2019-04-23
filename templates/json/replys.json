@@ -1,0 +1,26 @@
+{
+{% for reply in replys%}
+{
+  "id": '{{reply.id}}',
+    "review": {
+        "id": "{{reply.review.pk}}",
+        "review": "{{reply.review.review}}",
+        "time": "{{reply.review.time}}",
+        "user": {
+            "id": "{{reply.review.user.pk}}",
+            "nickname": "{{reply.review.user.nickname}}",
+            "avatar": "{{reply.review.user.avatar}}"
+        }
+    },
+    "to_reply": "{{reply.to_reply}}",
+    "user": {
+        "id": "{{reply.user.pk}}",
+        "nickname": "{{reply.user.nickname}}",
+        "avatar": "{{reply.user.avatar}}"
+    },
+    "content": "{{reply.content}}",
+    "time": "{{reply.time}}"
+
+},
+{% endfor %}
+}

@@ -65,12 +65,20 @@ class Tag(models.Model):
         return self.name
 
 
+# 回复
+class Reply(models.Model):
+    to_reply = models.ForeignKey(User, null=True, on_delete=models.CASCADE, verbose_name='被回复者', related_name="to_reply_nickname")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="回复者", related_name='user_id')
+    content = models.TextField(verbose_name='内容')
+    time = models.DateTimeField(auto_now_add=True, verbose_name='时间')
+
+
 # 评论
 class Review(models.Model):
     review = models.TextField(verbose_name="内容")
     time = models.DateTimeField(auto_now_add=True, verbose_name="时间")
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="创建者")
-
+    replys = models.ManyToManyField(Reply, verbose_name="回复")
     class Meta:
         verbose_name = "评论"
         verbose_name_plural = verbose_name
@@ -133,3 +141,4 @@ class Recommended(models.Model):
     create_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
     is_true = models.BooleanField(default=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name='帖子')
+

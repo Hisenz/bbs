@@ -1,13 +1,14 @@
 import json
 
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 
-from app.util import plateutil, tagutil, postutil, reviewutil, pageutil, randomutil, mailutil, imageutil, rankutil
+from app.util import plateutil, tagutil, postutil, reviewutil, pageutil, randomutil, mailutil, imageutil, rankutil, \
+    replyutil
 from .models import User, Plate, Tag, Post, Review, Rank
 from .util import userutil, requestutil
-
-
+from django.views.decorators.csrf import csrf_exempt
+from django.forms.models import model_to_dict
 # Create your views here.
 
 
@@ -96,7 +97,6 @@ def register(request):
 
 def index(request):
     pk = requestutil.get_session(name='user', request=request)
-    rankutil.update()
     context = {
         'user': userutil.get_user(user_id=pk),
         'plates': Plate.objects.filter(audit=True),
@@ -312,3 +312,16 @@ def latest(request):
         'plates': Plate.objects.filter(audit=True)
     }
     return render(request, 'latest.html', context=context)
+
+
+def add_replay(request):
+
+    user_pk = requestutil.get_session(name='user', request=request)
+    review_pk = request.POST.get('review')
+    content = request.POST.get('content')
+    to_reply = request.POST.get("to_reply")
+
+    if replyutil.add(user_pk, review_pk, content, to_reply):
+        return HttpResponse(status=200)
+    else:
+        return HttpResponse(status=500)

@@ -66,7 +66,6 @@
             margin: 10px 1.5% 0;
             padding-top: 10px;
             padding-bottom: 10px;
-            border: solid #9d9d9d 1px;
         }
 
         .review-img {
@@ -80,8 +79,13 @@
             height: 25px;
             width: 25px;
         }
-        #description img{
+
+        #description img {
             max-width: 90%;
+        }
+
+        .reply-content {
+            width: 80%;
         }
 
     </style>
@@ -100,7 +104,7 @@
                         {% endif %}
                         <div class="caption">
                             <h3>
-                                <a href="{% url 'app:showuser' %}?show={{ post.user.pk }}" >
+                                <a href="{% url 'app:showuser' %}?show={{ post.user.pk }}">
                                     {{ post.user.nickname }}
                                     {% if post.user.gender %}
                                         <small style="color: #5bc0de">♂</small>
@@ -138,7 +142,7 @@
                     <div class="row">
                         <div class="col-sm-8 col-sm-offset-2 post_description">
                             <div id="description">
-                                {{ post.description | safe}}
+                                {{ post.description | safe }}
                             </div>
                             <div class="attachment">
                                 附件：<a href="/media/{{ post.attachment }}" id="attachment"></a>
@@ -165,20 +169,62 @@
 
                 <div class="review_show">
                     {% for review in reviews %}
-                        <div class="row review">
-                            <div class="col-sm-2">
+                        <div class="media review">
+                            <div class="media-left">
                                 <a href="{% url 'app:showuser' %}?show={{ review.user.pk }}" class="text-center">
                                     {% if review.user.avatar %}
-                                        <img class="review-img" src="/media/{{ review.user.avatar }}">
+                                        <img class="media-object review-img" src="/media/{{ review.user.avatar }}">
                                     {% else %}
-                                        <img class="review-img " src="/static/images/user/user_404.png"
+                                        <img class="media-object review-img " src="/static/images/user/user_404.png"
                                     {% endif %}
                                 </a>
                             </div>
-                            <div class="col-sm-10">
-                                <a href="{% url 'app:showuser' %}?show={{ review.user.pk }}">{{ review.user.nickname }}</a>
+                            <div class="media-body">
+                                <a class="media-heading"
+                                   href="{% url 'app:showuser' %}?show={{ review.user.pk }}">{{ review.user.nickname }}</a>
                                 <div style="font-size: 20px">{{ review.review }}</div>
-                                <div>{{ review.time }}</div>
+                                <div>{{ review.time }} <span class="btn btn-link reply">回复</span></div>
+                                <form class="reply-form">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="review" value="{{ review.pk }}">
+                                    <input type="text" name="content" class="reply-content">
+                                    <span class="btn btn-link reply-submit">确定</span>
+                                </form>
+                                {% for reply in review.replys.all %}
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <a href="{% url 'app:showuser' %}?show={{ reply.user.pk }}"
+                                               class="text-center">
+                                                {% if reply.user.avatar %}
+                                                    <img class="media-object review-img"
+                                                         src="/media/{{ reply.user.avatar }}">
+                                                {% else %}
+                                                    <img class="media-object review-img "
+                                                         src="/static/images/user/user_404.png"
+                                                {% endif %}
+                                            </a>
+                                        </div>
+                                        <div class="media-body">
+                                            <a class="media-heading"
+                                               href="{% url 'app:showuser' %}?show={{ reply.user.pk }}">{{ reply.user.nickname }}</a>
+                                            {% if reply.to_reply %}
+                                            回复 <a class="media-heading"
+                                               href="{% url 'app:showuser' %}?show={{ reply.to_reply.pk }}">{{ reply.to_reply.nickname }}</a>
+                                            {% endif %}
+                                            <div style="font-size: 20px">{{ reply.content }}</div>
+                                            <div>{{ reply.time }} <span class="btn btn-link reply">回复</span></div>
+                                            <form class="reply-form">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="review" value="{{ review.pk }}">
+                                                <input type="hidden" name="to_reply" value="{{ reply.user.pk }}">
+                                                <input type="text" name="content" class="reply-content">
+                                                <span class="btn btn-link reply-submit">确定</span>
+                                            </form>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+
                             </div>
                         </div>
                     {% endfor %}
@@ -191,12 +237,12 @@
 {% block script %}
     <script src="https://cdn.bootcss.com/showdown/1.9.0/showdown.min.js"></script>
     <script>
-        let attachment = "{{ post.attachment }}".split("/").pop()
-        $("#attachment").html(attachment)
+        let attachment = "{{ post.attachment }}".split("/").pop();
+        $("#attachment").html(attachment);
 
         let give_like = false;
         $(document).ready(function () {
-
+            $('.reply-form').hide();
             $.ajaxSetup({
                 data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
             });
@@ -225,7 +271,7 @@
                     })
 
                 }
-            })
+            });
             $('#add_review').click(function () {
                 let review = $('#review').val();
                 if (review == '') {
@@ -243,7 +289,18 @@
                         }
                     })
                 }
-            })
+            });
+
+            $(".reply").click(function () {
+                $('.reply-form').hide();
+                $(this).parent().next().show()
+            });
+            $('.reply-submit').click(function () {
+                let reply = $(this).parent().serializeArray();
+                $.post("{% url 'app:addreplay' %}", reply, function (data, status) {
+                    alert(status);
+                });
+            });
 
         })
     </script>

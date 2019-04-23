@@ -12,7 +12,6 @@ class RecommendedSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = RecommendedSerializer
 
 
-
 class RecommendedList(generics.ListAPIView):
     queryset = Recommended.objects.filter(is_true=True)
     serializer_class = RecommendedSerializer
