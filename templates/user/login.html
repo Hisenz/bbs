@@ -18,7 +18,11 @@
                 {% include 'base/advertisement.html' %}
             </div>
             <div class="col-sm-2 form">
-                <div class="text-center"><h1>登录</h1></div>
+                <div class="text-center">
+                    <h1>登录</h1>
+                    <div id="email_v" style="color: red"></div>
+                    <div id="password_v" style="color: red"></div>
+                </div>
                 {% include 'form/loginform.html' %}
             </div>
         </div>
@@ -29,9 +33,36 @@
 {% block script %}
     <script>
         $(document).ready(function () {
-            {% if message != '' %}
+            {% if message %}
                 alert('{{ message }}')
             {% endif %}
-        })
+            $("#email").blur(function () {
+                let re = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
+                if (!re.test($(this).val())) {
+                    $("#email_v").html('请输入正确的邮箱账号!')
+                } else {
+                    $("#email_v").html("")
+                }
+            });
+            $("#password").blur(function () {
+                if ($(this).val().length < 6) {
+                    $("#password_v").html("请输入正确的密码！")
+
+                } else {
+                    $("#password_v").html("")
+
+                }
+            });
+            $("#submit").click(function () {
+                $("input").blur();
+                let email = document.getElementById('email_v').innerHTML;
+                let password = document.getElementById('password').innerHTML;
+
+
+                if (email.length === 0 && password.length ===0) {
+                    $("#login").click();
+                }
+            })
+        });
     </script>
 {% endblock %}

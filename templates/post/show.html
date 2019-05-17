@@ -175,7 +175,7 @@
                                     {% if review.user.avatar %}
                                         <img class="media-object review-img" src="/media/{{ review.user.avatar }}">
                                     {% else %}
-                                        <img class="media-object review-img " src="/static/images/user/user_404.png"
+                                        <img class="media-object review-img " src="/static/images/user/user_404.png">
                                     {% endif %}
                                 </a>
                             </div>
@@ -200,7 +200,7 @@
                                                          src="/media/{{ reply.user.avatar }}">
                                                 {% else %}
                                                     <img class="media-object review-img "
-                                                         src="/static/images/user/user_404.png"
+                                                         src="/static/images/user/user_404.png">
                                                 {% endif %}
                                             </a>
                                         </div>
@@ -299,6 +299,7 @@
                 let reply = $(this).parent().serializeArray();
                 $.post("{% url 'app:addreplay' %}", reply, function (data, status) {
                     alert(status);
+                    location.reload();
                 });
             });
 

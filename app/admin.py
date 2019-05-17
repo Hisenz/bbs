@@ -16,13 +16,14 @@ class PostAdmin(admin.ModelAdmin):
 
 #
 @admin.register(User)
-class PostAdmin(admin.ModelAdmin):
+class UserAdmin(admin.ModelAdmin):
+
     pass
 
 
 #
 @admin.register(Tag)
-class PostAdmin(admin.ModelAdmin):
+class TagAdmin(admin.ModelAdmin):
     pass
 
 

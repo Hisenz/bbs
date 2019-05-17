@@ -67,3 +67,9 @@ def modify_information(kwargs):
 
         return SUCCESS
     return ERROR
+
+
+def set_password(user, password):
+    user.password = encryption(password)
+    user.save()
+    return True

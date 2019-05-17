@@ -30,5 +30,6 @@ urlpatterns = [
     path('upload_image/', views.upload_image, name="uploadimage"),
     path('latest/', views.latest, name='latest'),
     path('addreply/', views.add_replay, name='addreplay'),
+    path('changepassword/', views.change_password, name='changepassword'),
 ]
 

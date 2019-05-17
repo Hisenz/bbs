@@ -115,12 +115,13 @@
                 </ul>
             </div>
             <div class="">
-                <div class="swiper-container">
+                <div class="swiper-container" id="recommended">
                     <div class="swiper-wrapper" id="wrapper"></div>
                     <div class="swiper-pagination"></div>
                     <div class="swiper-button-prev"></div>
                     <div class="swiper-button-next"></div>
                 </div>
+
                 <div class="post-list" id="post-list"></div>
             </div>
         </div>
@@ -162,11 +163,9 @@
                             window.open("{%  url 'app:show_post' %}?post_id=" + post['id'])
                         });
 
-                        document.getElementById("wrapper").appendChild(div)
-                    });
+                        document.getElementById("wrapper").appendChild(div);
 
-                }
-                let myswiper = new Swiper('.swiper-container', {
+                        let myswiper = new Swiper('#recommended', {
                     loop: true,
                     grabCursor: true,
                     autoplay: {
@@ -185,6 +184,11 @@
                     },
 
                 });
+
+                    });
+
+                }
+
 
             }, dataType = "json")
             $.get('/api/posts?format=json&limit=8', function (data, status) {

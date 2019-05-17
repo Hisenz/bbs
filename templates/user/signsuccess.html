@@ -1,0 +1,47 @@
+{% extends 'base/base.html' %}
+
+
+{% block title %}
+
+{% endblock %}
+
+
+{% block style %}
+<style>
+.register-result{
+    margin-left: 10%;
+    width: 80%;
+    background-color: white;
+    padding-top: 5%;
+    padding-bottom: 10%;
+}
+</style>
+{% endblock %}
+
+
+{% block body %}
+{% if result %}
+<div class="text-center register-result">
+    <img src="/media/image/success.jpg">
+    <h2>注册成功！5秒后跳转至<a href="{% url 'app:login' %}">登录界面</a></h2>
+    <script>
+        setTimeout(function () {
+            window.location.href = "{% url 'app:login' %}"
+        }, 5000)
+    </script>
+
+</div>
+{% endif %}
+<div class="text-center register-result">
+<img src="/media/image/failure2.jpg">
+    <h2>注册失败！</h2>
+    <div>
+        <h3>再来一次 ----> <a href="{% url 'app:signup' %}">重新注册</a></h3>
+        <h3>不注册了， 直接访问<a href="{% url 'app:index' %}">首页</a></h3>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

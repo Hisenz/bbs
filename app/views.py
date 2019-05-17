@@ -1,5 +1,6 @@
 import json
 
+from django.db.models import QuerySet
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 
@@ -14,22 +15,28 @@ from django.forms.models import model_to_dict
 
 def login(request):
     request.session.clear()
-    email = request.POST.get('email')
-    password = request.POST.get('password')
-    message = ''
-    if email:
-        user = userutil.login(email=email, password=password)
-        if user:
-            request.session['user'] = user.pk
-            request.session.set_expiry(0)
-            return index(request)
-        else:
-            message = '用户名不存在或者密码错误'
+    message = ""
+    if request.method == "POST":
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        message = ''
+        if email:
+            user = userutil.login(email=email, password=password)
+            if user:
+                request.session['user'] = user.pk
+                request.session.set_expiry(0)
+                return index(request)
+            else:
+                message = '用户名不存在或者密码错误'
+                return render(request, 'user/login.html', context={'message':message})
 
-    context = {
-        'message': message,
-    }
-    return render(request, 'user/login.html', context=context)
+    if request.method == "GET":
+        context = {
+            'message': message,
+        }
+        return render(request, 'user/login.html', context=context)
+
+    return HttpResponse(status=403)
 
 
 def dynamic_login(request):
@@ -92,7 +99,7 @@ def register(request):
                          nickname=request.POST.get('nickname')):
         context['result'] = True
 
-    return render(request, 'user/result.html', context=context)
+    return render(request, 'user/signsuccess.html', context=context)
 
 
 def index(request):
@@ -289,8 +296,16 @@ def search(request):
     posts_for_headline = None
     users = None
     if keywords != "":
-        posts_for_headline = Post.objects.filter(headline__contains=keywords)
-        users = User.objects.filter(nickname__contains=keywords)
+        posts_for_headline = set()
+        users = set()
+        for keyword in keywords.split(" "):
+            if keyword != "":
+                for post in Post.objects.filter(headline__contains=keyword):
+                    posts_for_headline.add(post)
+
+                for user in User.objects.filter(nickname__contains=keywords):
+                    users.add(user)
+
     return render(request, 'search.html', context={'keywords': keywords, "posts_for_headline": posts_for_headline, 'users': users, 'user': userutil.get_user(user_pk)})
 
 
@@ -325,3 +340,32 @@ def add_replay(request):
         return HttpResponse(status=200)
     else:
         return HttpResponse(status=500)
+
+
+def change_password(request):
+    if request.method == "GET":
+
+        return render(request, 'user/changepassword.html', context=None)
+
+    if request.method == "POST":
+        email = request.POST.get('email')
+        captcha = request.POST.get('captcha')
+        password = request.POST.get('password')
+        repeat = request.POST.get('repeat')
+        try:
+            if captcha == request.session.get("captcha"):
+                del request.session['captcha']
+                user = userutil.get_user_for_email(email)
+
+                if password == repeat:
+                    userutil.set_password(user, password)
+                    return HttpResponse("修改成功")
+                else:
+                    return HttpResponse("两次密码不一致")
+
+            else:
+                message = '用户不存在或者验证码错误'
+        except Exception as e:
+            return HttpResponse("遇到异常！")
+
+    return HttpResponse(status=403)

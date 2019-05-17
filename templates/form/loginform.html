@@ -12,10 +12,18 @@
         </div>
     </div>
     <div class="form-group form-style">
-        <input type="submit" value="登录" class="btn btn-primary col-sm-12">
+        <a href="{% url 'app:changepassword' %}" class="btn btn-link col-sm-12 text-center">忘记密码？</a>
+
     </div>
     <div class="form-group form-style">
-        <a href="{% url 'app:dynamic_login' %}" class="btn btn-link col-sm-12">验证码登录</a>
-        <a href="{% url 'app:signup' %}" class="btn btn-link col-sm-12">现在注册</a>
+        <input type="button" value="登录" class="btn btn-primary col-sm-12" id="submit">
+        <input type="submit" class="hidden" id="login">
+    </div>
+    <div class="form-group form-style">
+        <a href="{% url 'app:dynamic_login' %}" class="btn btn-link col-sm-12 text-center">验证码登录</a>
+    </div>
+
+    <div class="form-group form-style">
+        <a href="{% url 'app:signup' %}" class="btn btn-link col-sm-12 text-center">现在注册</a>
     </div>
 </form>

@@ -18,13 +18,13 @@ def update():
         if rank:
             if (now - post_time).seconds/60 > 1:
                 T = (now - post_time).seconds/60
-                rank.rank = get_rank(post.give_a_like, post.reviews.count(), post.read_num, T)
+                rank.rank = get_rank(post.give_a_like, T)
                 rank.save()
         else:
             rank = Rank()
             rank.post = post
             T = (now - post_time).seconds /60
-            rank.rank = get_rank(post.give_a_like, post.reviews.count(), post.read_num, T)
+            rank.rank = get_rank(post.give_a_like, T)
             rank.save()
 
 
@@ -35,16 +35,14 @@ def get(post):
         return None
 
 
-def get_rank(P, Rev, Read, T):
+def get_rank(P, T):
     """
-    计算 Hack News 值
+    计算 rank 值
     :param P: 点赞数
-    :param Rev: 评论数
-    :param Read: 阅读数
     :param T: 时间差（以小时计算)
     :return: 通过hack news算法计算其值
     """
-    return (P + Rev*5 + Read*0.1)*1.0/pow(T+2, 1.8)
+    return (P - 1)*1.0/pow(T+2, 1.8)
 
 
 def get_for_pk(pk):

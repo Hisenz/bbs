@@ -51,10 +51,12 @@
                                 <small style="color: deeppink">♀</small>
                             {% endif %}
                         </h3>
+
                         <p> 个人说明：{{ showuser.description }}</p>
                         {% if showuser.pk == user.pk %}
                             <p>
-                                <a href="{% url 'app:change' %}" class="btn btn-link" role="button">点击修改</a>
+                                <a href="{% url 'app:changepassword' %}">修改密码</a>
+                                <a href="{% url 'app:change' %}" class="btn btn-link" role="button">修改个人信息</a>
                             </p>
                         {% endif %}
                     </div>
@@ -96,9 +98,9 @@
 
                 </div>
 
-                {% if total_post == 0 and showuser == user %}
-                    <div class="alert alert-warning text-center">您还没有<a href="{% url 'user:posting' %}">发帖</a>，</div>
-                {% elif total_post == 0 and showuser != user %}
+                {% if total_post == 0 and showuser.pk == user.pk %}
+                    <div class="alert alert-warning text-center">您还没有<a href="{% url 'app:posting' %}">发帖</a>，</div>
+                {% elif total_post == 0 and showuser.pk != user.pk %}
                     <div class="alert alert-warning text-center">这个人还没有发过贴呢，</div>
                 {% else %}
                     <div class="text-center">

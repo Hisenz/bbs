@@ -24,7 +24,8 @@
             border-radius: 5px;
             padding-bottom: 10px;
         }
-        .description{
+
+        .description {
             min-height: 20px;
         }
     </style>
@@ -59,8 +60,8 @@
                             </div>
 
                         {% endfor %}
-                        {% if posts_for_headline.count == 0 %}
-                            <h3>没有相关标题</h3>
+                        {% if posts_for_headline|length == 0 %}
+                            <h3>没有相关帖子</h3>
                         {% endif %}
                     </div>
                     <h1>用户</h1>
@@ -79,6 +80,9 @@
 
                             </div>
                         {% endfor %}
+                        {% if users|length == 0 %}
+                            <h3>没有相关用户</h3>
+                        {% endif %}
                     </div>
                 {% endif %}
 
@@ -94,9 +98,15 @@
         showkeyords()
 
         function showkeyords() {
-            showhtml = document.getElementsByClassName("show-search")
+            showhtml = document.getElementsByClassName("show-search");
+            let keywords = "{{ keywords }}".split(" ");
+
             for (let i = 0; i < showhtml.length; i++) {
-                showhtml[i].innerHTML = showhtml[i].innerHTML.split("{{ keywords }}").join("<span style='color: red'>{{ keywords }}</span>")
+                for (let j = 0; j < keywords.length; j++) {
+                    if (keywords[j] != ""){
+                        showhtml[i].innerHTML = showhtml[i].innerHTML.split(keywords[j]).join("<span style='color: red'>" + keywords[j] + "</span>");
+                    }
+                }
             }
         }
 
