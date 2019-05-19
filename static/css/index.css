@@ -1,0 +1,74 @@
+        .post-list {
+            background-color: white;
+            margin-left: 3%;
+        }
+
+        .post-item {
+            padding: 5px 1.5% 0;
+            border: rgb(245, 246, 247) solid 1px;
+            border-radius: 3px;
+        }
+
+        .post-hover {
+            background-color: #fafafa;
+        }
+
+
+        .description {
+            color: #8a8a8a;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .post-title {
+            color: black;
+        }
+
+        .post-title h4:hover {
+            color: red;
+        }
+
+        .swiper-container {
+            margin-left: 3%;
+            height: 300px;
+            background-color: #9d9d9d;
+        }
+
+        .swiper-pagination-bullet {
+            width: 20px;
+            height: 20px;
+            background-color: white;
+        }
+
+        .newest {
+            background-color: white;
+        }
+
+        .newest-title {
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid #eee;
+            border-left-width: 5px;
+            border-left-color: #ce4044;
+            border-radius: 3px;
+        }
+
+        .swiper-wrapper div h1 {
+            color: white;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+    #roof{
+
+
+    position:fixed;
+
+    bottom:10%;
+
+    right:10%;
+
+    }

@@ -37,6 +37,8 @@
 
         .post-form {
             margin-top: 50px;
+            padding-left: 10%;
+
         }
 
         #show-post {
@@ -50,11 +52,16 @@
         }
 
         #editor {
-            width: 80%;
-            margin-left: 10%;
-            min-height: 600px;
+            width: 60%;
+            margin-left: 20%;
         }
 
+        .w-e-text-container {
+            height: 700px !important; /*!important是重点，因为原div是行内样式设置的高度300px*/
+        }
+    #attachment{
+        display: inline;
+    }
     </style>
 {% endblock %}
 
@@ -64,10 +71,10 @@
             <div class="container-fluid">
                 <div class="col-sm-9 post-form">
                     <div class="post-item">
-                        标题：<input type="text" id="headline" style="width: 80%">
+                        <label for="headline">标题：</label><input type="text" id="headline" style="width: 80%">
                     </div>
                     <div class="post-item">
-                        板块：
+                        <label for="">板块：</label>
                         <div class="btn-group">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="false">
@@ -82,14 +89,14 @@
                         </div>
                     </div>
                     <div class="post-item">
-                        标签：<span id="tags"></span><span id="prompt">点击删除</span>
+                        <label for="tags">标签：</label> <span id="tags"></span><span id="prompt">点击删除</span>
                     </div>
                     <div class="post-item">
-                        附件：<input type="file" name="attachment" id="attachment">
+                        <label for="attachment">附件：</label><input type="file" name="attachment" id="attachment">
                     </div>
                 </div>
 
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                     <h4>标签池：
                         <small>(点击添加标签)</small>
                     </h4>
@@ -108,8 +115,8 @@
     </div>
 {% endblock %}
 {% block script %}
-    <script src="https://cdn.bootcss.com/showdown/1.9.0/showdown.min.js"></script>
-    <script src="https://unpkg.com/wangeditor@3.1.1/release/wangEditor.min.js"></script>
+    <script src="/static/js/wangeditor.js
+"></script>
     <script type="text/javascript">
         let E = window.wangEditor
         let editor = new E("#editor")
@@ -141,6 +148,7 @@
         }
 
         $(document).ready(function () {
+            $('.dropdown-toggle').dropdown()
             let tag_pool = document.getElementById('tag-pool')
             {% for tag in tags %}
                 let tag_button_{{ tag.pk }} = document.createElement('button');
@@ -240,44 +248,6 @@
             })
         })
 
-        function tomarkdown(text) {
-            let converter = new showdown.Converter();
-            return converter.makeHtml(text)
-        }
 
-        let myInput = document.getElementById("description");
-        str = "    ";
-        if (myInput.addEventListener) {
-            myInput.addEventListener('keydown', this.keyHandler, false);
-        } else if (myInput.attachEvent) {
-            myInput.attachEvent('onkeydown', this.keyHandler); /* damn IE hack */
-        }
-
-        function keyHandler(e) {
-            let TABKEY = 9;
-            if (e.keyCode == TABKEY) {
-                insertText(myInput, str);
-                if (e.preventDefault) {
-                    e.preventDefault();
-                }
-            }
-        }
-
-        function insertText(obj, str) {
-            if (document.selection) {
-                let sel = document.selection.createRange();
-                sel.text = str;
-            } else if (typeof obj.selectionStart === 'number' && typeof obj.selectionEnd === 'number') {
-                let startPos = obj.selectionStart,
-                    endPos = obj.selectionEnd,
-                    cursorPos = startPos,
-                    tmpStr = obj.value;
-                obj.value = tmpStr.substring(0, startPos) + str + tmpStr.substring(endPos, tmpStr.length);
-                cursorPos += str.length;
-                obj.selectionStart = obj.selectionEnd = cursorPos;
-            } else {
-                obj.value += str;
-            }
-        }
     </script>
 {% endblock %}

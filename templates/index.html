@@ -3,73 +3,7 @@
 {% block title %}首页{% endblock %}
 {% block style %}
     <link rel="stylesheet" href="/static/css/swiper.min.css">
-
-    <style>
-        .post-list {
-            background-color: white;
-            margin-left: 3%;
-        }
-
-        .post-item {
-            padding: 5px 1.5% 0;
-            border: rgb(245, 246, 247) solid 1px;
-            border-radius: 3px;
-        }
-
-        .post-hover {
-            background-color: #fafafa;
-        }
-
-
-        .description {
-            color: #8a8a8a;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            text-overflow: ellipsis;
-            overflow: hidden;
-        }
-
-        .post-title {
-            color: black;
-        }
-
-        .post-title h4:hover {
-            color: red;
-        }
-
-        .swiper-container {
-            margin-left: 3%;
-            height: 300px;
-            background-color: #9d9d9d;
-        }
-
-        .swiper-pagination-bullet {
-            width: 20px;
-            height: 20px;
-            background-color: white;
-        }
-
-        .newest {
-            background-color: white;
-        }
-
-        .newest-title {
-            padding: 20px;
-            margin: 10px 0;
-            border: 1px solid #eee;
-            border-left-width: 5px;
-            border-left-color: #ce4044;
-            border-radius: 3px;
-        }
-
-        .swiper-wrapper div h1 {
-            color: white;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            text-overflow: ellipsis;
-            overflow: hidden;
-        }
-    </style>
+    <link rel="stylesheet" href="/static/css/index.css">
 {% endblock %}
 {% block body %}
     <div class="container-fluid">
@@ -135,6 +69,10 @@
                 <ul id="newest-review"></ul>
             </div>
         </div>
+        <div id="roof" class="text-center">
+            <a href="#"><img src="/static/images/turntoroof.png" style="width: 80px; height: 80px"></a></br>
+            返回顶部
+        </div>
     </div>
 
 {% endblock %}
@@ -166,24 +104,24 @@
                         document.getElementById("wrapper").appendChild(div);
 
                         let myswiper = new Swiper('#recommended', {
-                    loop: true,
-                    grabCursor: true,
-                    autoplay: {
-                        disableOnInteraction: false,
-                    },
-                    pagination: {
-                        el: '.swiper-pagination',
-                        clickable: true,
-                        renderBullet: function (index, className) {
-                            return '<span class="' + className + '">' + (index + 1) + '</span>';
-                        },
-                    },
-                    navigation: {
-                        nextEl: '.swiper-button-next',
-                        prevEl: '.swiper-button-prev',
-                    },
+                            loop: true,
+                            grabCursor: true,
+                            autoplay: {
+                                disableOnInteraction: false,
+                            },
+                            pagination: {
+                                el: '.swiper-pagination',
+                                clickable: true,
+                                renderBullet: function (index, className) {
+                                    return '<span class="' + className + '">' + (index + 1) + '</span>';
+                                },
+                            },
+                            navigation: {
+                                nextEl: '.swiper-button-next',
+                                prevEl: '.swiper-button-prev',
+                            },
 
-                });
+                        });
 
                     });
 
@@ -220,8 +158,48 @@
 
             }, dataType = "json")
 
-            $.get('/api/ranks/?format=json', function (data) {
+
+
+            $("#show_more").click(function () {
+                $(this).remove();
+                $(".hidden-plate").removeClass("hidden")
+            })
+            $('.plate-description-detail').hover(function () {
+                $(this).popover('show')
+            }, function () {
+                $(this).popover('hide')
+            })
+            $(".post-item").hover(function () {
+                $(this).addClass("post-hover")
+            }, function () {
+                $(this).removeClass("post-hover")
+            })
+            $(".plate-item").hover(function () {
+                $(this).addClass("active")
+            }, function () {
+                $(this).removeClass("active")
+            })
+            let offset = 0;
+            document.getElementById("post-list").innerHTML += "<div class='text-center post-item' id='loading'><h3>加载中，请稍后......</h3></div>";
+            loadpost(offset)
+            $(window).scroll(function () {
+                var scrollTop = $(this).scrollTop();
+                var scrollHeight = $(document).height();
+                var windowHeight = $(this).height();
+                if (scrollTop + windowHeight == scrollHeight) {
+                    offset += 30;
+                    document.getElementById("post-list").innerHTML += "<div class='text-center post-item' id='loading'><h3>加载中，请稍后......</h3></div>";
+                    loadpost(offset)
+                }
+            });
+        })
+        function loadpost(offset) {
+
+            $.get('/api/ranks/?format=json&offset='+offset, function (data) {
                 let ranks = data.results;
+                if (document.getElementById('loading')){
+                    document.getElementById('loading').remove();
+                }
                 for (let i = 0; i < ranks.length; i++) {
                     $.get(ranks[i]['post'], function (data) {
                         let post = data;
@@ -247,31 +225,9 @@
                         document.getElementById("post-list").innerHTML += html
                     })
                 }
-            })
+            });
 
-            $("#show_more").click(function () {
-                $(this).remove();
-                $(".hidden-plate").removeClass("hidden")
-            })
-            $('.plate-description-detail').hover(function () {
-                $(this).popover('show')
-            }, function () {
-                $(this).popover('hide')
-            })
-            $(".post-item").hover(function () {
-                $(this).addClass("post-hover")
-            }, function () {
-                $(this).removeClass("post-hover")
-            })
-            $(".plate-item").hover(function () {
-                $(this).addClass("active")
-            }, function () {
-                $(this).removeClass("active")
-            })
-
-
-        })
-
+        }
         function create_element(tag) {
             return document.createElement(tag)
         }

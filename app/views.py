@@ -344,7 +344,6 @@ def add_replay(request):
 
 def change_password(request):
     if request.method == "GET":
-
         return render(request, 'user/changepassword.html', context=None)
 
     if request.method == "POST":

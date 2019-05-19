@@ -1,6 +1,6 @@
 {% extends 'base/base.html' %}
 
-{% block title %}首页{% endblock %}
+{% block title %}最新{% endblock %}
 {% block style %}
     <style>
         .post-list {
@@ -31,11 +31,30 @@
         .post-title {
             color: black;
         }
+
+        .newest {
+            background-color: white;
+        }
+
+        .newest-title {
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid #eee;
+            border-left-width: 5px;
+            border-left-color: #ce4044;
+            border-radius: 3px;
+        }
+
+        #roof {
+            position: fixed;
+            bottom: 10%;
+            right: 10%;
+        }
     </style>
 {% endblock %}
 {% block body %}
-    <div class="container-fluid">
-        <div class="col-sm-5 col-sm-offset-3">
+    <div class="container-fluid" id="newest-recommended">
+        <div class="col-sm-6 col-sm-offset-3">
             <div class="plate-list">
                 <ul class="list-group">
                     <li class="text-center plate-item">
@@ -49,20 +68,11 @@
                         </a>
                     </li>
                     {% for plate in plates %}
-                        {% if forloop.counter <= 5 %}
-                            <li class="text-center plate-item">
-                                <a href="{% url 'app:show_posts' %}?plate={{ plate.pk }}">
-                                    <h4>{{ plate.name }}</h4>
-                                </a>
-                            </li>
-                        {% else %}
-                            <li class="hidden hidden-plate text-center plate-item">
-                                <a href="{% url 'app:show_posts' %}?plate={{ plate.pk }}">
-                                    <h4>{{ plate.name }}</h4>
-                                </a>
-                            </li>
-                        {% endif %}
-
+                        <li class="text-center plate-item">
+                            <a href="{% url 'app:show_posts' %}?plate={{ plate.pk }}">
+                                <h4>{{ plate.name }}</h4>
+                            </a>
+                        </li>
                     {% endfor %}
                     {% if plates.count > 5 %}
                         <li id="show_more" class="text-center plate-item">
@@ -77,34 +87,24 @@
                 </ul>
             </div>
             <div class="">
-                <div class="post-list">
-                    {% for post in posts %}
-                        <div class="post-item">
-                            <a class="post-title" href="{% url 'app:show_post' %}?post_id={{ post.pk }}">
-                                <h4>{{ post.headline }}</h4></a>
-                            <div class="description">{{ post.description| striptags }}</div>
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-sm-9">
-                                        <a href="{% url 'app:showuser' %}?show={{ post.user.pk }}">
-                                            {% if post.user.avatar %}
-                                                <img src="/media/{{ post.user.avatar }}" class="user_avatar">
-                                            {% else %}
-                                                <img src="/static/images/user/user_404_title.png" class="user_avatar">
-                                            {% endif %}{{ post.user.nickname }}</a>
-                                        | <a
-                                            href="{% url 'app:show_posts' %}?plate={{ post.plate.pk }}">{{ post.plate.name }}</a>>
-                                        | {{ post.create_time | timesince}}以前
-                                    </div>
-                                    <div class="col-sm-3 text-right">
-                                        阅读 {{ post.read_num }} | 评论数 {{ post.reviews.count }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
+                <div class="post-list" id="post-list">
+
                 </div>
             </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="newest">
+                <h5 class="newest-title">热门推荐</h5>
+                <ul id="newest"></ul>
+            </div>
+            <div class="newest">
+                <h5 class="newest-title">最新评论</h5>
+                <ul id="newest-review"></ul>
+            </div>
+        </div>
+        <div id="roof" class="text-center">
+            <a href="#"><img src="/static/images/turntoroof.png" style="width: 80px; height: 80px"></a></br>
+            返回顶部
         </div>
     </div>
 
@@ -113,6 +113,7 @@
     <script>
 
         $(document).ready(function () {
+            let offset = 0;
             $("#show_more").click(function () {
                 $(this).remove();
                 $(".hidden-plate").removeClass("hidden")
@@ -131,9 +132,94 @@
                 $(this).addClass("active")
             }, function () {
                 $(this).removeClass("active")
-            })
+            });
+            document.getElementById("post-list").innerHTML += "<div class='text-center post-item' id='loading'><h3>加载中，请稍后。。。。</h3></div>"
+            loadpost(offset);
+            $.get('/api/ranks?format=json&limit=8', function (data, status) {
+                let posts = data.results;
+
+                for (let i = 0; i < posts.length; i++) {
+                    $.get(posts[i]['post'], function (data) {
+                        let id = data['id'];
+                        let headline = data['headline'];
+                        let li = document.createElement("li")
+                        let a = document.createElement("a");
+                        a.innerHTML = headline;
+                        a.setAttribute('href', '{% url "app:show_post" %}?post_id=' + id);
+                        li.appendChild(a)
+                        document.getElementById("newest").appendChild(li)
+                    });
+
+                }
+
+            }, dataType = "json")
+            $.get('/api/ReviewPosts/?limit=8', function (data, status) {
+                let posts = data.results
+                for (let i = 0; i < posts.length; i++) {
+                    let id = posts[i]['id'];
+                    let headline = posts[i]['headline'];
+                    let li = document.createElement("li")
+                    let a = document.createElement("a");
+                    a.innerHTML = headline;
+                    a.setAttribute('href', '{% url "app:show_post" %}?post_id=' + id);
+                    li.appendChild(a)
+                    document.getElementById("newest-review").appendChild(li)
+                }
+
+            }, dataType = "json")
+            $(window).scroll(function () {
+                var scrollTop = $(this).scrollTop();
+                var scrollHeight = $(document).height();
+                var windowHeight = $(this).height();
+                if (scrollTop + windowHeight == scrollHeight) {
+                    offset += 30;
+                    document.getElementById("post-list").innerHTML += "<div class='text-center post-item' id='loading'><h3>加载中，请稍后......</h3></div>"
+                    loadpost(offset)
+                }
+            });
+        });
+
+        function loadpost(offset) {
 
 
-        })
+            $.get('/api/posts/?format=json&offset=' + offset, function (data) {
+
+                let ranks = data.results;
+                document.getElementById('loading').remove();
+                for (let i = 0; i < ranks.length; i++) {
+
+                    let post = ranks[i];
+                    let html = '<div class="post-item">\n' +
+                        '                            <a class="post-title" href="' + "{% url 'app:show_post' %}?post_id=" + post['id'] + '">\n' +
+                        '                                <h4>' + post['headline'] + '</h4></a>\n' +
+                        '                            <div class="description">' + post['description'].replace(/<[^>]+>/g, "") + '</div>\n' +
+                        '                            <div class="container-fluid">\n' +
+                        '                                <div class="row">\n' +
+                        '                                    <div class="col-sm-9">\n' +
+                        '                                        <a href="{% url 'app:showuser' %}?show=' + post['user']['id'] + '">\n' +
+                        '                                                <img src="' + avatar_src(post['user']['avatar']) + '" class="user_avatar">\n' +
+                        '                                        | <a\n' +
+                        '                                            href="{% url 'app:show_posts' %}?plate=' + post['plate']['id'] + '">' + post['plate']['name'] + '</a>\n' +
+                        '                                        | ' + post['create_time'].split('+')[0].replace("T", " ") + '\n' +
+                        '                                    </div>\n' +
+                        '                                    <div class="col-sm-3 text-right">\n' +
+                        '                                        阅读' + post['read_num'] + ' | 评论数 ' + post['reviews'].length + '\n' +
+                        '                                    </div>\n' +
+                        '                                </div>\n' +
+                        '                            </div>\n' +
+                        '                        </div>'
+                    document.getElementById("post-list").innerHTML += html
+
+                }
+            });
+        }
+
+        function avatar_src(url) {
+            if (url == null) {
+                return "/static/images/user/user_404_title.png"
+            } else {
+                return url
+            }
+        }
     </script>
 {% endblock %}

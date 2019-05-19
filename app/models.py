@@ -77,8 +77,9 @@ class Reply(models.Model):
 class Review(models.Model):
     review = models.TextField(verbose_name="内容")
     time = models.DateTimeField(auto_now_add=True, verbose_name="时间")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="创建者")
+    user = models.ForeignKey(User, to_field='nickname', on_delete=models.CASCADE, verbose_name="创建者")
     replys = models.ManyToManyField(Reply, verbose_name="回复")
+
     class Meta:
         verbose_name = "评论"
         verbose_name_plural = verbose_name
@@ -109,12 +110,6 @@ class Post(models.Model):
         return self.headline
 
 
-# 点赞
-class GiveLike(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-
 # 图片存放
 class Image(models.Model):
     image = models.ImageField(upload_to=image)
@@ -134,11 +129,15 @@ class Rank(models.Model):
         return str(self.pk)
 
 
-# 推荐
+# 首页推荐推荐
 class Recommended(models.Model):
 
     cover = models.ImageField(upload_to=recommend_cover)
     create_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
     is_true = models.BooleanField(default=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name='帖子')
+
+    class Meta:
+        verbose_name = "首页推荐"
+        verbose_name_plural = verbose_name
 

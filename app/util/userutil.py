@@ -55,18 +55,17 @@ def get_user_for_email(email):
 
 
 def modify_information(kwargs):
-    if login(kwargs['email'], kwargs['password']):
-        user = User.objects.get(email=kwargs['email'])
-        user.nickname = kwargs['nickname']
-        user.description = kwargs['description']
-        if kwargs['avatar']:
-            user.avatar = kwargs['avatar']
-        user.email = kwargs['email']
-        user.gender = kwargs['gender']
-        user.save()
+    user = User.objects.get(email=kwargs['email'])
+    user.nickname = kwargs['nickname']
+    user.description = kwargs['description']
+    user.email = kwargs['email']
+    user.gender = kwargs['gender']
+    if kwargs['avatar']:
+        user.avatar = kwargs['avatar']
+    user.save()
 
-        return SUCCESS
-    return ERROR
+    return SUCCESS
+
 
 
 def set_password(user, password):

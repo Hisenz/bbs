@@ -17,6 +17,7 @@ class PostSetOrderForReview(viewsets.ReadOnlyModelViewSet):
     queryset = Post.objects.all().order_by("-reviews")
     serializer_class = PostSerializer
 
+
 class PostList(generics.ListAPIView):
     queryset = Post.objects.all().order_by('-create_time')
     serializer_class = PostSerializer
